@@ -1,4 +1,3 @@
-import { css } from "https://cdn.jsdelivr.net/gh/timonson/salad/lit-element/src/lit-element.ts"
 export const tailwindCss = String.raw`
   /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 

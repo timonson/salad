@@ -4,7 +4,7 @@ function getBasename(path) {
 }
 
 function getDirname(path) {
-  return path.match(/.*\//)[0].slice(0, -1) || "."
+  return path.match(/.*\//)?.[0].slice(0, -1) || "."
 }
 
 function getFileExtension(filename) {
@@ -13,3 +13,4 @@ function getFileExtension(filename) {
 }
 
 console.log(getDirname("./aaaa/ddd/cccc.md"))
+console.log(getDirname("."))

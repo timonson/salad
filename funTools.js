@@ -21,6 +21,7 @@ export {
   mix,
   getProportianteOffsetSize,
   waitForPredicate,
+  throwError,
 }
 
 // makeArray(1, 'string', [3, 4, 5])
@@ -100,7 +101,7 @@ function makeHashMax(str, max) {
 // duration in milliseconds. The first arg can be an Error object:
 function delay(value, duration = 1000) {
   return new Promise(function makePromiseInsideDelay(resolve, reject) {
-    setTimeout(function() {
+    setTimeout(function () {
       if (value instanceof Error) return reject(value)
       resolve(value)
     }, duration)
@@ -127,7 +128,7 @@ async function* getLoopingRange(from, to, time) {
  * immediately ready for input via `next()`
  */
 function makeObserver(generatorFunction) {
-  return function(...args) {
+  return function (...args) {
     const generatorObject = generatorFunction(...args)
     generatorObject.next()
     return generatorObject
@@ -155,7 +156,7 @@ function makeQueue(...callbacks) {
 // one instance of `fn()` can run at a time on this server.
 function queue(fn) {
   let lastPromise = Promise.resolve()
-  return function(...args) {
+  return function (...args) {
     let returnedPromise = lastPromise.then(() => fn(...args))
     // If `returnedPromise` rejected, swallow the rejection for the queue,
     // but `returnedPromise` rejections will still be visible outside the queue
@@ -244,4 +245,8 @@ function waitForPredicate(predicate, message, options = {}) {
     }
     nextInterval()
   })
+}
+
+function throwError(mssg) {
+  throw new Error(mssg)
 }

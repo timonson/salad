@@ -5,14 +5,13 @@ export const wcCssReset = css`
     display: block;
     box-sizing: border-box;
     cursor: default;
-    line-height: 1.5;
-    tab-size: 4;
     word-break: break-word;
   }
   *,
   *::before,
   *::after {
     box-sizing: inherit;
+    color: inherit;
   }
   p,
   ol,
@@ -47,6 +46,10 @@ export const wcCssReset = css`
   h6 {
     font-size: 100%;
     font-weight: normal;
+  }
+
+  p {
+    line-height: 1.5;
   }
 
   ul {

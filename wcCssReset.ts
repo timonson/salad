@@ -4,7 +4,7 @@ function createHtmlTemplate(html: string) {
   return template
 }
 
-export const wcCssReset = createHtmlTemplate(`
+export const wcCssReset = createHtmlTemplate(`<style>
   :host {
     display: block;
     box-sizing: border-box;
@@ -90,4 +90,4 @@ export const wcCssReset = createHtmlTemplate(`
   th:not([align]) {
     text-align: left;
   }
-`)
+  </style>`)

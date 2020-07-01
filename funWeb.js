@@ -234,6 +234,20 @@ function surroundMouseWithElement(pageX, pageY, element) {
   ]
 }
 
+function reachedScrollingYEnd(element) {
+  return (
+    Math.abs(element.scrollHeight - element.scrollTop - element.clientHeight) <=
+    3.0 // buffer
+  )
+}
+
+function reachedScrollingXEnd(element) {
+  return (
+    Math.abs(element.scrollWidth - element.scrollLeft - element.clientWidth) <=
+    3.0
+  )
+}
+
 /**
  * Listens for one event and resolves with this event object after it was fired.
  *
@@ -254,20 +268,6 @@ function waitForEvent(eventTarget, eventName) {
     }
     eventTarget.addEventListener(eventName, listener)
   })
-}
-
-function reachedScrollingYEnd(element) {
-  return (
-    Math.abs(element.scrollHeight - element.scrollTop - element.clientHeight) <=
-    3.0 // buffer
-  )
-}
-
-function reachedScrollingXEnd(element) {
-  return (
-    Math.abs(element.scrollWidth - element.scrollLeft - element.clientWidth) <=
-    3.0
-  )
 }
 
 function findElementInEventPath(event, selector) {

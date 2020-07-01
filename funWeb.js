@@ -10,8 +10,6 @@ export {
   cloneTemplateIntoParent,
   requestString,
   requestStringSync,
-  convertCamelCaseToDash,
-  convertDashToCamelCase,
   coupleSettersAndGettersToAttributes,
   handlePageVisibilityChange,
   makeElementEditableOnDblclick,
@@ -19,6 +17,7 @@ export {
   surroundMouseWithElement,
   waitForEvent,
   findElementInEventPath,
+  observeScroll,
 }
 
 function getSiblingThroughClass(element, className) {
@@ -99,7 +98,7 @@ function createCss(cssString) {
 }
 
 function loadCss(path, target = document.head) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     const link = document.createElement("link")
     link.rel = "stylesheet"
     link.href = path
@@ -143,7 +142,7 @@ function requestStringSync(filePath) {
  * @return {HTMLTemplateElement}
  */
 function createHtmlTemplate(html) {
-  var template = document.createElement("template")
+  const template = document.createElement("template")
   template.innerHTML = html.trim() // Never return a text node of whitespace as the result
   return template
 }
@@ -153,26 +152,16 @@ function cloneTemplateIntoParent(template, parent) {
   return template
 }
 
-function convertCamelCaseToDash(str) {
-  return str.replace(/([a-zA-Z])(?=[A-Z])/g, "$1-").toLowerCase()
-}
-
-function convertDashToCamelCase(str) {
-  return str.replace(/-([a-z])/g, function(g) {
-    return g[1].toUpperCase()
-  })
-}
-
 function coupleSettersAndGettersToAttributes(thisObj, camelCasePropsAsStrings) {
   function camelCaseToDash(str) {
     return str.replace(/([a-zA-Z])(?=[A-Z])/g, "$1-").toLowerCase()
   }
   for (const propertyName of camelCasePropsAsStrings) {
     Object.defineProperty(thisObj, propertyName, {
-      get: function() {
+      get: function () {
         return this.getAttribute(camelCaseToDash(propertyName))
       },
-      set: function(value) {
+      set: function (value) {
         return value
           ? this.setAttribute(camelCaseToDash(propertyName), value)
           : this.removeAttribute(camelCaseToDash(propertyName))
@@ -290,4 +279,23 @@ function findElementInEventPath(event, selector) {
     .composedPath()
     .find(eventTarget => predicate(eventTarget, selector))
   return foundElement ? foundElement : null
+}
+
+// https://stripe.com/blog/connect-front-end-experience
+// const element = document.getElementById("express-animation");
+// observeScroll(element, startAnimation);
+function observeScroll(element, callback) {
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.intersectionRatio < 1) return
+      callback()
+      // Stop watching the element
+      observer.disconnect()
+    },
+    {
+      threshold: 1,
+    }
+  )
+  // Start watching the element
+  observer.observe(element)
 }

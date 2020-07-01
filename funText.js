@@ -1,4 +1,6 @@
 export {
+  convertCamelCaseToDash,
+  convertDashToCamelCase,
   concatWithSpace,
   replaceCharAt,
   searchAndPaste,
@@ -11,6 +13,17 @@ export {
   addPaddingToBase64url,
   hasWhiteSpace,
   reverseString,
+}
+
+
+function convertCamelCaseToDash(str) {
+  return str.replace(/([a-zA-Z])(?=[A-Z])/g, "$1-").toLowerCase()
+}
+
+function convertDashToCamelCase(str) {
+  return str.replace(/-([a-z])/g, function(g) {
+    return g[1].toUpperCase()
+  })
 }
 
 function concatWithSpace(...strings) {

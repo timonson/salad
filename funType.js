@@ -1,7 +1,15 @@
-export { makeArray, getTrueType, checkTypes, isNumber, isPromise, isNull, get }
+export {
+  getAlwaysAnArray,
+  getTrueType,
+  checkTypes,
+  isNumber,
+  isPromise,
+  isNull,
+  get,
+}
 
-// getArrayFromValuesAndArrays(1, 'string', [3, 4, 5])
-function makeArray(...arg) {
+// getAlwaysAnArray(1, 'string', [3, 4, 5])
+function getAlwaysAnArray(...arg) {
   return [].concat(...arg)
 }
 
@@ -9,10 +17,7 @@ function makeArray(...arg) {
 // toString() can be used with every object and allows you to get its class
 // console.log(getTrueType(null))
 function getTrueType(arg) {
-  return Object.prototype.toString
-    .call(arg)
-    .slice(8, -1)
-    .toLowerCase()
+  return Object.prototype.toString.call(arg).slice(8, -1).toLowerCase()
 }
 
 // function foo(a, b, c) {

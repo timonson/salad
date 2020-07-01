@@ -3,8 +3,8 @@ export async function mkdirAndWrite(
   data: Uint8Array | string
 ): Promise<Uint8Array | string> {
   const path =
-    pathOrUrlObj instanceof URL ? new URL(pathOrUrlObj).pathname : pathOrUrlObj
-  if (typeof path !== "string") throw TypeError("path is no string")
+    pathOrUrlObj instanceof URL ? pathOrUrlObj.pathname : pathOrUrlObj
+  if (typeof path !== "string") throw TypeError("path is not a string")
   return await Deno.lstat(path)
     .catch(() =>
       Deno.mkdir(path.match(/.*\//)?.[0].slice(0, -1) || ".", {

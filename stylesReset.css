@@ -36,6 +36,10 @@ h6 {
   font-weight: normal;
 }
 
+  p {
+    line-height: 1.647;
+  }
+
 ul {
   list-style: none;
 }
@@ -48,15 +52,13 @@ select {
 
 /**
  * 1. Use the default cursor in all browsers (opinionated).
- * 2. Change the line height in all browsers (opinionated).
- * 3. Use a 4-space tab width in all browsers (opinionated).
+ * 3. Don't overflow horizontally (opinionated).
  * 4. Breaks words to prevent overflow in all browsers (opinionated).
  * 5. Sets the border-box box sizing
  */
 html {
   cursor: default; /* 1 */
-  line-height: 1.5; /* 2 */
-  tab-size: 4; /* 3 */
+  overflow-x: hidden; /* 3 */
   word-break: break-word; /* 4 */
   box-sizing: border-box;
 }

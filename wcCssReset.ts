@@ -1,6 +1,10 @@
-import { css } from "https://cdn.jsdelivr.net/gh/timonson/salad/lit-element/src/lit-element.ts"
+function createHtmlTemplate(html: string) {
+  const template = document.createElement("template")
+  template.innerHTML = html.trim()
+  return template
+}
 
-export const wcCssReset = css`
+export const wcCssReset = createHtmlTemplate(`
   :host {
     display: block;
     box-sizing: border-box;
@@ -49,7 +53,7 @@ export const wcCssReset = css`
   }
 
   p {
-    line-height: 1.5;
+    line-height: 1.647;
   }
 
   ul {
@@ -86,4 +90,4 @@ export const wcCssReset = css`
   th:not([align]) {
     text-align: left;
   }
-`
+`)

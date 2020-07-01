@@ -1,10 +1,10 @@
-class customError extends Error {
-  constructor(name, message) {
-    super(message)
-    this.name = name
-    this.date = new Date()
-    Error.captureStackTrace(this, customError)
+class CustomError extends Error {
+  constructor(message) {
+    super(message);
+    this.message = message;
+    this.name = this.constructor.name;
+    this.date = new Date();
   }
 }
 
-export { customError }
+export { CustomError };

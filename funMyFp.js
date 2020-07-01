@@ -1,7 +1,7 @@
 export { zip, unzip, insert, insertMany }
 
 // const array = [[10, 20, 30, 40], ["A", "B", "C", "D"], [1, 2, 3, 4]]
-// zip(array) ==> [ [ 10, "A", 1 ], [ 20, "B", 2 ], [ 30, "C", 3 ], [ 40, "D", 4 ] ]
+// zip(array) //==> [ [ 10, "A", 1 ], [ 20, "B", 2 ], [ 30, "C", 3 ], [ 40, "D", 4 ] ]
 function zip(nestedArray) {
   return nestedArray[0].map((_, i) =>
     nestedArray.map(innerArray => innerArray[i])

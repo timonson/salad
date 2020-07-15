@@ -99,11 +99,15 @@ function makeHashMax(str, max) {
 
 // Returns a promise that resolves with the specified value after the specified
 // duration in milliseconds. The first arg can be an Error object:
-function delay(value, duration = 1000) {
+function delay(value, duration = 100) {
   return new Promise(function makePromiseInsideDelay(resolve, reject) {
     setTimeout(function () {
-      if (value instanceof Error) return reject(value)
-      resolve(value)
+      try {
+        const result = typeof value === "function" ? value() : value
+        resolve(result)
+      } catch (err) {
+        reject(err)
+      }
     }, duration)
   })
 }

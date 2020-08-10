@@ -1,17 +1,19 @@
-export { isPresent, isObject, has }
+export { isPresent, isObject, has };
 
 // remove falsey values:
 function isPresent<T>(t: T | undefined | null | void): t is T {
-  return t !== undefined && t !== null
+  return t !== undefined && t !== null;
 }
 
 function isObject(obj: unknown): obj is object {
-  return obj !== null && typeof obj === "object" && Array.isArray(obj) === false
+  return (
+    obj !== null && typeof obj === "object" && Array.isArray(obj) === false
+  );
 }
 
-function has<K extends string>(
+function hasProperty<K extends string>(
   key: K,
   x: object
 ): x is { [key in K]: unknown } {
-  return key in x
+  return key in x;
 }

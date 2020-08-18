@@ -18,16 +18,17 @@ export {
   waitForEvent,
   findElementInEventPath,
   observeScroll,
-}
+  prepareRedirecting,
+};
 
 function getSiblingThroughClass(element, className) {
   return [...element.parentNode.children].find(el =>
     el.classList.contains(className)
-  )
+  );
 }
 
 function getIndexOfElement(element) {
-  return [...element.parentNode.children].indexOf(element)
+  return [...element.parentNode.children].indexOf(element);
 }
 
 /*
@@ -60,51 +61,51 @@ function getIndexOfElement(element) {
  */
 
 function h(type, attributes, children) {
-  const element = document.createElement(type)
+  const element = document.createElement(type);
   for (let key in attributes) {
     if (key in element) {
-      element[key] = attributes[key]
+      element[key] = attributes[key];
     } else
       attributes[key]
         ? element.setAttribute(key, attributes[key])
-        : element.removeAttribute(key)
+        : element.removeAttribute(key);
   }
   if (typeof children === "string")
-    element.appendChild(document.createTextNode(children))
+    element.appendChild(document.createTextNode(children));
   else if (children)
     Array.isArray(children)
       ? children.forEach(child => element.appendChild(child))
-      : element.appendChild(children)
+      : element.appendChild(children);
 
-  return element
+  return element;
 }
 
 function mount(node, view) {
-  let currentApp
+  let currentApp;
   return function renderView(state) {
-    const evaluatedView = view(state)
+    const evaluatedView = view(state);
     currentApp
       ? node.replaceChild(evaluatedView, currentApp)
-      : node.appendChild(evaluatedView)
-    return (currentApp = evaluatedView)
-  }
+      : node.appendChild(evaluatedView);
+    return (currentApp = evaluatedView);
+  };
 }
 
 function createCss(cssString) {
-  const style = document.createElement("style")
-  style.type = "text/css"
-  style.innerHTML = cssString
-  document.getElementsByTagName("head")[0].appendChild(style)
+  const style = document.createElement("style");
+  style.type = "text/css";
+  style.innerHTML = cssString;
+  document.getElementsByTagName("head")[0].appendChild(style);
 }
 
 function loadCss(path, target = document.head) {
   return new Promise(function (resolve, reject) {
-    const link = document.createElement("link")
-    link.rel = "stylesheet"
-    link.href = path
-    target.appendChild(link)
-    link.onload = () => resolve("CSS has loaded!")
-  })
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = path;
+    target.appendChild(link);
+    link.onload = () => resolve("CSS has loaded!");
+  });
 }
 
 // addCssRules(document.querySelector("style"), `h1 { background-color:blue; }`)
@@ -112,29 +113,29 @@ function addCssRules(styleElement, ruleSet) {
   return styleElement.sheet.insertRule(
     ruleSet,
     styleElement.sheet.cssRules.length
-  )
+  );
 }
 
 function makeCanvasContext(canvas, sizeX, sizeY, ctxType = "2d") {
   if (!canvas.getContext)
-    return console.error(`Could not create ctx on element ${canvas}!`)
-  if (sizeX) canvas.width = sizeX
-  if (sizeY) canvas.height = sizeY
-  const ctx = canvas.getContext(ctxType)
-  ctx.width = canvas.width
-  ctx.height = canvas.height
-  return ctx
+    return console.error(`Could not create ctx on element ${canvas}!`);
+  if (sizeX) canvas.width = sizeX;
+  if (sizeY) canvas.height = sizeY;
+  const ctx = canvas.getContext(ctxType);
+  ctx.width = canvas.width;
+  ctx.height = canvas.height;
+  return ctx;
 }
 
 function requestString(filePath) {
-  return fetch(filePath).then(response => response.text())
+  return fetch(filePath).then(response => response.text());
 }
 
 function requestStringSync(filePath) {
-  var request = new XMLHttpRequest()
-  request.open("GET", filePath, false) // `false` makes the request synchronous
-  request.send(null)
-  return request.status === 200 ? request.responseText : null
+  var request = new XMLHttpRequest();
+  request.open("GET", filePath, false); // `false` makes the request synchronous
+  request.send(null);
+  return request.status === 200 ? request.responseText : null;
 }
 
 /**
@@ -142,86 +143,86 @@ function requestStringSync(filePath) {
  * @return {HTMLTemplateElement}
  */
 function createHtmlTemplate(html) {
-  const template = document.createElement("template")
-  template.innerHTML = html.trim() // Never return a text node of whitespace as the result
-  return template
+  const template = document.createElement("template");
+  template.innerHTML = html.trim(); // Never return a text node of whitespace as the result
+  return template;
 }
 
 function cloneTemplateIntoParent(template, parent) {
-  parent.append(template.content.cloneNode(true))
-  return template
+  parent.append(template.content.cloneNode(true));
+  return template;
 }
 
 function coupleSettersAndGettersToAttributes(thisObj, camelCasePropsAsStrings) {
   function camelCaseToDash(str) {
-    return str.replace(/([a-zA-Z])(?=[A-Z])/g, "$1-").toLowerCase()
+    return str.replace(/([a-zA-Z])(?=[A-Z])/g, "$1-").toLowerCase();
   }
   for (const propertyName of camelCasePropsAsStrings) {
     Object.defineProperty(thisObj, propertyName, {
       get: function () {
-        return this.getAttribute(camelCaseToDash(propertyName))
+        return this.getAttribute(camelCaseToDash(propertyName));
       },
       set: function (value) {
         return value
           ? this.setAttribute(camelCaseToDash(propertyName), value)
-          : this.removeAttribute(camelCaseToDash(propertyName))
+          : this.removeAttribute(camelCaseToDash(propertyName));
       },
-    })
+    });
   }
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
 function handlePageVisibilityChange(onHidden, onVisible) {
   // Set the name of the hidden property and the change event for visibility
-  var hidden, visibilityChange
+  var hidden, visibilityChange;
   if (typeof document.hidden !== "undefined") {
     // Opera 12.10 and Firefox 18 and later support
-    hidden = "hidden"
-    visibilityChange = "visibilitychange"
+    hidden = "hidden";
+    visibilityChange = "visibilitychange";
   } else if (typeof document.msHidden !== "undefined") {
-    hidden = "msHidden"
-    visibilityChange = "msvisibilitychange"
+    hidden = "msHidden";
+    visibilityChange = "msvisibilitychange";
   } else if (typeof document.webkitHidden !== "undefined") {
-    hidden = "webkitHidden"
-    visibilityChange = "webkitvisibilitychange"
+    hidden = "webkitHidden";
+    visibilityChange = "webkitvisibilitychange";
   }
-  var videoElement = document.getElementById("videoElement")
+  var videoElement = document.getElementById("videoElement");
   // If the page is hidden, pause the video;
   // if the page is shown, play the video
   function handleVisibilityChange() {
     if (document[hidden]) {
-      onHidden()
+      onHidden();
     } else {
-      onVisible()
+      onVisible();
     }
   }
   // Warn if the browser doesn't support addEventListener or the Page Visibility API
   if (typeof document.addEventListener === "undefined" || hidden === undefined)
     console.log(
       "This demo requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API."
-    )
+    );
   // Handle page visibility change
   else
-    document.addEventListener(visibilityChange, handleVisibilityChange, false)
+    document.addEventListener(visibilityChange, handleVisibilityChange, false);
 
-  return [hidden, visibilityChange]
+  return [hidden, visibilityChange];
 }
 
 function makeElementEditableOnDblclick(element) {
   element.ondblclick = event => {
-    element.contentEditable = "true"
-    element.blur()
-    element.focus()
-    document.execCommand("selectAll", false, undefined)
-    event.preventDefault()
-    event.stopPropagation()
-  }
-  element.onclick = event => (event.target.contentEditable = "false")
+    element.contentEditable = "true";
+    element.blur();
+    element.focus();
+    document.execCommand("selectAll", false, undefined);
+    event.preventDefault();
+    event.stopPropagation();
+  };
+  element.onclick = event => (event.target.contentEditable = "false");
 }
 
 function getMousePositionRelativeToElement(event) {
-  const rect = event.target.getBoundingClientRect()
-  return [event.clientX - rect.left, event.clientY - rect.top]
+  const rect = event.target.getBoundingClientRect();
+  return [event.clientX - rect.left, event.clientY - rect.top];
 }
 function surroundMouseWithElement(pageX, pageY, element) {
   return [
@@ -231,21 +232,21 @@ function surroundMouseWithElement(pageX, pageY, element) {
     pageY -
       (pageYOffset + element.offsetParent.getBoundingClientRect().top) -
       element.offsetHeight / 2,
-  ]
+  ];
 }
 
 function reachedScrollingYEnd(element) {
   return (
     Math.abs(element.scrollHeight - element.scrollTop - element.clientHeight) <=
     3.0 // buffer
-  )
+  );
 }
 
 function reachedScrollingXEnd(element) {
   return (
     Math.abs(element.scrollWidth - element.scrollLeft - element.clientWidth) <=
     3.0
-  )
+  );
 }
 
 /**
@@ -263,22 +264,23 @@ function reachedScrollingXEnd(element) {
 function waitForEvent(eventTarget, eventName) {
   return new Promise(resolve => {
     function listener(event) {
-      resolve(event)
-      eventTarget.removeEventListener(eventName, listener)
+      resolve(event);
+      eventTarget.removeEventListener(eventName, listener);
     }
-    eventTarget.addEventListener(eventName, listener)
-  })
+    eventTarget.addEventListener(eventName, listener);
+  });
 }
 
 function findElementInEventPath(event, selector) {
   function predicate(eventTarget, selector) {
-    if (eventTarget instanceof HTMLElement) return eventTarget.matches(selector)
-    else return false
+    if (eventTarget instanceof HTMLElement)
+      return eventTarget.matches(selector);
+    else return false;
   }
   const foundElement = event
     .composedPath()
-    .find(eventTarget => predicate(eventTarget, selector))
-  return foundElement ? foundElement : null
+    .find(eventTarget => predicate(eventTarget, selector));
+  return foundElement ? foundElement : null;
 }
 
 // https://stripe.com/blog/connect-front-end-experience
@@ -287,15 +289,32 @@ function findElementInEventPath(event, selector) {
 function observeScroll(element, callback) {
   const observer = new IntersectionObserver(
     ([entry]) => {
-      if (entry.intersectionRatio < 1) return
-      callback()
+      if (entry.intersectionRatio < 1) return;
+      callback();
       // Stop watching the element
-      observer.disconnect()
+      observer.disconnect();
     },
     {
       threshold: 1,
     }
-  )
+  );
   // Start watching the element
-  observer.observe(element)
+  observer.observe(element);
+}
+
+// window.addEventListener("DOMContentLoaded", event => {
+// prepareRedirecting(document.body);
+// });
+function prepareRedirecting(targetElement, title = document.title) {
+  window.history.pushState(
+    { html: targetElement.innerHTML, pageTitle: title },
+    "",
+    location.pathname
+  );
+  window.onpopstate = function (e) {
+    if (e.state) {
+      targetElement.innerHTML = e.state.html;
+      document.title = e.state.pageTitle;
+    }
+  };
 }

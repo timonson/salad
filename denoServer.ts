@@ -21,7 +21,7 @@ async function runServer(
   opts: Opts = {}
 ) {
   console.log(`Listening to ${addr}`);
-  if (Opts.isSecure) {
+  if (opts.isSecure && typeof addr === "object" && "certFile" in addr) {
     for await (const req of serveTLS(addr)) {
       req.respond(await makeResponseInput(req, callbacks, opts));
     }

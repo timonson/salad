@@ -1,8 +1,10 @@
 import {
   serve,
+  serveTLS,
   ServerRequest,
   Response,
   HTTPOptions,
+  HTTPSOptions,
 } from "https://deno.land/std/http/server.ts";
 import { extname } from "https://deno.land/std/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
@@ -14,13 +16,19 @@ type RequestHandlers = {
 };
 
 async function runServer(
-  addr: string | HTTPOptions,
+  addr: string | HTTPOptions | HTTPSOptions,
   callbacks: RequestHandlers = {},
   opts: Opts = {}
 ) {
   console.log(`Listening to ${addr}`);
-  for await (const req of serve(addr)) {
-    req.respond(await makeResponseInput(req, callbacks, opts));
+  if (Opts.isSecure) {
+    for await (const req of serveTLS(addr)) {
+      req.respond(await makeResponseInput(req, callbacks, opts));
+    }
+  } else {
+    for await (const req of serve(addr)) {
+      req.respond(await makeResponseInput(req, callbacks, opts));
+    }
   }
 }
 
@@ -63,7 +71,7 @@ async function handleFileRequest(req: ServerRequest): Promise<Response> {
         status: 200,
       })
     )
-    .catch(err => ({ status: 404 }));
+    .catch((err) => ({ status: 404 }));
 }
 
 function getContentTypeFromUrl(pathname: string): string | null {

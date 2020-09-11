@@ -19,6 +19,7 @@ export {
   findElementInEventPath,
   observeScroll,
   prepareRedirecting,
+  addRedirectionListeners
 };
 
 function getSiblingThroughClass(element, className) {
@@ -305,16 +306,61 @@ function observeScroll(element, callback) {
 // window.addEventListener("DOMContentLoaded", event => {
 // prepareRedirecting(document.body);
 // });
-function prepareRedirecting(targetElement, title = document.title) {
-  window.history.pushState(
-    { html: targetElement.innerHTML, pageTitle: title },
-    "",
-    location.pathname
-  );
-  window.onpopstate = function (e) {
-    if (e.state) {
-      targetElement.innerHTML = e.state.html;
-      document.title = e.state.pageTitle;
+  function prepareRedirecting(targetElement, title = document.title) {
+    window.history.replaceState(
+      { html: targetElement.innerHTML, pageTitle: title },
+      "",
+      location.toString()
+    );
+    window.onpopstate = function (entry) {
+      if (entry.state) {
+        targetElement.innerHTML = entry.state.html;
+        document.title = entry.state.pageTitle;
+      }
+    };
+  }
+
+  addRedirectionListeners({
+    element,
+    name,
+    idToGo,
+  }: {
+    element: HTMLElement;
+    name?: string;
+    idToGo?: string;
+  }) {
+    function makeRedirection({
+      html,
+      pageTitle,
+      urlPath,
+      targetElement,
+      idToGo,
+    }: {
+      html: string;
+      pageTitle: string;
+      urlPath: string;
+      targetElement: HTMLElement;
+      idToGo?: string;
+    }) {
+      targetElement!.innerHTML = html;
+      document.title = pageTitle;
+      window.history.pushState({ html, pageTitle }, "", urlPath);
+      if (idToGo) {
+        location.hash = idToGo; // changing the location object saves new history entry
+        history.replaceState({ html, pageTitle }, "", document.URL);
+      }
     }
-  };
-}
+    name = name ? name : element.textContent!.trim().toLowerCase();
+    return element.addEventListener("click", () => {
+      return (window as any).htmlMap.has(name + "Html")
+        ? this.makeRedirection({
+            html: (window as any).htmlMap.get(name + "Html") as string,
+            pageTitle: name!.charAt(0).toUpperCase() + name!.slice(1),
+            urlPath: name === "home" ? "/" : "/" + name + ".html",
+            targetElement: document.body,
+            idToGo: idToGo,
+          })
+        : undefined;
+    });
+  }
+

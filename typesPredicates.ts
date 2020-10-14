@@ -4,6 +4,7 @@ export {
   isNull,
   isUndefined,
   isString,
+  isObjectWithAllProps,
   isObject,
   hasProperty,
   isTrue,
@@ -30,7 +31,13 @@ function isString(input: unknown): input is string {
   return typeof input === "string";
 }
 
-function isObject(obj: unknown): obj is { [key: string]: unknown } {
+function isObjectWithAllProps(obj: unknown): obj is { [key: string]: unknown } {
+  return (
+    obj !== null && typeof obj === "object" && Array.isArray(obj) === false
+  );
+}
+
+function isObject(obj: unknown): obj is object {
   return (
     obj !== null && typeof obj === "object" && Array.isArray(obj) === false
   );

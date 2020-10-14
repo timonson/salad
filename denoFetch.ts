@@ -4,7 +4,7 @@ function runFetch(url: string, fetchInit?: RequestInit) {
   return fetch(url, fetchInit).then((res: Response) => {
     if (!res.ok)
       return Promise.reject(
-        new Deno.errors.Http(
+        new RangeError(
           `${res.status} '${res.statusText}' received instead of 200-299 range`
         )
       );
@@ -16,7 +16,7 @@ function runFetch(url: string, fetchInit?: RequestInit) {
     } else if (contentType?.includes("text/")) {
       return res.text();
     } else {
-      return res.arrayBuffer().then(p => new Uint8Array(p));
+      return res.arrayBuffer().then((p) => new Uint8Array(p));
     }
   });
 }

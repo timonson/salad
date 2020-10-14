@@ -18,7 +18,7 @@ function isNotNull<T>(t: T | null): t is T {
   return t !== null;
 }
 
-export function isNull(input: unknown): input is null {
+function isNull(input: unknown): input is null {
   return input === null;
 }
 
@@ -30,7 +30,7 @@ function isString(input: unknown): input is string {
   return typeof input === "string";
 }
 
-function isObject(obj: unknown): obj is object {
+function isObject(obj: unknown): obj is { [key: string]: unknown } {
   return (
     obj !== null && typeof obj === "object" && Array.isArray(obj) === false
   );

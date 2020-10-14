@@ -149,8 +149,9 @@ function createHtmlTemplate(html) {
   return template;
 }
 
-function cloneTemplateIntoParent(template, parent) {
-  parent.append(template.content.cloneNode(true));
+function cloneTemplateIntoParent(template, parent, sibling) {
+  if (sibling) parent.insertBefore(template.content.cloneNode(true), sibling);
+  else parent.append(template.content.cloneNode(true));
   return template;
 }
 

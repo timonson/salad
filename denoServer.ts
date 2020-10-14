@@ -1,6 +1,5 @@
-import {
-  serve,
-  serveTLS,
+import { serve, serveTLS } from "https://deno.land/std/http/server.ts";
+import type {
   ServerRequest,
   Response,
   HTTPOptions,
@@ -39,13 +38,23 @@ async function makeResponseInput(
 ): Promise<Response> {
   switch (req.method) {
     case "GET":
+      console.log(
+        req.url,
+        getContentTypeFromUrl(
+          req.url.slice(-1) === "/" ? "./index.html" : "." + req.url
+        )
+      );
       return callbacks.handleGetRequest
         ? getContentTypeFromUrl(
             req.url.slice(-1) === "/" ? "./index.html" : "." + req.url
-          )
+          ) !== undefined
           ? await handleFileRequest(req)
           : await callbacks.handleGetRequest(req, opts)
-        : await handleFileRequest(req);
+        : getContentTypeFromUrl(
+            req.url.slice(-1) === "/" ? "./index.html" : "." + req.url
+          ) !== undefined
+        ? await handleFileRequest(req)
+        : { status: 404 };
       break;
     case "POST":
       return callbacks.handlePostRequest
@@ -62,7 +71,7 @@ async function handleFileRequest(req: ServerRequest): Promise<Response> {
   const pathname = req.url.slice(-1) === "/" ? "./index.html" : "." + req.url;
   if (!(await exists(pathname))) return { status: 404 };
   const headers = new Headers();
-  headers.set("Content-type", getContentTypeFromUrl(pathname) || "text/plain");
+  headers.set("Content-type", getContentTypeFromUrl(pathname) || "");
   return Deno.readFile(pathname)
     .then(
       (data: Uint8Array): Response => ({
@@ -74,7 +83,7 @@ async function handleFileRequest(req: ServerRequest): Promise<Response> {
     .catch((err) => ({ status: 404 }));
 }
 
-function getContentTypeFromUrl(pathname: string): string | null {
+function getContentTypeFromUrl(pathname: string) {
   const fileTypes = new Map([
     [".ico", "image/x-icon"],
     [".html", "text/html"],
@@ -83,20 +92,17 @@ function getContentTypeFromUrl(pathname: string): string | null {
     [".css", "text/css"],
     [".png", "image/png"],
     [".jpg", "image/jpeg"],
+    [".webp", "image/jpeg"],
     [".wav", "audio/wav"],
     [".mp3", "audio/mpeg"],
+    [".mp4", "video/mp4"],
     [".svg", "image/svg+xml"],
     [".pdf", "application/pdf"],
     [".doc", "application/msword"],
+    [".woff2", null],
   ]);
-  return fileTypes.get(extname(pathname)) || null;
+  return fileTypes.get(extname(pathname));
 }
 
-export {
-  runServer,
-  ServerRequest,
-  Response,
-  Opts,
-  handleFileRequest,
-  getContentTypeFromUrl,
-};
+export { runServer, handleFileRequest, getContentTypeFromUrl };
+export type { ServerRequest, Response, Opts };

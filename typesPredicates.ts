@@ -45,9 +45,21 @@ function isObject(obj: unknown): obj is object {
 
 function hasProperty<K extends string>(
   key: K,
-  x: object
-): x is { [key in K]: unknown } {
-  return key in x;
+  obj: object
+): obj is { [key in K]: unknown } {
+  return key in obj;
+}
+
+function isObjectAndHasProp(
+  obj: unknown,
+  key: string
+): obj is { [key in K]: unknown } {
+  return (
+    obj !== null &&
+    typeof obj === "object" &&
+    Array.isArray(obj) === false &&
+    key in obj
+  );
 }
 
 function isTrue(input: unknown): input is true {

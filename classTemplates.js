@@ -1,4 +1,4 @@
-class Dragon {
+export class Dragon {
   constructor() {
     this.fireDragons = [
       "Blaze",
@@ -35,5 +35,3 @@ class Dragon {
     return this.all[Math.floor(this.all.length * Math.random())]
   }
 }
-
-export { Dragon }

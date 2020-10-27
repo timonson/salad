@@ -20,12 +20,12 @@ export async function getInnerHtmlFromSrc({
 
   return await Deno.writeTextFile(
     destinationFile,
-    contextPre + innerHtml + contextPost
+    contextPre + innerHtml + contextPost,
   );
 }
 
 getInnerHtmlFromSrc({
   sourceFile: "./index.html",
   destinationFile: "newIndex.html",
-  element: "universal-footer",
+  element: "body",
 });

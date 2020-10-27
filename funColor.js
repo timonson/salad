@@ -1,5 +1,5 @@
-function colorNameToHex(color) {
-  var colors = {
+export function colorNameToHex(color) {
+  const colors = {
     aliceblue: "#f0f8ff",
     antiquewhite: "#faebd7",
     aqua: "#00ffff",
@@ -148,4 +148,5 @@ function colorNameToHex(color) {
 
   return false
 }
-export { colorNameToHex }
+
+console.log(colorNameToHex(Deno.args[0]))

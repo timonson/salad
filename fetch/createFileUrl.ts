@@ -1,4 +1,4 @@
-import { dirname, join, normalize } from "https://deno.land/std/path/mod.ts";
+import { dirname, join } from "https://deno.land/std/path/mod.ts";
 
 export function createFileUrl(
   { moduleUrl, reqUrl, root = "", entry = "index.html" }: {
@@ -8,8 +8,7 @@ export function createFileUrl(
     entry?: string;
   },
 ): string {
-  const normalizedUrl = normalize(reqUrl);
-  return normalizedUrl === "/"
-    ? join(dirname(moduleUrl), "/", root, normalize(reqUrl), entry)
-    : join(dirname(moduleUrl), "/", root, normalize(reqUrl));
+  return reqUrl === "/"
+    ? join(dirname(moduleUrl), "/", root, reqUrl, entry)
+    : join(dirname(moduleUrl), "/", root, reqUrl);
 }

@@ -18,13 +18,7 @@ export function isString(input: unknown): input is string {
   return typeof input === "string";
 }
 
-export function isObject(obj: unknown): obj is { [key: string]: unknown } {
-  return (
-    obj !== null && typeof obj === "object" && Array.isArray(obj) === false
-  );
-}
-
-export function isObjectNarrow(obj: unknown): obj is object {
+export function isObject(obj: unknown): obj is object {
   return (
     obj !== null && typeof obj === "object" && Array.isArray(obj) === false
   );
@@ -32,14 +26,14 @@ export function isObjectNarrow(obj: unknown): obj is object {
 
 export function hasProperty<K extends string>(
   key: K,
-  obj: object
+  obj: object,
 ): obj is { [key in K]: unknown } {
   return key in obj;
 }
 
 export function isObjectAndHasProp<K extends string>(
   key: K,
-  obj: unknown
+  obj: unknown,
 ): obj is { [key in K]: unknown } {
   return (
     typeof obj === "object" &&

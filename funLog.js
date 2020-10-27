@@ -9,7 +9,6 @@ export {
   logTime,
   logTicker,
   logProps,
-  logCssRulesText,
 }
 
 // slog({obj})
@@ -170,15 +169,6 @@ const propertyRetriever = {
   },
 }
 
-function logCssRulesText() {
-  setTimeout(
-    () =>
-      [...document.styleSheets[0].cssRules].forEach((rule, i) =>
-        console.log(i, rule.cssText)
-      ),
-    300
-  )
-}
 
 function log(...input) {
   console.log(...input)

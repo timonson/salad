@@ -1,29 +1,40 @@
 export {
-  getSiblingThroughClass,
-  getIndexOfElement,
-  h,
-  mount,
-  createCss,
-  loadCss,
-  makeCanvasContext,
-  createHtmlTemplate,
+  addRedirectionListeners,
   cloneTemplateIntoParent,
-  requestString,
-  requestStringSync,
   coupleSettersAndGettersToAttributes,
-  handlePageVisibilityChange,
-  makeElementEditableOnDblclick,
-  getMousePositionRelativeToElement,
-  surroundMouseWithElement,
-  waitForEvent,
+  createCss,
+  createHtmlTemplate,
   findElementInEventPath,
+  getIndexOfElement,
+  getMousePositionRelativeToElement,
+  getSiblingThroughClass,
+  h,
+  handlePageVisibilityChange,
+  loadCss,
+  logCssRulesText,
+  makeCanvasContext,
+  makeElementEditableOnDblclick,
+  mount,
   observeScroll,
   prepareRedirecting,
-  addRedirectionListeners
+  requestString,
+  requestStringSync,
+  surroundMouseWithElement,
+  waitForEvent,
 };
 
+function logCssRulesText() {
+  setTimeout(
+    () =>
+      [...document.styleSheets[0].cssRules].forEach((rule, i) =>
+        console.log(i, rule.cssText)
+      ),
+    300,
+  );
+}
+
 function getSiblingThroughClass(element, className) {
-  return [...element.parentNode.children].find(el =>
+  return [...element.parentNode.children].find((el) =>
     el.classList.contains(className)
   );
 }
@@ -66,17 +77,19 @@ function h(type, attributes, children) {
   for (let key in attributes) {
     if (key in element) {
       element[key] = attributes[key];
-    } else
+    } else {
       attributes[key]
         ? element.setAttribute(key, attributes[key])
         : element.removeAttribute(key);
+    }
   }
-  if (typeof children === "string")
+  if (typeof children === "string") {
     element.appendChild(document.createTextNode(children));
-  else if (children)
+  } else if (children) {
     Array.isArray(children)
-      ? children.forEach(child => element.appendChild(child))
+      ? children.forEach((child) => element.appendChild(child))
       : element.appendChild(children);
+  }
 
   return element;
 }
@@ -113,13 +126,14 @@ function loadCss(path, target = document.head) {
 function addCssRules(styleElement, ruleSet) {
   return styleElement.sheet.insertRule(
     ruleSet,
-    styleElement.sheet.cssRules.length
+    styleElement.sheet.cssRules.length,
   );
 }
 
 function makeCanvasContext(canvas, sizeX, sizeY, ctxType = "2d") {
-  if (!canvas.getContext)
+  if (!canvas.getContext) {
     return console.error(`Could not create ctx on element ${canvas}!`);
+  }
   if (sizeX) canvas.width = sizeX;
   if (sizeY) canvas.height = sizeY;
   const ctx = canvas.getContext(ctxType);
@@ -129,7 +143,7 @@ function makeCanvasContext(canvas, sizeX, sizeY, ctxType = "2d") {
 }
 
 function requestString(filePath) {
-  return fetch(filePath).then(response => response.text());
+  return fetch(filePath).then((response) => response.text());
 }
 
 function requestStringSync(filePath) {
@@ -199,19 +213,22 @@ function handlePageVisibilityChange(onHidden, onVisible) {
     }
   }
   // Warn if the browser doesn't support addEventListener or the Page Visibility API
-  if (typeof document.addEventListener === "undefined" || hidden === undefined)
+  if (
+    typeof document.addEventListener === "undefined" || hidden === undefined
+  ) {
     console.log(
-      "This demo requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API."
+      "This demo requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.",
     );
-  // Handle page visibility change
-  else
+  } // Handle page visibility change
+  else {
     document.addEventListener(visibilityChange, handleVisibilityChange, false);
+  }
 
   return [hidden, visibilityChange];
 }
 
 function makeElementEditableOnDblclick(element) {
-  element.ondblclick = event => {
+  element.ondblclick = (event) => {
     element.contentEditable = "true";
     element.blur();
     element.focus();
@@ -219,7 +236,7 @@ function makeElementEditableOnDblclick(element) {
     event.preventDefault();
     event.stopPropagation();
   };
-  element.onclick = event => (event.target.contentEditable = "false");
+  element.onclick = (event) => (event.target.contentEditable = "false");
 }
 
 function getMousePositionRelativeToElement(event) {
@@ -229,25 +246,25 @@ function getMousePositionRelativeToElement(event) {
 function surroundMouseWithElement(pageX, pageY, element) {
   return [
     pageX -
-      (pageXOffset + element.offsetParent.getBoundingClientRect().left) -
-      element.offsetWidth / 2,
+    (pageXOffset + element.offsetParent.getBoundingClientRect().left) -
+    element.offsetWidth / 2,
     pageY -
-      (pageYOffset + element.offsetParent.getBoundingClientRect().top) -
-      element.offsetHeight / 2,
+    (pageYOffset + element.offsetParent.getBoundingClientRect().top) -
+    element.offsetHeight / 2,
   ];
 }
 
 function reachedScrollingYEnd(element) {
   return (
     Math.abs(element.scrollHeight - element.scrollTop - element.clientHeight) <=
-    3.0 // buffer
+      3.0 // buffer
   );
 }
 
 function reachedScrollingXEnd(element) {
   return (
     Math.abs(element.scrollWidth - element.scrollLeft - element.clientWidth) <=
-    3.0
+      3.0
   );
 }
 
@@ -264,7 +281,7 @@ function reachedScrollingXEnd(element) {
  * @returns {Promise<CustomEvent>} Promise to await until the event has been fired
  */
 function waitForEvent(eventTarget, eventName) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     function listener(event) {
       resolve(event);
       eventTarget.removeEventListener(eventName, listener);
@@ -275,13 +292,13 @@ function waitForEvent(eventTarget, eventName) {
 
 function findElementInEventPath(event, selector) {
   function predicate(eventTarget, selector) {
-    if (eventTarget instanceof HTMLElement)
+    if (eventTarget instanceof HTMLElement) {
       return eventTarget.matches(selector);
-    else return false;
+    } else return false;
   }
   const foundElement = event
     .composedPath()
-    .find(eventTarget => predicate(eventTarget, selector));
+    .find((eventTarget) => predicate(eventTarget, selector));
   return foundElement ? foundElement : null;
 }
 
@@ -298,7 +315,7 @@ function observeScroll(element, callback) {
     },
     {
       threshold: 1,
-    }
+    },
   );
   // Start watching the element
   observer.observe(element);
@@ -307,61 +324,50 @@ function observeScroll(element, callback) {
 // window.addEventListener("DOMContentLoaded", event => {
 // prepareRedirecting(document.body);
 // });
-  function prepareRedirecting(targetElement, title = document.title) {
-    window.history.replaceState(
-      { html: targetElement.innerHTML, pageTitle: title },
-      "",
-      location.toString()
-    );
-    window.onpopstate = function (entry) {
-      if (entry.state) {
-        targetElement.innerHTML = entry.state.html;
-        document.title = entry.state.pageTitle;
-      }
-    };
-  }
-
-  addRedirectionListeners({
-    element,
-    name,
-    idToGo,
-  }: {
-    element: HTMLElement;
-    name?: string;
-    idToGo?: string;
-  }) {
-    function makeRedirection({
-      html,
-      pageTitle,
-      urlPath,
-      targetElement,
-      idToGo,
-    }: {
-      html: string;
-      pageTitle: string;
-      urlPath: string;
-      targetElement: HTMLElement;
-      idToGo?: string;
-    }) {
-      targetElement!.innerHTML = html;
-      document.title = pageTitle;
-      window.history.pushState({ html, pageTitle }, "", urlPath);
-      if (idToGo) {
-        location.hash = idToGo; // changing the location object saves new history entry
-        history.replaceState({ html, pageTitle }, "", document.URL);
-      }
+function prepareRedirecting(targetElement, title = document.title) {
+  window.history.replaceState(
+    { html: targetElement.innerHTML, pageTitle: title },
+    "",
+    location.toString(),
+  );
+  window.onpopstate = function (entry) {
+    if (entry.state) {
+      targetElement.innerHTML = entry.state.html;
+      document.title = entry.state.pageTitle;
     }
-    name = name ? name : element.textContent!.trim().toLowerCase();
-    return element.addEventListener("click", () => {
-      return (window as any).htmlMap.has(name + "Html")
-        ? this.makeRedirection({
-            html: (window as any).htmlMap.get(name + "Html") as string,
-            pageTitle: name!.charAt(0).toUpperCase() + name!.slice(1),
-            urlPath: name === "home" ? "/" : "/" + name + ".html",
-            targetElement: document.body,
-            idToGo: idToGo,
-          })
-        : undefined;
-    });
-  }
+  };
+}
 
+function addRedirectionListeners({
+  element,
+  name,
+  idToGo,
+}) {
+  function makeRedirection({
+    html,
+    pageTitle,
+    urlPath,
+    targetElement,
+    idToGo,
+  }) {
+    targetElement!.innerHTML = html;
+    document.title = pageTitle;
+    window.history.pushState({ html, pageTitle }, "", urlPath);
+    if (idToGo) {
+      location.hash = idToGo; // changing the location object saves new history entry
+      history.replaceState({ html, pageTitle }, "", document.URL);
+    }
+  }
+  name = name ? name : element.textContent!.trim().toLowerCase();
+  return element.addEventListener("click", () => {
+    return (window as any).htmlMap.has(name + "Html")
+      ? this.makeRedirection({
+        html: (window as any).htmlMap.get(name + "Html") as string,
+        pageTitle: name!.charAt(0).toUpperCase() + name!.slice(1),
+        urlPath: name === "home" ? "/" : "/" + name + ".html",
+        targetElement: document.body,
+        idToGo: idToGo,
+      })
+      : undefined;
+  });
+}

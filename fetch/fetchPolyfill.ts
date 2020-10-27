@@ -20,13 +20,13 @@ export async function fetch(
     // Open the file, and convert to ReadableStream
     const file = await Deno.open(url, { read: true }).catch((err) => {
       if (err instanceof Deno.errors.NotFound) {
-        return undefined;
+        return new Response("404 not found", { status: 404 });
       } else {
-        throw err;
+        new Response("Internal server error", { status: 500 });
       }
     });
-    if (!file) {
-      return new Response("404 not found", { status: 404 });
+    if (file instanceof Response) {
+      return file;
     }
     const body = new ReadableStream<Uint8Array>({
       start: async (controller) => {

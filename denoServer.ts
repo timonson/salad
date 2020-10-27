@@ -38,12 +38,6 @@ async function makeResponseInput(
 ): Promise<Response> {
   switch (req.method) {
     case "GET":
-      console.log(
-        req.url,
-        getContentTypeFromUrl(
-          req.url.slice(-1) === "/" ? "./index.html" : "." + req.url
-        )
-      );
       return callbacks.handleGetRequest
         ? getContentTypeFromUrl(
             req.url.slice(-1) === "/" ? "./index.html" : "." + req.url

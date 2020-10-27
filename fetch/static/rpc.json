@@ -1,0 +1,1 @@
+{ "jsonrpc": "2.0", "method": "sayHello", "params": ["World"], "id": 1 }

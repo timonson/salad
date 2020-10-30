@@ -22,7 +22,7 @@ export async function fetch(
       if (err instanceof Deno.errors.NotFound) {
         return new Response("404 not found", { status: 404 });
       } else {
-        new Response("Internal server error", { status: 500 });
+        return new Response("Internal server error", { status: 500 });
       }
     });
     if (file instanceof Response) {

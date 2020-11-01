@@ -2,86 +2,89 @@
 //======
 
 export {
-  makeArray,
-  pipe,
-  memoize,
+  delay,
+  generateDelayingIterable,
+  generateId,
+  getLoopingRange,
+  getProportianteOffsetSize,
   getRandomInt,
   getRandomIntSimpel,
   getRandomItem,
-  generateId,
+  makeArray,
   makeHash,
   makeHashMax,
-  delay,
-  generateDelayingIterable,
-  getLoopingRange,
   makeObserver,
   makeQueue,
-  queue,
-  valoo,
+  memoize,
   mix,
-  getProportianteOffsetSize,
-  waitForPredicate,
+  pipe,
+  queue,
+  stringifyKeysInOrder,
   throwError,
-}
+  valoo,
+  waitForPredicate,
+};
 
 // makeArray(1, 'string', [3, 4, 5])
 function makeArray(...arg) {
-  return [].concat(...arg)
+  return [].concat(...arg);
 }
 
 // Performs left-to-right function composition. The leftmost function may have
 // any arity; the remaining functions must be unary.
 function pipe(...fns) {
-  const _pipe = (accumulator, currentValue) => (...arg) =>
-    currentValue(accumulator(...arg))
-  return fns.reduce(_pipe)
+  const _pipe = (accumulator, currentValue) =>
+    (...arg) => currentValue(accumulator(...arg));
+  return fns.reduce(_pipe);
 }
 
 function memoize(f) {
-  const cache = {}
+  const cache = {};
   return (...args) => {
-    const argStr = JSON.stringify(args)
-    cache[argStr] = cache[argStr] || f(...args)
-  }
+    const argStr = JSON.stringify(args);
+    cache[argStr] = cache[argStr] || f(...args);
+  };
 }
 
 function getRandomInt(min, max) {
   // Create byte array and fill with 1 random number
-  var byteArray = new Uint8Array(1)
-  window.crypto.getRandomValues(byteArray)
-  var range = max - min + 1
-  var max_range = 256
-  if (byteArray[0] >= Math.floor(max_range / range) * range)
-    return getRandomInt(min, max)
-  return min + (byteArray[0] % range)
+  var byteArray = new Uint8Array(1);
+  window.crypto.getRandomValues(byteArray);
+  var range = max - min + 1;
+  var max_range = 256;
+  if (byteArray[0] >= Math.floor(max_range / range) * range) {
+    return getRandomInt(min, max);
+  }
+  return min + (byteArray[0] % range);
 }
 
 function getRandomIntSimpel(min = 1, max = 100) {
-  return Math.floor(Math.random() * (max - min + 1)) + min
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function getRandomItem(array) {
-  return array[Math.floor(array.length * Math.random())]
+  return array[Math.floor(array.length * Math.random())];
 }
 
 function generateId(size) {
-  const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz"
-  for (var str = "", i = 0; i < size; i += 1)
-    str += chars[Math.floor(Math.random() * chars.length)]
-  return str
+  const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+  for (var str = "", i = 0; i < size; i += 1) {
+    str += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return str;
 }
 
 function makeHash(string) {
   var hash = 0,
     i,
-    chr
-  if (string.length === 0) return hash
+    chr;
+  if (string.length === 0) return hash;
   for (i = 0; i < string.length; i++) {
-    chr = string.charCodeAt(i)
-    hash = (hash << 5) - hash + chr
-    hash |= 0 // Convert to 32bit integer
+    chr = string.charCodeAt(i);
+    hash = (hash << 5) - hash + chr;
+    hash |= 0; // Convert to 32bit integer
   }
-  return hash
+  return hash;
 }
 
 // Hashes a string to an integer with returned hash < integer:
@@ -91,10 +94,10 @@ function makeHashMax(str, max) {
       .split("")
       .reduce(
         (hash, char) => (hash << 6) + (hash << 16) - hash + char.charCodeAt(0),
-        0
-      )
+        0,
+      );
   }
-  return ((hash(str) % max) + max) % max
+  return ((hash(str) % max) + max) % max;
 }
 
 // Returns a promise that resolves with the specified value after the specified
@@ -103,28 +106,29 @@ function delay(value, duration = 100) {
   return new Promise(function makePromiseInsideDelay(resolve, reject) {
     setTimeout(function () {
       try {
-        const result = typeof value === "function" ? value() : value
-        resolve(result)
+        const result = typeof value === "function" ? value() : value;
+        resolve(result);
       } catch (err) {
-        reject(err)
+        reject(err);
       }
-    }, duration)
-  })
+    }, duration);
+  });
 }
 
 // generateDelayingIterable([0,200],1500)
 function* generateDelayingIterable(range, time) {
-  let i = 0
+  let i = 0;
   while (i++ < 200) {
-    yield delay(getRandomIntSimpel(...range), time)
+    yield delay(getRandomIntSimpel(...range), time);
   }
 }
 
 async function* getLoopingRange(from, to, time) {
-  let c = from
-  while (true)
-    if (c < to) yield await delay(++c, time)
-    else yield await delay((c = 0), time)
+  let c = from;
+  while (true) {
+    if (c < to) yield await delay(++c, time);
+    else yield await delay((c = 0), time);
+  }
 }
 
 /**
@@ -133,10 +137,10 @@ async function* getLoopingRange(from, to, time) {
  */
 function makeObserver(generatorFunction) {
   return function (...args) {
-    const generatorObject = generatorFunction(...args)
-    generatorObject.next()
-    return generatorObject
-  }
+    const generatorObject = generatorFunction(...args);
+    generatorObject.next();
+    return generatorObject;
+  };
 }
 
 // const queue = makeQueue(console.log)
@@ -145,44 +149,44 @@ function makeObserver(generatorFunction) {
 function makeQueue(...callbacks) {
   async function* makeGenerator(callbacks) {
     while (true) {
-      const request = yield
+      const request = yield;
       for (const callback of callbacks) {
-        await callback(request)
+        await callback(request);
       }
     }
   }
-  const generatorObject = makeGenerator(callbacks)
-  generatorObject.next()
-  return generatorObject
+  const generatorObject = makeGenerator(callbacks);
+  generatorObject.next();
+  return generatorObject;
 }
 
 // Wrap an async function `fn()` in a queue using promise chaining, so only
 // one instance of `fn()` can run at a time on this server.
 function queue(fn) {
-  let lastPromise = Promise.resolve()
+  let lastPromise = Promise.resolve();
   return function (...args) {
-    let returnedPromise = lastPromise.then(() => fn(...args))
+    let returnedPromise = lastPromise.then(() => fn(...args));
     // If `returnedPromise` rejected, swallow the rejection for the queue,
     // but `returnedPromise` rejections will still be visible outside the queue
-    lastPromise = returnedPromise.catch(() => {})
-    return returnedPromise
-  }
+    lastPromise = returnedPromise.catch(() => {});
+    return returnedPromise;
+  };
 }
 
 // valoo: just the bare necessities of state management
 function valoo(v = null, ...cb) {
   function value(n) {
     if (arguments.length) {
-      v = n
-      cb.map(f => f && f(v))
+      v = n;
+      cb.map((f) => f && f(v));
     }
-    return v
+    return v;
   }
-  value.on = c => {
-    const i = cb.push(c) - 1
-    return () => (cb[i] = null)
-  }
-  return value
+  value.on = (c) => {
+    const i = cb.push(c) - 1;
+    return () => (cb[i] = null);
+  };
+  return value;
 }
 
 // This is our Linear Interpolation method. It takes 3 parameters:
@@ -195,7 +199,7 @@ function valoo(v = null, ...cb) {
 // The closer your normal is to 0 the smoother will be the interpolation.
 // The closer your normal is to 1 the sharper will be the interpolation.
 function mix(a, b, amount) {
-  return (1 - amount) * a + amount * b
+  return (1 - amount) * a + amount * b;
 }
 
 // calculate the proportianl share of the 40/300 ratio from 100:
@@ -203,9 +207,9 @@ function mix(a, b, amount) {
 function getProportianteOffsetSize(
   value,
   biggestPossibleValue,
-  actualTotalLength
+  actualTotalLength,
 ) {
-  return (value / biggestPossibleValue) * actualTotalLength
+  return (value / biggestPossibleValue) * actualTotalLength;
 }
 
 /**
@@ -224,33 +228,60 @@ function getProportianteOffsetSize(
  * @param {{ interval?: number, timeout?: number }} [options] timeout and polling interval
  */
 function waitForPredicate(predicate, message, options = {}) {
-  const { interval = 50, timeout = 2000 } = options
+  const { interval = 50, timeout = 2000 } = options;
 
   return new Promise((resolve, reject) => {
-    let timeoutId
+    let timeoutId;
 
     setTimeout(() => {
-      clearTimeout(timeoutId)
-      reject(new Error(message ? `Timeout: ${message}` : "waitUntil timed out"))
-    }, timeout)
+      clearTimeout(timeoutId);
+      reject(
+        new Error(message ? `Timeout: ${message}` : "waitUntil timed out"),
+      );
+    }, timeout);
 
     async function nextInterval() {
       try {
         if (await predicate()) {
-          resolve()
+          resolve();
         } else {
           timeoutId = setTimeout(() => {
-            nextInterval()
-          }, interval)
+            nextInterval();
+          }, interval);
         }
       } catch (error) {
-        reject(error)
+        reject(error);
       }
     }
-    nextInterval()
-  })
+    nextInterval();
+  });
 }
 
 function throwError(mssg) {
-  throw new Error(mssg)
+  throw new Error(mssg);
+}
+
+function stringifyKeysInOrder(data) {
+  function recursivelyOrderKeys(unordered) {
+    // If it's an array - recursively order any
+    // dictionary items within the array
+    if (Array.isArray(unordered)) {
+      unordered.forEach(function (item, index) {
+        unordered[index] = recursivelyOrderKeys(item);
+      });
+      return unordered;
+    }
+    // If it's an object - let's order the keys
+    if (typeof unordered === "object") {
+      const ordered = {};
+      Object.keys(unordered)
+        .sort()
+        .forEach(function (key) {
+          ordered[key] = recursivelyOrderKeys(unordered[key]);
+        });
+      return ordered;
+    }
+    return unordered;
+  }
+  return JSON.stringify(recursivelyOrderKeys(data), null, 2);
 }

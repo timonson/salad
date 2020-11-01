@@ -1,4 +1,5 @@
 import { fetch as fetchPolyfilled } from "./fetchPolyfill.ts";
+import { FetchSimplyError } from "./fetchSimply.ts";
 
 import type { BodyMethod, FetchSimply } from "./types.ts";
 
@@ -8,7 +9,11 @@ export const fetchSimply: FetchSimply = async (
 ): Promise<any> => {
   const res = await fetchPolyfilled(url, init);
   if (!res.ok) {
-    throw res;
+    throw new FetchSimplyError(
+      `${res.status} '${res.statusText}' received instead of 200-299 range.`,
+      res.status,
+      res.statusText,
+    );
   }
   const contentType = res.headers.get("content-type");
   const contentLength = res.headers.get("content-length");

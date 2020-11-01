@@ -1,12 +1,26 @@
 import type { BodyMethod, FetchSimply } from "./types.ts";
 
+export class FetchSimplyError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+    readonly statusText: string,
+  ) {
+    super(message);
+  }
+}
+
 export const fetchSimply: FetchSimply = async (
   url: string,
   init?: RequestInit & { bodyMethod?: BodyMethod },
 ): Promise<any> => {
   const res = await fetch(url, init);
   if (!res.ok) {
-    throw res;
+    throw new FetchSimplyError(
+      `${res.status} '${res.statusText}' received instead of 200-299 range`,
+      res.status,
+      res.statusText,
+    );
   }
   const contentType = res.headers.get("content-type");
   const contentLength = res.headers.get("content-length");

@@ -8,9 +8,7 @@ export const fetchSimply: FetchSimply = async (
 ): Promise<any> => {
   const res = await fetchPolyfilled(url, init);
   if (!res.ok) {
-    throw new RangeError(
-      `${res.status} '${res.statusText}' received instead of 200-299 range`,
-    );
+    throw res;
   }
   const contentType = res.headers.get("content-type");
   const contentLength = res.headers.get("content-length");
@@ -31,20 +29,8 @@ export const fetchSimply: FetchSimply = async (
     case "text":
       return await res.text();
       break;
+    case "uint8Array":
     default:
       return new Uint8Array(await res.arrayBuffer());
   }
 };
-
-/*
- * Example:
- * import { dirname } from "https://deno.land/std/path/mod.ts";
- * let i = await fetchSimply(
- *   dirname(import.meta.url), + "/static/cat.jpeg",
- * );
- * let r = await fetchSimply(
- *   dirname(import.meta.url)+ "/static/cat.jpeg",
- *   { bodyMethod: "blob" },
- * );
- * console.log(i, r);
-*/

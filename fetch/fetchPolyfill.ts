@@ -51,7 +51,6 @@ export async function fetch(
     if (info.mtime) {
       headers.set("last-modified", info.mtime.toUTCString());
     }
-
     // Create 200 streaming response
     return new Response(body, { status: 200, headers });
   }

@@ -1,48 +1,46 @@
 /* LICENSE MIT-2.0 - @MostlyAdequate */
 /* eslint-disable no-use-before-define, max-len, class-methods-use-this */
 export {
-  always,
-  compose,
-  curry,
-  curry2Args,
-  uncurry2Args,
-  either,
-  identity,
-  inspect,
-  left,
-  liftA2,
-  liftA3,
-  maybe,
-  nothing,
-  reject,
-  createCompose,
-  Either,
-  Left,
-  Right,
-  Identity,
-  IO,
-  List,
-  Map,
-  Maybe,
-  Task,
   add,
+  always,
   append,
   chain,
+  compose,
   concat,
+  createCompose,
+  curry,
+  curry2Args,
+  Either,
+  either,
   eq,
   filter,
   flip,
   forEach,
   head,
+  Identity,
+  identity,
+  inspect,
   intercalate,
+  IO,
   join,
   last,
+  Left,
+  left,
+  liftA2,
+  liftA3,
+  List,
+  Map,
   map,
   match,
+  Maybe,
+  maybe,
+  nothing,
   prop,
   reduce,
+  reject,
   replace,
   reverse,
+  Right,
   safeHead,
   safeLast,
   safeProp,
@@ -50,85 +48,87 @@ export {
   sortBy,
   split,
   take,
+  Task,
   toLowerCase,
   toString,
   toUpperCase,
   traverse,
+  uncurry2Args,
   unsafePerformIO,
-}
+};
 
 // always :: a -> b -> a
-const always = curry((a, b) => a)
+const always = curry((a, b) => a);
 
 // compose :: ((a -> b), (b -> c),  ..., (y -> z)) -> a -> z
-const compose = (...fns) => (...args) =>
-  fns.reduceRight((res, fn) => [fn.call(null, ...res)], args)[0]
+const compose = (...fns) =>
+  (...args) => fns.reduceRight((res, fn) => [fn.call(null, ...res)], args)[0];
 
 // curry :: ((a, b, ...) -> c) -> a -> b -> ... -> c
 function curry(fn) {
-  const arity = fn.length
+  const arity = fn.length;
 
   return function $curry(...args) {
     if (args.length < arity) {
-      return $curry.bind(null, ...args)
+      return $curry.bind(null, ...args);
     }
 
-    return fn.call(null, ...args)
-  }
+    return fn.call(null, ...args);
+  };
 }
 
-const curry2Args = f => a => b => f(a, b)
-const uncurry2Args = f => (a, b) => f(a)(b)
+const curry2Args = (f) => (a) => (b) => f(a, b);
+const uncurry2Args = (f) => (a, b) => f(a)(b);
 
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
 const either = curry((f, g, e) => {
   if (e.isLeft) {
-    return f(e.$value)
+    return f(e.$value);
   }
 
-  return g(e.$value)
-})
+  return g(e.$value);
+});
 
 // identity :: x -> x
-const identity = x => x
+const identity = (x) => x;
 
 // inspect :: a -> String
-const inspect = x => {
+const inspect = (x) => {
   if (x && typeof x.inspect === "function") {
-    return x.inspect()
+    return x.inspect();
   }
 
   function inspectFn(f) {
-    return f.name ? f.name : f.toString()
+    return f.name ? f.name : f.toString();
   }
 
   function inspectTerm(t) {
     switch (typeof t) {
       case "string":
-        return `'${t}'`
+        return `'${t}'`;
       case "object": {
-        const ts = Object.keys(t).map(k => [k, inspect(t[k])])
-        return `{${ts.map(kv => kv.join(": ")).join(", ")}}`
+        const ts = Object.keys(t).map((k) => [k, inspect(t[k])]);
+        return `{${ts.map((kv) => kv.join(": ")).join(", ")}}`;
       }
       default:
-        return String(t)
+        return String(t);
     }
   }
 
   function inspectArgs(args) {
     return Array.isArray(args)
       ? `[${args.map(inspect).join(", ")}]`
-      : inspectTerm(args)
+      : inspectTerm(args);
   }
 
-  return typeof x === "function" ? inspectFn(x) : inspectArgs(x)
-}
+  return typeof x === "function" ? inspectFn(x) : inspectArgs(x);
+};
 
 // left :: a -> Either a b
-const left = a => new Left(a)
+const left = (a) => new Left(a);
 
 // liftA2 :: (Applicative f) => (a1 -> a2 -> b) -> f a1 -> f a2 -> f b
-const liftA2 = curry((fn, a1, a2) => a1.map(fn).ap(a2))
+const liftA2 = curry((fn, a1, a2) => a1.map(fn).ap(a2));
 
 // liftA3 :: (Applicative f) => (a1 -> a2 -> a3 -> b) -> f a1 -> f a2 -> f a3 -> f b
 const liftA3 = curry((fn, a1, a2, a3) =>
@@ -136,207 +136,207 @@ const liftA3 = curry((fn, a1, a2, a3) =>
     .map(fn)
     .ap(a2)
     .ap(a3)
-)
+);
 
 // maybe :: b -> (a -> b) -> Maybe a -> b
 const maybe = curry((v, f, m) => {
   if (m.isNothing) {
-    return v
+    return v;
   }
 
-  return f(m.$value)
-})
+  return f(m.$value);
+});
 
 const createCompose = curry(
   (F, G) =>
     class Compose {
       constructor(x) {
-        this.$value = x
+        this.$value = x;
       }
 
       [Deno.customInspect]() {
-        return `Compose(${inspect(this.$value)})`
+        return `Compose(${inspect(this.$value)})`;
       }
 
       // ----- Pointed (Compose F G)
       static of(x) {
-        return new Compose(F(G(x)))
+        return new Compose(F(G(x)));
       }
 
       // ----- Functor (Compose F G)
       map(fn) {
-        return new Compose(this.$value.map(x => x.map(fn)))
+        return new Compose(this.$value.map((x) => x.map(fn)));
       }
 
       // ----- Applicative (Compose F G)
       ap(f) {
-        return f.map(this.$value)
+        return f.map(this.$value);
       }
-    }
-)
+    },
+);
 
 class Either {
   constructor(x) {
-    this.$value = x
+    this.$value = x;
   }
 
   // ----- Pointed (Either a)
   static of(x) {
-    return new Right(x)
+    return new Right(x);
   }
 }
 
 class Left extends Either {
   get isLeft() {
-    return true
+    return true;
   }
 
   get isRight() {
-    return false
+    return false;
   }
 
   static of(x) {
     throw new Error(
-      "`of` called on class Left (value) instead of Either (type)"
-    )
+      "`of` called on class Left (value) instead of Either (type)",
+    );
   }
 
   [Deno.customInspect]() {
-    return `Left(${inspect(this.$value)})`
+    return `Left(${inspect(this.$value)})`;
   }
 
   // ----- Functor (Either a)
   map() {
-    return this
+    return this;
   }
 
   // ----- Applicative (Either a)
   ap() {
-    return this
+    return this;
   }
 
   // ----- Monad (Either a)
   chain() {
-    return this
+    return this;
   }
 
   join() {
-    return this
+    return this;
   }
 
   // ----- Traversable (Either a)
   sequence(of) {
-    return of(this)
+    return of(this);
   }
 
   traverse(of, fn) {
-    return of(this)
+    return of(this);
   }
 }
 
 class Right extends Either {
   get isLeft() {
-    return false
+    return false;
   }
 
   get isRight() {
-    return true
+    return true;
   }
 
   static of(x) {
     throw new Error(
-      "`of` called on class Right (value) instead of Either (type)"
-    )
+      "`of` called on class Right (value) instead of Either (type)",
+    );
   }
 
   [Deno.customInspect]() {
-    return `Right(${inspect(this.$value)})`
+    return `Right(${inspect(this.$value)})`;
   }
 
   // ----- Functor (Either a)
   map(fn) {
-    return Either.of(fn(this.$value))
+    return Either.of(fn(this.$value));
   }
 
   // ----- Applicative (Either a)
   ap(f) {
-    return f.map(this.$value)
+    return f.map(this.$value);
   }
 
   // ----- Monad (Either a)
   chain(fn) {
-    return fn(this.$value)
+    return fn(this.$value);
   }
 
   join() {
-    return this.$value
+    return this.$value;
   }
 
   // ----- Traversable (Either a)
   sequence(of) {
-    return this.traverse(of, identity)
+    return this.traverse(of, identity);
   }
 
   traverse(of, fn) {
-    fn(this.$value).map(Either.of)
+    fn(this.$value).map(Either.of);
   }
 }
 
 class Identity {
   constructor(x) {
-    this.$value = x
+    this.$value = x;
   }
 
   [Deno.customInspect]() {
-    return `Identity(${inspect(this.$value)})`
+    return `Identity(${inspect(this.$value)})`;
   }
 
   // ----- Pointed Identity
   static of(x) {
-    return new Identity(x)
+    return new Identity(x);
   }
 
   // ----- Functor Identity
   map(fn) {
-    return Identity.of(fn(this.$value))
+    return Identity.of(fn(this.$value));
   }
 
   // ----- Applicative Identity
   ap(f) {
-    return f.map(this.$value)
+    return f.map(this.$value);
   }
 
   // ----- Monad Identity
   chain(fn) {
-    return this.map(fn).join()
+    return this.map(fn).join();
   }
 
   join() {
-    return this.$value
+    return this.$value;
   }
 
   // ----- Traversable Identity
   sequence(of) {
-    return this.traverse(of, identity)
+    return this.traverse(of, identity);
   }
 
   traverse(of, fn) {
-    return fn(this.$value).map(Identity.of)
+    return fn(this.$value).map(Identity.of);
   }
 }
 
 class IO {
   constructor(fn) {
-    this.unsafePerformIO = fn
+    this.unsafePerformIO = fn;
   }
 
   [Deno.customInspect]() {
-    return "IO(?)"
+    return "IO(?)";
   }
 
   // ----- Pointed IO
   static of(x) {
-    return new IO(() => x)
+    return new IO(() => x);
   }
 
   // ----- Functor IO
@@ -344,175 +344,175 @@ class IO {
     return new IO(
       compose(
         fn,
-        this.unsafePerformIO
-      )
-    )
+        this.unsafePerformIO,
+      ),
+    );
   }
 
   // ----- Applicative IO
   ap(f) {
-    return this.chain(fn => f.map(fn))
+    return this.chain((fn) => f.map(fn));
   }
 
   // ----- Monad IO
   chain(fn) {
-    return this.map(fn).join()
+    return this.map(fn).join();
   }
 
   join() {
-    return new IO(() => this.unsafePerformIO().unsafePerformIO())
+    return new IO(() => this.unsafePerformIO().unsafePerformIO());
   }
 }
 
 class List {
   constructor(xs) {
-    this.$value = xs
+    this.$value = xs;
   }
 
   [Deno.customInspect]() {
-    return `List(${inspect(this.$value)})`
+    return `List(${inspect(this.$value)})`;
   }
 
   concat(x) {
-    return new List(this.$value.concat(x))
+    return new List(this.$value.concat(x));
   }
 
   // ----- Pointed List
   static of(x) {
-    return new List([x])
+    return new List([x]);
   }
 
   // ----- Functor List
   map(fn) {
-    return new List(this.$value.map(fn))
+    return new List(this.$value.map(fn));
   }
 
   // ----- Traversable List
   sequence(of) {
-    return this.traverse(of, identity)
+    return this.traverse(of, identity);
   }
 
   traverse(of, fn) {
     return this.$value.reduce(
       (f, a) =>
         fn(a)
-          .map(b => bs => bs.concat(b))
+          .map((b) => (bs) => bs.concat(b))
           .ap(f),
-      of(new List([]))
-    )
+      of(new List([])),
+    );
   }
 }
 
 class Map {
   constructor(x) {
-    this.$value = x
+    this.$value = x;
   }
 
   [Deno.customInspect]() {
-    return `Map(${inspect(this.$value)})`
+    return `Map(${inspect(this.$value)})`;
   }
 
   insert(k, v) {
-    const singleton = {}
-    singleton[k] = v
-    return Map.of(Object.assign({}, this.$value, singleton))
+    const singleton = {};
+    singleton[k] = v;
+    return Map.of(Object.assign({}, this.$value, singleton));
   }
 
   reduceWithKeys(fn, zero) {
     return Object.keys(this.$value).reduce(
       (acc, k) => fn(acc, this.$value[k], k),
-      zero
-    )
+      zero,
+    );
   }
 
   // ----- Functor (Map a)
   map(fn) {
-    return this.reduceWithKeys((m, v, k) => m.insert(k, fn(v)), new Map({}))
+    return this.reduceWithKeys((m, v, k) => m.insert(k, fn(v)), new Map({}));
   }
 
   // ----- Traversable (Map a)
   sequence(of) {
-    return this.traverse(of, identity)
+    return this.traverse(of, identity);
   }
 
   traverse(of, fn) {
     return this.reduceWithKeys(
       (f, a, k) =>
         fn(a)
-          .map(b => m => m.insert(k, b))
+          .map((b) => (m) => m.insert(k, b))
           .ap(f),
-      of(new Map({}))
-    )
+      of(new Map({})),
+    );
   }
 }
 
 class Maybe {
   get isNothing() {
-    return this.$value === null || this.$value === undefined
+    return this.$value === null || this.$value === undefined;
   }
 
   get isJust() {
-    return !this.isNothing
+    return !this.isNothing;
   }
 
   constructor(x) {
-    this.$value = x
+    this.$value = x;
   }
 
   [Deno.customInspect]() {
-    return this.isNothing ? "Nothing" : `Just(${inspect(this.$value)})`
+    return this.isNothing ? "Nothing" : `Just(${inspect(this.$value)})`;
   }
 
   // ----- Pointed Maybe
   static of(x) {
-    return new Maybe(x)
+    return new Maybe(x);
   }
 
   // ----- Functor Maybe
   map(fn) {
-    return this.isNothing ? this : Maybe.of(fn(this.$value))
+    return this.isNothing ? this : Maybe.of(fn(this.$value));
   }
 
   // ----- Applicative Maybe
   ap(f) {
-    return this.isNothing ? this : f.map(this.$value)
+    return this.isNothing ? this : f.map(this.$value);
   }
 
   // ----- Monad Maybe
   chain(fn) {
-    return this.map(fn).join()
+    return this.map(fn).join();
   }
 
   join() {
-    return this.isNothing ? this : this.$value
+    return this.isNothing ? this : this.$value;
   }
 
   // ----- Traversable Maybe
   sequence(of) {
-    return this.traverse(of, identity)
+    return this.traverse(of, identity);
   }
 
   traverse(of, fn) {
-    return this.isNothing ? of(this) : fn(this.$value).map(Maybe.of)
+    return this.isNothing ? of(this) : fn(this.$value).map(Maybe.of);
   }
 }
 
 class Task {
   constructor(fork) {
-    this.fork = fork
+    this.fork = fork;
   }
 
   [Deno.customInspect]() {
-    return "Task(?)"
+    return "Task(?)";
   }
 
   static rejected(x) {
-    return new Task((reject_, _) => reject_(x))
+    return new Task((reject_, _) => reject_(x));
   }
 
   // ----- Pointed (Task a)
   static of(x) {
-    return new Task((_, resolve) => resolve(x))
+    return new Task((_, resolve) => resolve(x));
   }
 
   // ----- Functor (Task a)
@@ -522,146 +522,144 @@ class Task {
         reject_,
         compose(
           resolve,
-          fn
-        )
+          fn,
+        ),
       )
-    )
+    );
   }
 
   // ----- Applicative (Task a)
   ap(f) {
-    return this.chain(fn => f.map(fn))
+    return this.chain((fn) => f.map(fn));
   }
 
   // ----- Monad (Task a)
   chain(fn) {
     return new Task((reject_, resolve) =>
-      this.fork(reject_, x => fn(x).fork(reject_, resolve))
-    )
+      this.fork(reject_, (x) => fn(x).fork(reject_, resolve))
+    );
   }
 
   join() {
-    return this.chain(identity)
+    return this.chain(identity);
   }
 }
 
 // nothing :: Maybe a
-const nothing = Maybe.of(null)
+const nothing = Maybe.of(null);
 
 // reject :: a -> Task a b
-const reject = a => Task.rejected(a)
+const reject = (a) => Task.rejected(a);
 
 // flip :: (a -> b -> c) -> b -> a -> c
-const flip = curry((fn, a, b) => fn(b, a))
+const flip = curry((fn, a, b) => fn(b, a));
 
 // concat :: String -> String -> String
-const concat = curry((a, b) => a.concat(b))
+const concat = curry((a, b) => a.concat(b));
 
 // add :: Number -> Number -> Number
-const add = curry((a, b) => a + b)
+const add = curry((a, b) => a + b);
 
 // append :: String -> String -> String
-const append = flip(concat)
+const append = flip(concat);
 
 // chain :: Monad m => (a -> m b) -> m a -> m b
-const chain = curry((fn, m) => m.chain(fn))
+const chain = curry((fn, m) => m.chain(fn));
 
 // eq :: Eq a => a -> a -> Boolean
-const eq = curry((a, b) => a === b)
+const eq = curry((a, b) => a === b);
 
 // filter :: (a -> Boolean) -> [a] -> [a]
-const filter = curry((fn, xs) => xs.filter(fn))
+const filter = curry((fn, xs) => xs.filter(fn));
 
 // forEach :: (a -> ()) -> [a] -> ()
-const forEach = curry((fn, xs) => xs.forEach(fn))
+const forEach = curry((fn, xs) => xs.forEach(fn));
 
 // head :: [a] -> a
-const head = xs => xs[0]
+const head = (xs) => xs[0];
 
 // intercalate :: String -> [String] -> String
-const intercalate = curry((str, xs) => xs.join(str))
+const intercalate = curry((str, xs) => xs.join(str));
 
 // join :: Monad m => m (m a) -> m a
-const join = m => m.join()
+const join = (m) => m.join();
 
 // last :: [a] -> a
-const last = xs => xs[xs.length - 1]
+const last = (xs) => xs[xs.length - 1];
 
 // map :: Functor f => (a -> b) -> f a -> f b
-const map = curry((fn, f) => f.map(fn))
+const map = curry((fn, f) => f.map(fn));
 
 // match :: RegExp -> String -> Boolean
-const match = curry((re, str) => re.test(str))
+const match = curry((re, str) => re.test(str));
 
 // prop :: String -> Object -> a
-const prop = curry((p, obj) => obj[p])
+const prop = curry((p, obj) => obj[p]);
 
 // reduce :: (b -> a -> b) -> b -> [a] -> b
-const reduce = curry((fn, zero, xs) => xs.reduce(fn, zero))
+const reduce = curry((fn, zero, xs) => xs.reduce(fn, zero));
 
 // replace :: RegExp -> String -> String -> String
-const replace = curry((re, rpl, str) => str.replace(re, rpl))
+const replace = curry((re, rpl, str) => str.replace(re, rpl));
 
 // reverse :: [a] -> [a]
-const reverse = x =>
-  Array.isArray(x)
-    ? x.reverse()
-    : x
-        .split("")
-        .reverse()
-        .join("")
+const reverse = (x) =>
+  Array.isArray(x) ? x.reverse() : x
+    .split("")
+    .reverse()
+    .join("");
 
 // safeHead :: [a] -> Maybe a
 const safeHead = compose(
   Maybe.of,
-  head
-)
+  head,
+);
 
 // safeLast :: [a] -> Maybe a
 const safeLast = compose(
   Maybe.of,
-  last
-)
+  last,
+);
 
 // safeProp :: String -> Object -> Maybe a
 const safeProp = curry((p, obj) =>
   compose(
     Maybe.of,
-    prop(p)
+    prop(p),
   )(obj)
-)
+);
 
 // sequence :: (Applicative f, Traversable t) => (a -> f a) -> t (f a) -> f (t a)
-const sequence = curry((of, f) => f.sequence(of))
+const sequence = curry((of, f) => f.sequence(of));
 
 // sortBy :: Ord b => (a -> b) -> [a] -> [a]
 const sortBy = curry((fn, xs) =>
   xs.sort((a, b) => {
     if (fn(a) === fn(b)) {
-      return 0
+      return 0;
     }
 
-    return fn(a) > fn(b) ? 1 : -1
+    return fn(a) > fn(b) ? 1 : -1;
   })
-)
+);
 
 // split :: String -> String -> [String]
-const split = curry((sep, str) => str.split(sep))
+const split = curry((sep, str) => str.split(sep));
 
 // take :: Number -> [a] -> [a]
-const take = curry((n, xs) => xs.slice(0, n))
+const take = curry((n, xs) => xs.slice(0, n));
 
 // toLowerCase :: String -> String
-const toLowerCase = s => s.toLowerCase()
+const toLowerCase = (s) => s.toLowerCase();
 
 // toString :: a -> String
-const toString = String
+const toString = String;
 
 // toUpperCase :: String -> String
-const toUpperCase = s => s.toUpperCase()
+const toUpperCase = (s) => s.toUpperCase();
 
 // traverse :: (Applicative f, Traversable t) => (a -> f a) -> (a -> f b) -> t a -> f (t b)
-const traverse = curry((of, fn, f) => f.traverse(of, fn))
+const traverse = curry((of, fn, f) => f.traverse(of, fn));
 
 // unsafePerformIO :: IO a -> a
-const unsafePerformIO = io => io.unsafePerformIO()
+const unsafePerformIO = (io) => io.unsafePerformIO();

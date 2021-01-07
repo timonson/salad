@@ -239,6 +239,54 @@ function makeElementEditableOnDblclick(element) {
   element.onclick = (event) => (event.target.contentEditable = "false");
 }
 
+/*
+ * Short version is:
+ *   <div
+ *     contenteditable="true"
+ *     onInput="e => console.log('Text inside div', e.currentTarget.textContent)"
+ *   >
+ *     Text inside div
+ *   </div>
+ */
+
+// function makeElementEditableSanely(
+// element: HTMLElement,
+// callback?: (element: HTMLElement) => void
+// ) {
+// function makeEditable(event: Event) {
+// element.contentEditable = "true"
+// element.blur()
+// element.focus()
+// document.execCommand("selectAll", false, undefined)
+// event.preventDefault()
+// event.stopPropagation()
+// const resetContentEditable = (event: Event) => {
+// element.contentEditable = "false"
+// element.removeEventListener("keydown", handleKeyDown)
+// document.removeEventListener("click", handleClickContentEditable)
+// if (typeof callback === "function") callback(element)
+// }
+// const handleKeyDown = (event: KeyboardEvent) => {
+// if (event.key === "Tab") {
+// resetContentEditable(event)
+// }
+// }
+// const handleClickContentEditable = (event: MouseEvent) => {
+// if (event.clientX === 0 && event.clientY === 0) {
+// event.preventDefault()
+// event.stopPropagation()
+// } else resetContentEditable(event)
+// }
+
+// element.addEventListener("keydown", handleKeyDown)
+// document.addEventListener("click", handleClickContentEditable)
+// }
+// element.addEventListener("dblclick", makeEditable)
+// element.addEventListener("keydown", event => {
+// if (event.key === "Enter") makeEditable(event)
+// })
+// }
+
 function getMousePositionRelativeToElement(event) {
   const rect = event.target.getBoundingClientRect();
   return [event.clientX - rect.left, event.clientY - rect.top];

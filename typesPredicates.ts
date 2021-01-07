@@ -18,6 +18,12 @@ export function isString(input: unknown): input is string {
   return typeof input === "string";
 }
 
+export function isObjectWide(obj: unknown): Record<string, unknown> {
+  return (
+    obj !== null && typeof obj === "object" && Array.isArray(obj) === false
+  );
+}
+
 export function isObject(obj: unknown): obj is object {
   return (
     obj !== null && typeof obj === "object" && Array.isArray(obj) === false

@@ -7,7 +7,7 @@ import {
   invertResults,
   mapResult,
   success,
-} from "./result.ts";
+} from "../result.ts";
 
 const add10 = (v: number) => v + 10;
 const append = (v: string) => v + " appended";
@@ -42,6 +42,8 @@ let r14 = r12(44);
 // r14 = 4;
 let r15 = r14(e);
 console.log(r15);
+let r16 = foldResult(() => "FOLDED")("GRRRRR")(s);
+console.log("r16", r16);
 
 // invertResults
 
@@ -49,7 +51,7 @@ let r4 = invertResults([success(2), success("a"), failure("s")]);
 let r5 = invertResults([failure("s"), failure("")]);
 let r6 = invertResults([failure(3), success(3)]);
 let r7 = invertResults([success(3), failure("")]);
-r4 = success([8]);
+// r4 = success([8]);
 r4 = 5;
 
 // ifSucceeded

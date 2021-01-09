@@ -7,7 +7,7 @@ export type Success<S> = {
 };
 
 export type Failure<F> = {
-  value: F;
+  error: F;
   kind: "Failure";
 };
 
@@ -20,9 +20,9 @@ export function success<S>(value: S): Success<S> {
   };
 }
 
-export function failure<F>(value: F): Failure<F> {
+export function failure<F>(error: F): Failure<F> {
   return {
-    value,
+    error,
     kind: "Failure",
   };
 }
@@ -52,7 +52,7 @@ export function chainResult<S, T, F>(
   f: any,
 ): any {
   return (result: Result<S, F>) =>
-    isSuccess(result) ? f(result.value) : failure(result.value);
+    isSuccess(result) ? f(result.value) : failure(result.error);
 }
 
 export function foldResult<S, T>(
@@ -62,7 +62,7 @@ export function foldResult<S, T>(
     (res: Result<S, F>) =>
       isSuccess(res)
         ? (isFunction<S, T>(ifSuccess) ? ifSuccess(res.value) : ifSuccess)
-        : (isFunction<F, G>(ifFailure) ? ifFailure(res.value) : ifFailure);
+        : (isFunction<F, G>(ifFailure) ? ifFailure(res.error) : ifFailure);
 }
 
 /*
@@ -75,8 +75,9 @@ export function invertResults<
   R extends Result<unknown, unknown>,
 >(
   results: R[],
-): R["kind"] extends "Success" ? Success<Array<R["value"]>>
-  : Failure<unknown> {
+):
+  | Success<Exclude<R, Failure<any>>["value"][]>
+  | Failure<Exclude<R, Success<any>>["error"]> {
   return results.reduce<any>(
     (acc: any, result: any) =>
       chainResult((arr: any) =>
@@ -99,7 +100,7 @@ export function ifSucceeded<S>(sideEffect: (x: S) => void) {
 export function ifFailed<F>(sideEffect: (e: F) => void) {
   return <S>(result: Result<S, F>) => {
     if (isFailure(result)) {
-      sideEffect(result.value);
+      sideEffect(result.error);
     }
   };
 }

@@ -5,7 +5,7 @@ import {
   mapOption,
   None,
   some,
-} from "./option.ts";
+} from "../option.ts";
 
 const add10 = (v: number) => v + 10;
 const append = (v: string) => v + " appended";
@@ -31,8 +31,8 @@ let r6 = foldOption(append)(() => 3);
 // r6 = 4;
 
 // invertOptions
-let r7 = invertOptions([some(2), some("a"), None]);
+let r7 = invertOptions([some(2), some("a"), None, None]);
 let r8 = invertOptions([None, None]);
 let r9 = invertOptions([None, some(3)]);
 let r10 = invertOptions([some(3), None]);
-// r7 = {};
+r7 = {};

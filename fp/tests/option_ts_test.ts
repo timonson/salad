@@ -3,6 +3,8 @@ import {
   foldOption,
   invertOptions,
   mapOption,
+  maybeNull,
+  maybeUndefined,
   None,
   some,
 } from "../option.ts";
@@ -36,3 +38,8 @@ let r8 = invertOptions([None, None]);
 let r9 = invertOptions([None, some(3)]);
 let r10 = invertOptions([some(3), None]);
 r7 = {};
+
+let m = maybeUndefined(8);
+// m = 9;
+let n = maybeNull(null);
+// n = "";

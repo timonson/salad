@@ -94,16 +94,16 @@ export function alternativeValue<T, U>(
     )(opt);
 }
 
-export function maybeNull<T>(nullable: T): Some<T>;
-export function maybeNull<T>(nullable: null): None;
-export function maybeNull<T>(nullable: T | null): any {
-  return nullable === null ? None : some<T>(nullable);
+export function maybeNull<T>(nullable: T): None | Some<Exclude<T, null>> {
+  return nullable === null ? None : some<Exclude<T, null>>(nullable as any);
 }
 
-export function maybeUndefined<T>(undefinable: T): Some<T>;
-export function maybeUndefined<T>(undefinable: undefined): None;
-export function maybeUndefined<T>(undefinable: T | undefined): any {
-  return undefinable === undefined ? None : some<T>(undefinable);
+export function maybeUndefined<T>(
+  undefinable: T,
+): None | Some<Exclude<T, undefined>> {
+  return undefinable === undefined
+    ? None
+    : some<Exclude<T, undefined>>(undefinable as any);
 }
 
 export function ifPresent<T>(sideEffect: (x: T) => void) {

@@ -19,6 +19,8 @@ const e = failure(["err"]);
 // mapResult
 let r2 = mapResult(append)(s);
 // r2 = 9;
+let r22 = mapResult(append)(e);
+r22 = "";
 
 // chainResult
 let r3 = chainResult((str: string) =>
@@ -52,7 +54,7 @@ let r5 = invertResults([failure("s"), failure("")]);
 let r6 = invertResults([failure(3), success(3)]);
 let r7 = invertResults([success(3), failure("")]);
 // r4 = success([8]);
-r4 = 5;
+// r4 = 5;
 
 // ifSucceeded
 let r8 = ifSucceeded(console.log);

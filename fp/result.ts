@@ -35,11 +35,10 @@ export function isFailure<S, F>(result: Result<S, F>): result is Failure<F> {
   return result.kind === "Failure";
 }
 
-export function mapResult<S, T, F>(
+export function mapResult<S, T>(
   f: (x: S) => T,
-): (result: Result<S, F>) => Result<T, F> {
-  return (result: Result<S, F>) =>
-    isSuccess(result) ? success<T>(f(result.value)) : result;
+): <F>(result: Result<S, F>) => Result<T, F> {
+  return (result) => isSuccess(result) ? success<T>(f(result.value)) : result;
 }
 
 export function chainResult<S, T, F>(

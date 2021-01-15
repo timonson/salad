@@ -5,6 +5,7 @@ export {
   createCss,
   createHtmlTemplate,
   findElementInEventPath,
+  findElementInEventPathByInnerHtml,
   getIndexOfElement,
   getMousePositionRelativeToElement,
   getSiblingThroughClass,
@@ -164,9 +165,9 @@ function createHtmlTemplate(html) {
 }
 
 function cloneTemplateIntoParent(template, parent, sibling) {
-  if (sibling) parent.insertBefore(template.content.cloneNode(true), sibling);
-  else parent.append(template.content.cloneNode(true));
-  return template;
+  return sibling
+    ? parent.insertBefore(template.content.cloneNode(true), sibling)
+    : parent.appendChild(template.content.cloneNode(true));
 }
 
 function coupleSettersAndGettersToAttributes(thisObj, camelCasePropsAsStrings) {
@@ -336,6 +337,15 @@ function waitForEvent(eventTarget, eventName) {
     }
     eventTarget.addEventListener(eventName, listener);
   });
+}
+
+function findElementInEventPathByInnerHtml(
+  event,
+  selector,
+  ...innerHtml
+) {
+  const element = findElementInEventPath(event, selector);
+  return innerHtml.includes(element.innerHTML);
 }
 
 function findElementInEventPath(event, selector) {

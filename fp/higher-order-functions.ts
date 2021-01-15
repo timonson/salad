@@ -39,3 +39,16 @@ export function identity<X>(x: X) {
 export function constant<X>(x: X): () => X {
   return () => x;
 }
+
+export function curry<F>(fn: any): F {
+  const arity = fn.length;
+
+  // @ts-ignore
+  return function $curry(...args) {
+    if (args.length < arity) {
+      return $curry.bind(null, ...args);
+    }
+
+    return fn.call(null, ...args);
+  };
+}

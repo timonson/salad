@@ -18,7 +18,7 @@ export function isString(input: unknown): input is string {
   return typeof input === "string";
 }
 
-export function isObjectWide(obj: unknown): Record<string, unknown> {
+export function isObjectWide(obj: unknown): obj is Record<string, unknown> {
   return (
     obj !== null && typeof obj === "object" && Array.isArray(obj) === false
   );
@@ -55,4 +55,11 @@ export function isTrue(input: unknown): input is true {
 
 export function isFalse(input: unknown): input is false {
   return input === false;
+}
+
+export function isEmail(value: unknown): value is string {
+  // https://stackoverflow.com/a/46181
+  const regex =
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return typeof value === "string" && regex.test(value.toLowerCase());
 }

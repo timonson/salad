@@ -20,7 +20,7 @@ const e = failure(["err"]);
 let r2 = mapResult(append)(s);
 // r2 = 9;
 let r22 = mapResult(append)(e);
-r22 = "";
+// r22 = "";
 
 // chainResult
 let r3 = chainResult((str: string) =>
@@ -30,8 +30,7 @@ let r3 = chainResult((str: string) =>
 
 // foldResult
 let r1 = foldResult(append)((e: string[]) => [""])(s);
-console.log(r1);
-// r1 = 3;
+// r1 = { a: "" };
 let r12 = foldResult(append);
 // r12 = 3;
 let r122 = foldResult("yyy");

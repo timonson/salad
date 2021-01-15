@@ -58,7 +58,7 @@ export function foldResult<S, T>(
   ifSuccess: ((x: S) => T) | T,
 ) {
   return <F, G>(ifFailure: ((e: F) => G) | G): (x: Result<S, F>) => (T | G) =>
-    (res: Result<S, F>) =>
+    (res: Result<S, F>): (T | G) =>
       isSuccess(res)
         ? (isFunction<S, T>(ifSuccess) ? ifSuccess(res.value) : ifSuccess)
         : (isFunction<F, G>(ifFailure) ? ifFailure(res.error) : ifFailure);

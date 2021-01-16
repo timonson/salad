@@ -64,6 +64,13 @@ export function foldResult<S, T>(
         : (isFunction<F, G>(ifFailure) ? ifFailure(res.error) : ifFailure);
 }
 
+export function foldIfSuccessElseThrow<S, T>(ifSuccess: ((x: S) => T) | T) {
+  return <F>(result: Result<S, F>) =>
+    foldResult(ifSuccess)((e: F): never => {
+      throw e;
+    })(result);
+}
+
 /*
     [ success(val1), success(val2) ] = success([x, y])
     [ failure(err1), failure(err2) ] = failure(err)

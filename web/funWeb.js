@@ -345,7 +345,9 @@ function findElementInEventPathByInnerHtml(
   ...innerHtml
 ) {
   const element = findElementInEventPath(event, selector);
-  return innerHtml.includes(element.innerHTML);
+  return element
+    ? innerHtml.includes(element.innerHTML) ? element : null
+    : null;
 }
 
 function findElementInEventPath(event, selector) {

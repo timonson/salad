@@ -1,4 +1,4 @@
-import { lookup } from "https://deno.land/x/media_types@v2.5.1/mod.ts";
+import { lookup } from "https://deno.land/x/media_types@v2.7.1/mod.ts";
 
 export async function fetch(
   input: string | Request | URL,
@@ -20,7 +20,7 @@ export async function fetch(
     // Open the file, and convert to ReadableStream
     const file = await Deno.open(url, { read: true }).catch((err) => {
       if (err instanceof Deno.errors.NotFound) {
-        return new Response("404 not found", { status: 404 });
+        return new Response("Not found", { status: 404 });
       } else {
         return new Response("Internal server error", { status: 500 });
       }

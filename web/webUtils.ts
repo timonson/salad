@@ -69,7 +69,9 @@ export function observeScroll(
 }
 
 export function nextFrame() {
-  return new Promise<void>((resolve) => requestAnimationFrame(() => resolve(void 0)));
+  return new Promise<void>((resolve) =>
+    requestAnimationFrame(() => resolve(void 0))
+  );
 }
 
 export function delay(value: unknown, duration = 100) {
@@ -83,4 +85,13 @@ export function delay(value: unknown, duration = 100) {
       }
     }, duration);
   });
+}
+
+export function getKeyboardFocusableElements(
+  element: HTMLElement | Document | ShadowRoot = document,
+) {
+  return [...element.querySelectorAll(
+    'a, button, input:not([type="hidden"], textarea, select, details,[tabindex]:not([tabindex="-1"])',
+  )]
+    .filter((el) => !el.hasAttribute("disabled"));
 }

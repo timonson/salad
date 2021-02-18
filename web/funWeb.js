@@ -390,6 +390,7 @@ function prepareRedirecting(targetElement, title = document.title) {
     "",
     location.toString(),
   );
+  // Remember the onpopstate event only
   window.onpopstate = function (entry) {
     if (entry.state) {
       targetElement.innerHTML = entry.state.html;

@@ -1,14 +1,11 @@
 import { lookup } from "https://deno.land/x/media_types@v2.7.1/mod.ts";
+import { toFileUrl } from "https://deno.land/std@0.87.0/path/posix.ts";
 
 export async function fetch(
-  input: string | Request | URL,
+  input: string | Request,
   init?: RequestInit,
 ): Promise<Response> {
-  const url = typeof input === "string"
-    ? new URL(input)
-    : input instanceof Request
-    ? new URL(input.url)
-    : input;
+  const url = typeof input === "string" ? toFileUrl(input) : new URL(input.url);
   if (url.protocol === "file:") {
     // Only allow GET requests
     if (init && init.method && init.method !== "GET") {
@@ -51,6 +48,7 @@ export async function fetch(
     if (info.mtime) {
       headers.set("last-modified", info.mtime.toUTCString());
     }
+    console.log(body);
     // Create 200 streaming response
     return new Response(body, { status: 200, headers });
   }

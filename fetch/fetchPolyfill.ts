@@ -1,5 +1,5 @@
 import { lookup } from "https://deno.land/x/media_types@v2.7.1/mod.ts";
-import { toFileUrl } from "https://deno.land/std@0.87.0/path/posix.ts";
+import { toFileUrl } from "https://deno.land/std@0.88.0/path/posix.ts";
 
 export async function fetch(
   input: string | Request,

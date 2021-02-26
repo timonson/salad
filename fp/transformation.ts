@@ -1,9 +1,6 @@
 import { isFunction } from "./higher-order-functions.ts";
-import { failure, foldResult, success } from "./result.ts";
-import { foldOption } from "./option.ts";
-
-import type { Result, Success } from "./result.ts";
-import type { Option } from "./option.ts";
+import { failure, foldResult, Result, Success, success } from "./result.ts";
+import { foldOption, Option } from "./option.ts";
 
 export function transformResultToPromise<T, U>(
   mapOrResult: ((x: T) => Promise<U>),

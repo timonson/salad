@@ -1,6 +1,4 @@
-import { maybeUndefined, None, some } from "./option.ts";
-
-import type { Option } from "./option.ts";
+import { maybeUndefined, None, Option, some } from "./option.ts";
 
 export function safeFirst<T>(arr: T[]): Option<T> {
   return arr.length >= 1 ? some(arr[0]) : None;
@@ -22,13 +20,12 @@ export function safeDrop<T>(n: number): (arr: T[]) => Option<T[]> {
   return (arr: T[]) => arr.length >= n ? some(arr.slice(n)) : None;
 }
 
+// safeFind((n: number) => n > 3)([1, 2, 3, 4, 5]);
 export function safeFind<T>(
   predicate: (x: T) => boolean,
 ): (arr: T[]) => Option<T> {
   return (arr: T[]) => maybeUndefined(arr.find(predicate));
 }
-let r = safeFind((n: number) => n > 3)([1, 2, 3, 4, 5]);
-r = "";
 
 export function safeFindIndex<T>(
   predicate: (x: T) => boolean,

@@ -2,6 +2,7 @@
 //======
 
 export {
+  checkTypes,
   delay,
   generateDelayingIterable,
   generateId,
@@ -10,6 +11,8 @@ export {
   getRandomInt,
   getRandomIntSimpel,
   getRandomItem,
+  getTrueType,
+  getWordCnt,
   makeArray,
   makeHash,
   makeHashMax,
@@ -24,6 +27,32 @@ export {
   valoo,
   waitForPredicate,
 };
+
+// https://gomakethings.com/true-type-checking-with-vanilla-js/
+// toString() can be used with every object and allows you to get its class
+// console.log(getTrueType(null))
+function getTrueType(arg) {
+  return Object.prototype.toString.call(arg).slice(8, -1).toLowerCase();
+}
+
+// function foo(a, b, c) {
+// checkTypes(arguments, ["string", "number", "array"])
+// return "foo"
+// }
+// console.log(foo("a", 1, [2])) //=> foo
+function checkTypes(args, types) {
+  args = [].slice.call(args);
+  for (var i = 0; i < types.length; ++i) {
+    const typeReceived = getTrueType(args[i]);
+    if (typeReceived != types[i]) {
+      throw new TypeError(
+        `param ${i} must be of type ${
+          types[i]
+        }, but received type ${typeReceived}!`,
+      );
+    }
+  }
+}
 
 // makeArray(1, 'string', [3, 4, 5])
 function makeArray(...arg) {
@@ -284,4 +313,25 @@ function stringifyKeysInOrder(data) {
     return unordered;
   }
   return JSON.stringify(recursivelyOrderKeys(data), null, 2);
+}
+
+// The function returns an array with nested key/value pairs, where the unique key
+// represents a word and the value the amount of the word's appearances:
+// Example:
+// let text = "Hello World, hello Sun!";
+// const words = getWordCnt(text); // [ [ "Hello", 2 ], [ "World", 1 ], [ "Sun", 1 ] ]
+// const strings = words.map(
+// ([key, value]) => `The word '${key}' appears ${value} time(s)`,
+// );
+function getWordCnt(text) {
+  return Object.entries(
+    text
+      .toLowerCase()
+      .split(/\W+/)
+      .filter((line) => !!line)
+      .reduce((acc, el) => {
+        acc[el] = acc[el] + 1 || 1;
+        return acc;
+      }, {}),
+  );
 }

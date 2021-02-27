@@ -1,20 +1,17 @@
-export function isLowercase(c: string): Boolean {
-  return c === c.toLowerCase();
+const digits = "0123456789";
+
+export function isDigit(c: string): c is string {
+  return digits.includes(c);
 }
 
-export function isUppercase(c: string): Boolean {
-  return c === c.toUpperCase();
+const lowercaseEnglishLetters = "abcdefghijklmnopqrstuvwxyz";
+
+export function isLowercaseEnglishLetter(c: string): c is string {
+  return lowercaseEnglishLetters.includes(c);
 }
 
-export function isNumber(c: string): Boolean {
-  return c === "0" ||
-    c === "1" ||
-    c === "2" ||
-    c === "3" ||
-    c === "4" ||
-    c === "5" ||
-    c === "6" ||
-    c === "7" ||
-    c === "8" ||
-    c === "9";
+const uppercaseEnglishLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+export function isUppercaseEnglishLetter(c: string): c is string {
+  return uppercaseEnglishLetters.includes(c);
 }

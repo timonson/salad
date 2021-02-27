@@ -1,5 +1,24 @@
 import { isFunction } from "./higher-order-functions.ts";
 
+interface NestedArray extends Array<NestedArray | Promise<unknown>> {}
+export function parallel<T = unknown>(
+  ...promises: NestedArray
+): Promise<T[]> {
+  if (promises.length === 1) {
+    const firstItem = promises[0];
+
+    if (Array.isArray(firstItem)) {
+      return parallel(...firstItem) as Promise<T[]>;
+    }
+  }
+
+  return Promise.all(promises) as Promise<T[]>;
+}
+
+export function parallelMap<T>(f: (x: unknown) => Promise<unknown>) {
+  return (arr: any[]) => parallel<T>(arr.map(f));
+}
+
 export function mapFulfilled<T, U>(
   functionOrValue: ((x: T) => U) | U,
 ): (p: Promise<T>) => Promise<U> {
@@ -29,23 +48,3 @@ export function mapPromise<T, U>(ifFulfilled: ((x: T) => U) | U) {
       );
   };
 }
-
-const ifFulfilled = (p: string) => {
-  console.log("fullfilled");
-  return "full promise";
-};
-const ifRejected = (p: string) => {
-  console.log("rejected");
-  return 100;
-};
-let r1 = mapFulfilled(ifFulfilled)(Promise.resolve("promise"));
-let r2 = mapPromise(ifFulfilled)(ifRejected)(Promise.resolve("promise"));
-let r3 = mapPromise(ifFulfilled)(ifRejected)(Promise.reject("promise"));
-console.log(r1, r2, r3);
-// r1 = 3;
-let r4 = mapFulfilled(ifFulfilled);
-// r4 = 3;
-let r5 = mapPromise(ifFulfilled)(ifRejected);
-// r5 = 4;
-let r6 = mapPromise(ifFulfilled)(ifRejected);
-// r6 = 5;

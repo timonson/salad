@@ -14,8 +14,10 @@ export function lessThan(value: number) {
   return (x: number): Boolean => x < value;
 }
 
-export function not<X>(predicate: (x: X) => Boolean) {
-  return (x: X): Boolean => !predicate(x);
+// const foo: Array<number | null | string> = [2, 3, null, "a", 4];
+// const bar = foo.filter(not<string>(isString)); // (number | null)[]
+export function not<N>(predicate: (x: unknown) => Boolean) {
+  return <T>(x: T | N): x is T => !predicate(x);
 }
 
 export function anyPass<X>(predicates: ((x: X) => Boolean)[]) {

@@ -1,9 +1,8 @@
 // remove falsey values:
+// const foo: Array<number | null> = [2,3, null, 4];
+// const bar = foo.filter(isPresent); // number[]
 export function isPresent<T>(t: T | undefined | null | void): t is T {
   return t !== undefined && t !== null;
-}
-export function isNotNull<T>(t: T | null): t is T {
-  return t !== null;
 }
 
 export function isNull(input: unknown): input is null {
@@ -20,6 +19,21 @@ export function isString(input: unknown): input is string {
 
 export function isNumber(input: unknown): input is number {
   return typeof input === "number";
+}
+
+export function isTrue(input: unknown): input is true {
+  return input === true;
+}
+
+export function isFalse(input: unknown): input is false {
+  return input === false;
+}
+
+type AnyFunction = (...args: any) => any;
+export function isFunction<F = AnyFunction>(
+  input: unknown,
+): input is F {
+  return input === "function";
 }
 
 export function isObjectWide(obj: unknown): obj is Record<string, unknown> {
@@ -51,14 +65,6 @@ export function isObjectAndHasProp<K extends string>(
     obj !== null &&
     key in obj
   );
-}
-
-export function isTrue(input: unknown): input is true {
-  return input === true;
-}
-
-export function isFalse(input: unknown): input is false {
-  return input === false;
 }
 
 export function isEmail(value: unknown): value is string {

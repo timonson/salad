@@ -1,6 +1,5 @@
 export {
   addRedirectionListeners,
-  cloneTemplateIntoParent,
   coupleSettersAndGettersToAttributes,
   createCss,
   createHtmlTemplate,
@@ -21,7 +20,6 @@ export {
   requestString,
   requestStringSync,
   surroundMouseWithElement,
-  waitForEvent,
 };
 
 function logCssRulesText() {
@@ -34,7 +32,7 @@ function logCssRulesText() {
   );
 }
 
-function getSiblingThroughClass(element, className) {
+function getSiblingByroughClass(element, className) {
   return [...element.parentNode.children].find((el) =>
     el.classList.contains(className)
   );
@@ -147,29 +145,6 @@ function requestString(filePath) {
   return fetch(filePath).then((response) => response.text());
 }
 
-function requestStringSync(filePath) {
-  var request = new XMLHttpRequest();
-  request.open("GET", filePath, false); // `false` makes the request synchronous
-  request.send(null);
-  return request.status === 200 ? request.responseText : null;
-}
-
-/**
- * @param {String} HTML representing a single element
- * @return {HTMLTemplateElement}
- */
-function createHtmlTemplate(html) {
-  const template = document.createElement("template");
-  template.innerHTML = html.trim(); // Never return a text node of whitespace as the result
-  return template;
-}
-
-function cloneTemplateIntoParent(template, parent, sibling) {
-  return sibling
-    ? parent.insertBefore(template.content.cloneNode(true), sibling)
-    : parent.appendChild(template.content.cloneNode(true));
-}
-
 function coupleSettersAndGettersToAttributes(thisObj, camelCasePropsAsStrings) {
   function camelCaseToDash(str) {
     return str.replace(/([a-zA-Z])(?=[A-Z])/g, "$1-").toLowerCase();
@@ -240,54 +215,6 @@ function makeElementEditableOnDblclick(element) {
   element.onclick = (event) => (event.target.contentEditable = "false");
 }
 
-/*
- * Short version is:
- *   <div
- *     contenteditable="true"
- *     onInput="e => console.log('Text inside div', e.currentTarget.textContent)"
- *   >
- *     Text inside div
- *   </div>
- */
-
-// function makeElementEditableSanely(
-// element: HTMLElement,
-// callback?: (element: HTMLElement) => void
-// ) {
-// function makeEditable(event: Event) {
-// element.contentEditable = "true"
-// element.blur()
-// element.focus()
-// document.execCommand("selectAll", false, undefined)
-// event.preventDefault()
-// event.stopPropagation()
-// const resetContentEditable = (event: Event) => {
-// element.contentEditable = "false"
-// element.removeEventListener("keydown", handleKeyDown)
-// document.removeEventListener("click", handleClickContentEditable)
-// if (typeof callback === "function") callback(element)
-// }
-// const handleKeyDown = (event: KeyboardEvent) => {
-// if (event.key === "Tab") {
-// resetContentEditable(event)
-// }
-// }
-// const handleClickContentEditable = (event: MouseEvent) => {
-// if (event.clientX === 0 && event.clientY === 0) {
-// event.preventDefault()
-// event.stopPropagation()
-// } else resetContentEditable(event)
-// }
-
-// element.addEventListener("keydown", handleKeyDown)
-// document.addEventListener("click", handleClickContentEditable)
-// }
-// element.addEventListener("dblclick", makeEditable)
-// element.addEventListener("keydown", event => {
-// if (event.key === "Enter") makeEditable(event)
-// })
-// }
-
 function getMousePositionRelativeToElement(event) {
   const rect = event.target.getBoundingClientRect();
   return [event.clientX - rect.left, event.clientY - rect.top];
@@ -317,28 +244,6 @@ function reachedScrollingXEnd(element) {
   );
 }
 
-/**
- * Listens for one event and resolves with this event object after it was fired.
- *
- * @example
- * setTimeout(() => el.fireDone());
- * await waitForEvent(el, 'done');
- * expect(el.done).to.be.true;
- *
- * @param {EventTarget} eventTarget Target of the event, usually an Element
- * @param {string} eventName Name of the event
- * @returns {Promise<CustomEvent>} Promise to await until the event has been fired
- */
-function waitForEvent(eventTarget, eventName) {
-  return new Promise((resolve) => {
-    function listener(event) {
-      resolve(event);
-      eventTarget.removeEventListener(eventName, listener);
-    }
-    eventTarget.addEventListener(eventName, listener);
-  });
-}
-
 function findElementInEventPathByInnerHtml(
   event,
   selector,
@@ -348,18 +253,6 @@ function findElementInEventPathByInnerHtml(
   return element
     ? innerHtml.includes(element.innerHTML) ? element : null
     : null;
-}
-
-function findElementInEventPath(event, selector) {
-  function predicate(eventTarget, selector) {
-    if (eventTarget instanceof HTMLElement) {
-      return eventTarget.matches(selector);
-    } else return false;
-  }
-  const foundElement = event
-    .composedPath()
-    .find((eventTarget) => predicate(eventTarget, selector));
-  return foundElement ? foundElement : null;
 }
 
 // https://stripe.com/blog/connect-front-end-experience

@@ -12,6 +12,7 @@ export const wcCssReset = createHtmlTemplate(`<style>
   *::after {
     box-sizing: inherit;
     color: inherit;
+    border: 0 solid #d2d6dc;
   }
   p,
   ol,
@@ -49,7 +50,7 @@ export const wcCssReset = createHtmlTemplate(`<style>
   }
 
   p {
-    line-height: 1.647;
+    line-height: 1.555;
   }
 
   ul {
@@ -70,20 +71,5 @@ export const wcCssReset = createHtmlTemplate(`<style>
 
   iframe {
     border: 0;
-  }
-
-  table {
-    border-collapse: collapse;
-    border-spacing: 0;
-  }
-
-  td,
-  th {
-    padding: 0;
-  }
-
-  td:not([align]),
-  th:not([align]) {
-    text-align: left;
   }
   </style>`);

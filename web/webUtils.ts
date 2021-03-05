@@ -6,7 +6,7 @@ export function createHtmlTemplate(html: string): HTMLTemplateElement {
 
 export function cloneTemplateIntoParent(
   template: HTMLTemplateElement,
-  parent: HTMLElement,
+  parent: HTMLElement | ShadowRoot,
   sibling?: HTMLElement,
 ) {
   if (sibling) parent.insertBefore(template.content.cloneNode(true), sibling);
@@ -74,19 +74,6 @@ export function nextFrame() {
   );
 }
 
-export function delay(value: unknown, duration = 100) {
-  return new Promise(function makePromiseInsideDelay(resolve, reject) {
-    setTimeout(function () {
-      try {
-        const result = typeof value === "function" ? value() : value;
-        resolve(result);
-      } catch (err) {
-        reject(err);
-      }
-    }, duration);
-  });
-}
-
 export function getKeyboardFocusableElements(
   element: HTMLElement | Document | ShadowRoot = document,
 ) {
@@ -94,4 +81,46 @@ export function getKeyboardFocusableElements(
     'a, button, input:not([type="hidden"], textarea, select, details,[tabindex]:not([tabindex="-1"])',
   )]
     .filter((el) => !el.hasAttribute("disabled"));
+}
+
+/**
+ * Listens for one event and resolves with this event object after it was fired.
+ *
+ * @example
+ * setTimeout(() => el.fireDone());
+ * await waitForEvent(el, 'done');
+ * expect(el.done).to.be.true;
+ *
+ * @param {EventTarget} eventTarget Target of the event, usually an Element
+ * @param {string} eventName Name of the event
+ * @returns {Promise<CustomEvent>} Promise to await until the event has been fired
+ */
+export function waitForEvent(eventTarget: EventTarget, eventName: string) {
+  return new Promise((resolve) => {
+    function listener(event: Event) {
+      resolve(event);
+      eventTarget.removeEventListener(eventName, listener);
+    }
+    eventTarget.addEventListener(eventName, listener);
+  });
+}
+
+export function waitForImages(images: HTMLImageElement[]) {
+  return Promise.all(images.map((img) => {
+    if (img.complete) {
+      return Promise.resolve(img);
+    } else {
+      return new Promise((resolve, reject) => {
+        function listener(event: Event) {
+          if (event.type === "load") {
+            resolve(img);
+          } else reject(event);
+          img.removeEventListener("load", listener);
+          img.removeEventListener("error", listener);
+        }
+        img.addEventListener("load", listener);
+        img.addEventListener("error", listener);
+      });
+    }
+  }));
 }

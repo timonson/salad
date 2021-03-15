@@ -56,6 +56,10 @@ export function isFalse(input: unknown): input is false {
   return input === false;
 }
 
+export function equals<B>(b: B) {
+  return (a: unknown): a is B => a === b;
+}
+
 type AnyFunction = (...args: any) => any;
 export function isFunction<F = AnyFunction>(
   input: unknown,

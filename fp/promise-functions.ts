@@ -30,15 +30,6 @@ export function mapFulfilled<T, U>(
     );
 }
 
-// export function mapPromise<T, U>(ifFulfilled: ((x: T) => U) | U) {
-// return (ifRejected: ((x: T) => U) | U) => {
-// return (promise: Promise<T>) =>
-// promise.then(
-// isFunction<T, U>(ifFulfilled) ? ifFulfilled : () => ifFulfilled,
-// isFunction<T, U>(ifRejected) ? ifRejected : () => ifRejected,
-// );
-// };
-// }
 export function mapPromise<T, U>(ifFulfilled: ((x: T) => U) | U) {
   return <V>(ifRejected: ((x: T) => V) | V) => {
     return (promise: Promise<T>) =>

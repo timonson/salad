@@ -11,29 +11,29 @@ export type BodyMethod =
   | "text"
   | "uint8Array";
 
-export type FetchSimply = {
-  (
+export type FetchSimply<R = void> = {
+  <R extends Promise<unknown> = Promise<ArrayBuffer | undefined>>(
     url: string,
-    init?: RequestInit & { bodyMethod: "arrayBuffer" },
-  ): Promise<ArrayBuffer | undefined>;
-  (
+    init: RequestInit & { bodyMethod: "arrayBuffer" },
+  ): R;
+  <R extends Promise<unknown> = Promise<Blob | undefined>>(
     url: string,
-    init?: RequestInit & { bodyMethod: "blob" },
-  ): Promise<Blob | undefined>;
-  (
+    init: RequestInit & { bodyMethod: "blob" },
+  ): R;
+  <R extends Promise<unknown> = Promise<FormData | undefined>>(
     url: string,
-    init?: RequestInit & { bodyMethod: "formData" },
-  ): Promise<FormData | undefined>;
-  (
+    init: RequestInit & { bodyMethod: "formData" },
+  ): R;
+  <R extends Promise<unknown> = Promise<string | undefined>>(
     url: string,
-    init?: RequestInit & { bodyMethod: "json" },
-  ): Promise<JsonValue | undefined>;
-  (
+    init: RequestInit & { bodyMethod: "json" },
+  ): R;
+  <R extends Promise<unknown> = Promise<string | undefined>>(
     url: string,
-    init?: RequestInit & { bodyMethod: "text" },
-  ): Promise<string | undefined>;
-  (
+    init: RequestInit & { bodyMethod: "text" },
+  ): R;
+  <R extends Promise<unknown> = Promise<Uint8Array | undefined>>(
     url: string,
     init?: RequestInit & { bodyMethod?: "uint8Array" },
-  ): Promise<Uint8Array | undefined>;
+  ): R;
 };

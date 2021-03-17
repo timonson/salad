@@ -1,29 +1,29 @@
-function delay(value, duration = 0) {
+function delay1(value, duration = 0) {
     return new Promise((resolve, reject)=>{
         setTimeout(async ()=>resolve(typeof value === "function" ? await value() : value)
         , duration);
     });
 }
-function* generateDelayingIterable(range, time) {
+function* generateDelayingIterable1(range, time) {
     let i = 0;
     while((i++) < 200){
-        yield delay(getRandomIntSimpel(...range), time);
+        yield delay1(getRandomIntSimpel(...range), time);
     }
 }
-function* getLoopingRange(from, to, time) {
+function* getLoopingRange1(from, to, time) {
     while(true){
-        if (from < to) yield delay(++from, time);
-        else yield delay(from = 0, time);
+        if (from < to) yield delay1(++from, time);
+        else yield delay1(from = 0, time);
     }
 }
-function makeObserver(generatorFunction) {
+function makeObserver1(generatorFunction) {
     return function(...args) {
         const generatorObject = generatorFunction(...args);
         generatorObject.next();
         return generatorObject;
     };
 }
-function makeQueue(...callbacks) {
+function makeQueue1(...callbacks) {
     async function* makeGenerator(callbacks1) {
         while(true){
             const request = yield;
@@ -36,7 +36,7 @@ function makeQueue(...callbacks) {
     generatorObject.next();
     return generatorObject;
 }
-function queue(fn) {
+function queue1(fn) {
     let lastPromise = Promise.resolve();
     return function(...args) {
         let returnedPromise = lastPromise.then(()=>fn(...args)
@@ -46,17 +46,13 @@ function queue(fn) {
         return returnedPromise;
     };
 }
-const mod = function() {
-    return {
-        delay: delay,
-        generateDelayingIterable: generateDelayingIterable,
-        getLoopingRange: getLoopingRange,
-        makeObserver: makeObserver,
-        makeQueue: makeQueue,
-        queue: queue
-    };
-}();
-class Dragon {
+export { delay1 as delay };
+export { generateDelayingIterable1 as generateDelayingIterable };
+export { getLoopingRange1 as getLoopingRange };
+export { makeObserver1 as makeObserver };
+export { makeQueue1 as makeQueue };
+export { queue1 as queue };
+class Dragon1 {
     fireDragons = [
         "Blaze",
         "Heat",
@@ -97,14 +93,10 @@ class Dragon {
         return this.all[Math.floor(this.all.length * Math.random())];
     }
     getRandomDelayed() {
-        return delay(this.getRandom(), 500);
+        return delay1(this.getRandom(), 500);
     }
 }
-const mod1 = function() {
-    return {
-        Dragon: Dragon
-    };
-}();
+export { Dragon1 as Dragon };
 function slog(obj) {
     Object.entries(obj).forEach(([key, value])=>console.log(key + ":", value)
     );
@@ -146,58 +138,46 @@ function time(name, action) {
 slog.pp = pp;
 slog.add = add;
 slog.time = time;
-const log = slog;
-const mod2 = function() {
-    return {
-        log: log
-    };
-}();
-function importMetaResolve(modulePath, filePath) {
+const log1 = slog;
+export { log1 as log };
+function importMetaResolve1(modulePath, filePath) {
     return new URL(filePath, modulePath).pathname;
 }
-function createUrlFromRequest(req, proto = "http") {
+function createUrlFromRequest1(req, proto = "http") {
     return new URL(req.url, `${proto}://${req.headers.get("host")}`);
 }
-const mod3 = function() {
-    return {
-        importMetaResolve: importMetaResolve,
-        createUrlFromRequest: createUrlFromRequest
-    };
-}();
-function concatTypedArrays(a, b) {
+export { importMetaResolve1 as importMetaResolve };
+export { createUrlFromRequest1 as createUrlFromRequest };
+function concatTypedArrays1(a, b) {
     const c = new a.constructor(a.length + b.length);
     c.set(a, 0);
     c.set(b, a.length);
     return c;
 }
-function concatBytes(a, ...bytes) {
+function concatBytes1(a, ...bytes) {
     const b = new a.constructor(bytes);
-    return concatTypedArrays(a, b);
+    return concatTypedArrays1(a, b);
 }
-function areEqual(a, b) {
+function areEqual1(a, b) {
     if (a.byteLength !== b.byteLength) return false;
     return a.every((el, i)=>el === b[i]
     );
 }
-const mod4 = function() {
-    return {
-        concatTypedArrays: concatTypedArrays,
-        concatBytes: concatBytes,
-        areEqual: areEqual
-    };
-}();
-function makeArray(...arg) {
+export { concatTypedArrays1 as concatTypedArrays };
+export { concatBytes1 as concatBytes };
+export { areEqual1 as areEqual };
+function makeArray1(...arg) {
     return [].concat(...arg);
 }
-function throwError(mssg) {
+function throwError1(mssg) {
     throw new Error(mssg);
 }
-function pipe(...fns) {
+function pipe1(...fns) {
     const _pipe = (accumulator, currentValue)=>(...arg)=>currentValue(accumulator(...arg))
     ;
     return fns.reduce(_pipe);
 }
-function memoize(f) {
+function memoize1(f) {
     const cache = {
     };
     return (...args)=>{
@@ -205,30 +185,30 @@ function memoize(f) {
         cache[argStr] = cache[argStr] || f(...args);
     };
 }
-function getRandomInt(min, max) {
+function getRandomInt1(min, max) {
     var byteArray = new Uint8Array(1);
     window.crypto.getRandomValues(byteArray);
     var range = max - min + 1;
     var max_range = 256;
     if (byteArray[0] >= Math.floor(max_range / range) * range) {
-        return getRandomInt(min, max);
+        return getRandomInt1(min, max);
     }
     return min + byteArray[0] % range;
 }
-function getRandomIntSimpel(min = 1, max = 100) {
+function getRandomIntSimpel1(min = 1, max = 100) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-function getRandomItem(array) {
+function getRandomItem1(array) {
     return array[Math.floor(array.length * Math.random())];
 }
-function generateId(size) {
+function generateId1(size) {
     const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
     for(var str = "", i = 0; i < size; i += 1){
         str += chars[Math.floor(Math.random() * chars.length)];
     }
     return str;
 }
-function valoo(v = null, ...cb) {
+function valoo1(v = null, ...cb) {
     function value(n) {
         if (arguments.length) {
             v = n;
@@ -244,7 +224,7 @@ function valoo(v = null, ...cb) {
     };
     return value;
 }
-function stringifyKeysInOrder(data) {
+function stringifyKeysInOrder1(data) {
     function recursivelyOrderKeys(unordered) {
         if (Array.isArray(unordered)) {
             unordered.forEach(function(item, index) {
@@ -264,7 +244,7 @@ function stringifyKeysInOrder(data) {
     }
     return JSON.stringify(recursivelyOrderKeys(data), null, 2);
 }
-function getWordCnt(text) {
+function getWordCnt1(text) {
     return Object.entries(text.toLowerCase().split(/\W+/).filter((line)=>!!line
     ).reduce((acc, el)=>{
         acc[el] = acc[el] + 1 || 1;
@@ -272,25 +252,15 @@ function getWordCnt(text) {
     }, {
     }));
 }
-const mod5 = function() {
-    return {
-        makeArray: makeArray,
-        throwError: throwError,
-        pipe: pipe,
-        memoize: memoize,
-        getRandomInt: getRandomInt,
-        getRandomIntSimpel: getRandomIntSimpel,
-        getRandomItem: getRandomItem,
-        generateId: generateId,
-        valoo: valoo,
-        stringifyKeysInOrder: stringifyKeysInOrder,
-        getWordCnt: getWordCnt
-    };
-}();
-export { mod as async };
-export { mod1 as dragons };
-export { mod2 as logging };
-export { mod3 as pathsAndUrls };
-export { mod4 as typedArray };
-export { mod5 as tools };
+export { makeArray1 as makeArray };
+export { throwError1 as throwError };
+export { pipe1 as pipe };
+export { memoize1 as memoize };
+export { getRandomInt1 as getRandomInt };
+export { getRandomIntSimpel1 as getRandomIntSimpel };
+export { getRandomItem1 as getRandomItem };
+export { generateId1 as generateId };
+export { valoo1 as valoo };
+export { stringifyKeysInOrder1 as stringifyKeysInOrder };
+export { getWordCnt1 as getWordCnt };
 

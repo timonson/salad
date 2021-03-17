@@ -1,29 +1,29 @@
-function getViewportSize() {
+function getViewportSize1() {
     return [
         document.documentElement.clientWidth || window.innerWidth,
         document.documentElement.clientHeight || window.innerHeight, 
     ];
 }
-function reachedScrollingYEnd(element) {
+function reachedScrollingYEnd1(element) {
     return Math.abs(element.scrollHeight - element.scrollTop - element.clientHeight) <= 3;
 }
-function reachedScrollingXEnd(element) {
+function reachedScrollingXEnd1(element) {
     return Math.abs(element.scrollWidth - element.scrollLeft - element.clientWidth) <= 3;
 }
-function getMousePositionRelativeToElement(event) {
+function getMousePositionRelativeToElement1(event) {
     const rect = event.target.getBoundingClientRect();
     return [
         event.clientX - rect.left,
         event.clientY - rect.top
     ];
 }
-function surroundMouseWithElement(pageX, pageY, element) {
+function surroundMouseWithElement1(pageX, pageY, element) {
     return [
         pageX - (pageXOffset + element.offsetParent.getBoundingClientRect().left) - element.offsetWidth / 2,
         pageY - (pageYOffset + element.offsetParent.getBoundingClientRect().top) - element.offsetHeight / 2, 
     ];
 }
-function observe(elements, callback, options = {
+function observe1(elements, callback, options = {
 }) {
     let isDone = false;
     const observer = new IntersectionObserver((entries)=>{
@@ -43,20 +43,16 @@ function observe(elements, callback, options = {
     else observer.observe(elements);
     return observer;
 }
-const mod = function() {
-    return {
-        getViewportSize: getViewportSize,
-        reachedScrollingYEnd: reachedScrollingYEnd,
-        reachedScrollingXEnd: reachedScrollingXEnd,
-        getMousePositionRelativeToElement: getMousePositionRelativeToElement,
-        surroundMouseWithElement: surroundMouseWithElement,
-        observe: observe
-    };
-}();
-function mix(a, b, amount) {
+export { getViewportSize1 as getViewportSize };
+export { reachedScrollingYEnd1 as reachedScrollingYEnd };
+export { reachedScrollingXEnd1 as reachedScrollingXEnd };
+export { getMousePositionRelativeToElement1 as getMousePositionRelativeToElement };
+export { surroundMouseWithElement1 as surroundMouseWithElement };
+export { observe1 as observe };
+function mix1(a, b, amount) {
     return (1 - amount) * a + amount * b;
 }
-function getOffset(value, biggestValue, actualLength) {
+function getOffset1(value, biggestValue, actualLength) {
     return value / biggestValue * actualLength;
 }
 function getPosition(element, [start, end]) {
@@ -64,7 +60,7 @@ function getPosition(element, [start, end]) {
     const elementHeight = element.clientHeight;
     const totalRange = Math.max(1, viewportHeight - elementHeight);
     const elementDistanceFromTop = totalRange - Math.max(0, element.getBoundingClientRect().top);
-    const result = mix(start, end, elementDistanceFromTop / totalRange) + "%";
+    const result = mix1(start, end, elementDistanceFromTop / totalRange) + "%";
     return result;
 }
 function getListener(config) {
@@ -100,29 +96,21 @@ function observerCallback(configs) {
         return false;
     };
 }
-function moveElementsAlongScrolling(configs) {
-    return observe(configs.map((config)=>config.observedElement
+function moveElementsAlongScrolling1(configs) {
+    return observe1(configs.map((config)=>config.observedElement
     ), observerCallback(configs), {
         threshold: [
             1
         ]
     });
 }
-const mod1 = function() {
-    return {
-        mix: mix,
-        getOffset: getOffset,
-        moveElementsAlongScrolling: moveElementsAlongScrolling
-    };
-}();
-function getErrorPage(status, message) {
+export { mix1 as mix };
+export { getOffset1 as getOffset };
+export { moveElementsAlongScrolling1 as moveElementsAlongScrolling };
+function getErrorPage1(status, message) {
     return `<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="UTF-8" />\n    <title>Error</title>\n    <link rel="icon" href="./media/favicon.ico" />\n  </head>\n  <body>\n    <style>\n      body {\n        background: #33cc99;\n        color: #fff;\n        font-family: "Open Sans", sans-serif;\n        max-height: 700px;\n        overflow: hidden;\n      }\n      .c {\n        text-align: center;\n        display: block;\n        position: relative;\n        width: 80%;\n        margin: 100px auto;\n      }\n      ._404 {\n        font-size: 220px;\n        position: relative;\n        display: inline-block;\n        z-index: 2;\n        height: 250px;\n        letter-spacing: 15px;\n      }\n      ._1 {\n        text-align: center;\n        display: block;\n        position: relative;\n        letter-spacing: 12px;\n        font-size: 4em;\n        line-height: 80%;\n      }\n      ._2 {\n        text-align: center;\n        display: block;\n        position: relative;\n        font-size: 20px;\n      }\n      .text {\n        font-size: 70px;\n        text-align: center;\n        position: relative;\n        display: inline-block;\n        margin: 19px 0px 0px 0px;\n        /* top: 256.301px; */\n        z-index: 3;\n        width: 100%;\n        line-height: 1.2em;\n        display: inline-block;\n      }\n\n      .btn {\n        background-color: rgb(255, 255, 255);\n        position: relative;\n        display: inline-block;\n        width: 358px;\n        padding: 5px;\n        z-index: 5;\n        font-size: 25px;\n        margin: 0 auto;\n        color: #33cc99;\n        text-decoration: none;\n        margin-right: 10px;\n      }\n      .right {\n        float: right;\n        width: 60%;\n      }\n\n      hr {\n        padding: 0;\n        border: none;\n        border-top: 5px solid #fff;\n        color: #fff;\n        text-align: center;\n        margin: 0px auto;\n        width: 420px;\n        height: 10px;\n        z-index: -10;\n      }\n\n      hr:after {\n        content: "\\2022";\n        display: inline-block;\n        position: relative;\n        top: -0.75em;\n        font-size: 2em;\n        padding: 0 0.2em;\n        background: #33cc99;\n      }\n\n      .cloud {\n        width: 350px;\n        height: 120px;\n\n        background: #fff;\n        background: linear-gradient(top, #fff 100%);\n        background: -webkit-linear-gradient(top, #fff 100%);\n        background: -moz-linear-gradient(top, #fff 100%);\n        background: -ms-linear-gradient(top, #fff 100%);\n        background: -o-linear-gradient(top, #fff 100%);\n\n        border-radius: 100px;\n        -webkit-border-radius: 100px;\n        -moz-border-radius: 100px;\n\n        position: absolute;\n        margin: 120px auto 20px;\n        z-index: -1;\n        transition: ease 1s;\n      }\n\n      .cloud:after,\n      .cloud:before {\n        content: "";\n        position: absolute;\n        background: #fff;\n        z-index: -1;\n      }\n\n      .cloud:after {\n        width: 100px;\n        height: 100px;\n        top: -50px;\n        left: 50px;\n\n        border-radius: 100px;\n        -webkit-border-radius: 100px;\n        -moz-border-radius: 100px;\n      }\n\n      .cloud:before {\n        width: 180px;\n        height: 180px;\n        top: -90px;\n        right: 50px;\n\n        border-radius: 200px;\n        -webkit-border-radius: 200px;\n        -moz-border-radius: 200px;\n      }\n\n      .x1 {\n        top: -50px;\n        left: 100px;\n        -webkit-transform: scale(0.3);\n        -moz-transform: scale(0.3);\n        transform: scale(0.3);\n        opacity: 0.9;\n        -webkit-animation: moveclouds 15s linear infinite;\n        -moz-animation: moveclouds 15s linear infinite;\n        -o-animation: moveclouds 15s linear infinite;\n      }\n\n      .x1_5 {\n        top: -80px;\n        left: 250px;\n        -webkit-transform: scale(0.3);\n        -moz-transform: scale(0.3);\n        transform: scale(0.3);\n        -webkit-animation: moveclouds 17s linear infinite;\n        -moz-animation: moveclouds 17s linear infinite;\n        -o-animation: moveclouds 17s linear infinite;\n      }\n\n      .x2 {\n        left: 250px;\n        top: 30px;\n        -webkit-transform: scale(0.6);\n        -moz-transform: scale(0.6);\n        transform: scale(0.6);\n        opacity: 0.6;\n        -webkit-animation: moveclouds 25s linear infinite;\n        -moz-animation: moveclouds 25s linear infinite;\n        -o-animation: moveclouds 25s linear infinite;\n      }\n\n      .x3 {\n        left: 250px;\n        bottom: -70px;\n\n        -webkit-transform: scale(0.6);\n        -moz-transform: scale(0.6);\n        transform: scale(0.6);\n        opacity: 0.8;\n\n        -webkit-animation: moveclouds 25s linear infinite;\n        -moz-animation: moveclouds 25s linear infinite;\n        -o-animation: moveclouds 25s linear infinite;\n      }\n\n      .x4 {\n        left: 470px;\n        botttom: 20px;\n\n        -webkit-transform: scale(0.75);\n        -moz-transform: scale(0.75);\n        transform: scale(0.75);\n        opacity: 0.75;\n\n        -webkit-animation: moveclouds 18s linear infinite;\n        -moz-animation: moveclouds 18s linear infinite;\n        -o-animation: moveclouds 18s linear infinite;\n      }\n\n      .x5 {\n        left: 200px;\n        top: 300px;\n\n        -webkit-transform: scale(0.5);\n        -moz-transform: scale(0.5);\n        transform: scale(0.5);\n        opacity: 0.8;\n\n        -webkit-animation: moveclouds 20s linear infinite;\n        -moz-animation: moveclouds 20s linear infinite;\n        -o-animation: moveclouds 20s linear infinite;\n      }\n\n      @-webkit-keyframes moveclouds {\n        0% {\n          margin-left: 1000px;\n        }\n        100% {\n          margin-left: -1000px;\n        }\n      }\n      @-moz-keyframes moveclouds {\n        0% {\n          margin-left: 1000px;\n        }\n        100% {\n          margin-left: -1000px;\n        }\n      }\n      @-o-keyframes moveclouds {\n        0% {\n          margin-left: 1000px;\n        }\n        100% {\n          margin-left: -1000px;\n        }\n      }\n    </style>\n    <div id="clouds">\n      <div class="cloud x1"></div>\n      <div class="cloud x1_5"></div>\n      <div class="cloud x2"></div>\n      <div class="cloud x3"></div>\n      <div class="cloud x4"></div>\n      <div class="cloud x5"></div>\n    </div>\n    <div class="c">\n      <div class="_404">${status}</div>\n      <hr />\n      <div class="_1">PAGE</div>\n      <div class="_2">${message}</div>\n      <a class="btn" href="/">BACK TO HOME</a>\n    </div>\n  </body>\n</html>`;
 }
-const mod2 = function() {
-    return {
-        getErrorPage: getErrorPage
-    };
-}();
+export { getErrorPage1 as getErrorPage };
 function escape1(unescapedHtml) {
     const matchHtmlRegExp = /["'&<>]/;
     const str = "" + unescapedHtml;
@@ -161,11 +149,7 @@ function escape1(unescapedHtml) {
     }
     return lastIndex !== index ? html + str.substring(lastIndex, index) : html;
 }
-const mod3 = function() {
-    return {
-        escape: escape1
-    };
-}();
+export { escape1 as escape };
 function changeInlineStyles(element, [property, value]) {
     if (property.slice(0, 2) === "--" && element.style.getPropertyValue(property) !== value) {
         element.style.setProperty(property, value);
@@ -173,18 +157,18 @@ function changeInlineStyles(element, [property, value]) {
         element.style[property] = value;
     }
 }
-function changeCss(styles, ...elements) {
+function changeCss1(styles, ...elements) {
     Object.entries(styles).forEach((entry)=>elements.forEach((element)=>changeInlineStyles(element, entry)
         )
     );
 }
-function appendCss(cssString, parent) {
+function appendCss1(cssString, parent) {
     const style = document.createElement("style");
     style.type = "text/css";
     style.innerHTML = cssString;
     parent ? parent.appendChild(style) : document.getElementsByTagName("head")[0].appendChild(style);
 }
-function loadCss(path, target = document.head) {
+function loadCss1(path, target = document.head) {
     return new Promise(function(resolve, reject) {
         const link = document.createElement("link");
         link.rel = "stylesheet";
@@ -194,26 +178,22 @@ function loadCss(path, target = document.head) {
         ;
     });
 }
-function addCssRules(styleElement, ruleSet) {
+function addCssRules1(styleElement, ruleSet) {
     return styleElement.sheet?.insertRule(ruleSet, styleElement.sheet.cssRules.length);
 }
-function logCssRulesText() {
+function logCssRulesText1() {
     setTimeout(()=>[
             ...document.styleSheets[0].cssRules
         ].forEach((rule, i)=>console.log(i, rule.cssText)
         )
     , 300);
 }
-const mod4 = function() {
-    return {
-        changeCss: changeCss,
-        appendCss: appendCss,
-        loadCss: loadCss,
-        addCssRules: addCssRules,
-        logCssRulesText: logCssRulesText
-    };
-}();
-function dispatchCustomEvent(eventName, element, { bubbles =true , composed =true , detail =null  } = {
+export { changeCss1 as changeCss };
+export { appendCss1 as appendCss };
+export { loadCss1 as loadCss };
+export { addCssRules1 as addCssRules };
+export { logCssRulesText1 as logCssRulesText };
+function dispatchCustomEvent1(eventName, element, { bubbles =true , composed =true , detail =null  } = {
 }) {
     return element.dispatchEvent(new CustomEvent(eventName, {
         bubbles,
@@ -223,20 +203,20 @@ function dispatchCustomEvent(eventName, element, { bubbles =true , composed =tru
         } : detail
     }));
 }
-function isInEventPath(event, element) {
+function isInEventPath1(event, element) {
     return event.composedPath().some((eventTarget)=>eventTarget === element
     );
 }
-function findElementInEventPath(event, selector) {
+function findElementInEventPath1(event, selector) {
     const result = event.composedPath().find((eventTarget)=>eventTarget instanceof HTMLElement ? eventTarget.matches(selector) : false
     );
     return result ?? null;
 }
-function findElementInEventPathByInnerHtml(event, selector, ...innerHtml) {
-    const element = findElementInEventPath(event, selector);
+function findElementInEventPathByInnerHtml1(event, selector, ...innerHtml) {
+    const element = findElementInEventPath1(event, selector);
     return element ? innerHtml.includes(element.innerHTML) ? element : null : null;
 }
-function waitForEventOnce(eventTarget, eventName) {
+function waitForEventOnce1(eventTarget, eventName) {
     return new Promise((resolve)=>{
         function listener(event) {
             resolve(event);
@@ -245,7 +225,7 @@ function waitForEventOnce(eventTarget, eventName) {
         eventTarget.addEventListener(eventName, listener);
     });
 }
-function waitForImages(images) {
+function waitForImages1(images) {
     return Promise.all(images.map((img)=>{
         if (img.complete) {
             return Promise.resolve(img);
@@ -264,79 +244,63 @@ function waitForImages(images) {
         }
     }));
 }
-const mod5 = function() {
-    return {
-        dispatchCustomEvent: dispatchCustomEvent,
-        isInEventPath: isInEventPath,
-        findElementInEventPath: findElementInEventPath,
-        findElementInEventPathByInnerHtml: findElementInEventPathByInnerHtml,
-        waitForEventOnce: waitForEventOnce,
-        waitForImages: waitForImages
-    };
-}();
-function getSiblingByClass(element, className) {
+export { dispatchCustomEvent1 as dispatchCustomEvent };
+export { isInEventPath1 as isInEventPath };
+export { findElementInEventPath1 as findElementInEventPath };
+export { findElementInEventPathByInnerHtml1 as findElementInEventPathByInnerHtml };
+export { waitForEventOnce1 as waitForEventOnce };
+export { waitForImages1 as waitForImages };
+function getSiblingByClass1(element, className) {
     const result = [
         ...element.parentNode?.children ?? []
     ].find((el)=>el.classList.contains(className)
     );
     return result ?? null;
 }
-function getIndexOfElement(element) {
+function getIndexOfElement1(element) {
     const result = [
         ...element.parentNode?.children ?? []
     ].indexOf(element);
     return result === -1 ? null : result;
 }
-function getKeyboardFocusableElements(element = document) {
+function getKeyboardFocusableElements1(element = document) {
     return [
         ...element.querySelectorAll('a, button, input:not([type="hidden"], textarea, select, details,[tabindex]:not([tabindex="-1"])')
     ].filter((el)=>!el.hasAttribute("disabled")
     );
 }
-const mod6 = function() {
-    return {
-        getSiblingByClass: getSiblingByClass,
-        getIndexOfElement: getIndexOfElement,
-        getKeyboardFocusableElements: getKeyboardFocusableElements
-    };
-}();
-function createTemplate(html) {
+export { getSiblingByClass1 as getSiblingByClass };
+export { getIndexOfElement1 as getIndexOfElement };
+export { getKeyboardFocusableElements1 as getKeyboardFocusableElements };
+function createTemplate1(html) {
     const template = document.createElement("template");
     template.innerHTML = html.trim();
     return template;
 }
-function cloneTemplateIntoParent(template, parent, sibling) {
+function cloneTemplateIntoParent1(template, parent, sibling) {
     if (sibling) parent.insertBefore(template.content.cloneNode(true), sibling);
     else parent.append(template.content.cloneNode(true));
     return template;
 }
-const mod7 = function() {
-    return {
-        createTemplate: createTemplate,
-        cloneTemplateIntoParent: cloneTemplateIntoParent
-    };
-}();
-function isHTMLElement(element) {
+export { createTemplate1 as createTemplate };
+export { cloneTemplateIntoParent1 as cloneTemplateIntoParent };
+function isHTMLElement1(element) {
     return element instanceof HTMLElement;
 }
-function createElementWithHtml(kind, html) {
+function createElementWithHtml1(kind, html) {
     const element = document.createElement(kind);
     element.innerHTML = html.trim();
     return element;
 }
-const mod8 = function() {
-    return {
-        isHTMLElement: isHTMLElement,
-        createElementWithHtml: createElementWithHtml
-    };
-}();
-const wcCssReset = createTemplate(`<style>\n  :host {\n    display: block;\n    box-sizing: border-box;\n    cursor: default;\n    word-break: break-word;\n    overflow-x: hidden;\n  }\n  *,\n  *::before,\n  *::after {\n    box-sizing: inherit;\n    color: inherit;\n  }\n  p,\n  ol,\n  ul,\n  li,\n  dl,\n  dt,\n  dd,\n  blockquote,\n  figure,\n  fieldset,\n  legend,\n  textarea,\n  pre,\n  iframe,\n  hr,\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    margin: 0;\n    padding: 0;\n  }\n\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    font-size: 100%;\n    font-weight: normal;\n  }\n\n  p {\n    line-height: 1.555;\n  }\n\n  ul {\n    list-style: none;\n  }\n\n  button,\n  input,\n  select {\n    margin: 0;\n  }\n\n  img,\n  video {\n    height: auto;\n    max-width: 100%;\n  }\n  </style>`);
-const mod9 = function() {
-    return {
-        wcCssReset: wcCssReset
-    };
-}();
-function waitUntil(predicate, { interval =50 , timeout =2000 , message  }) {
+export { isHTMLElement1 as isHTMLElement };
+export { createElementWithHtml1 as createElementWithHtml };
+const wcReset1 = createTemplate1(`<style>\n  :host {\n    display: block;\n    box-sizing: border-box;\n    cursor: default;\n    word-break: break-word;\n    overflow-x: hidden;\n  }\n  *,\n  *::before,\n  *::after {\n    box-sizing: inherit;\n    color: inherit;\n  }\n  p,\n  ol,\n  ul,\n  li,\n  dl,\n  dt,\n  dd,\n  blockquote,\n  figure,\n  fieldset,\n  legend,\n  textarea,\n  pre,\n  iframe,\n  hr,\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    margin: 0;\n    padding: 0;\n  }\n\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    font-size: 100%;\n    font-weight: normal;\n  }\n\n  p {\n    line-height: 1.555;\n  }\n\n  ul {\n    list-style: none;\n  }\n\n  button,\n  input,\n  select {\n    margin: 0;\n  }\n\n  img,\n  video {\n    height: auto;\n    max-width: 100%;\n  }\n  </style>`);
+const link1 = createTemplate1(`<style>.link {\n  font-family: inherit;\n  margin: 0;\n  padding: 0;\n  border: none;\n  outline: none;\n  background: none;\n  text-decoration: none;\n  transition: 150ms cubic-bezier(0.215, 0.61, 0.355, 1);\n  transition-property: background-color, opacity;\n  display: block;\n  white-space: nowrap;\n  user-select: none;\n  font-size: 15px;\n  line-height: 25px;\n  font-weight: inherit;\n  color: inherit;\n}\n\nlink.:hover {\n  background-color: var(--linkHoverBackgroundColor);\n  opacity: var(--linkHoverOpacity, 0.6);\n}</style>`);
+const center1 = createTemplate1(`<style>.center {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}</style>`);
+export { wcReset1 as wcReset };
+export { link1 as link };
+export { center1 as center };
+function waitUntil1(predicate, { interval =50 , timeout =2000 , message  }) {
     return new Promise((resolve, reject)=>{
         let timeoutId;
         setTimeout(()=>{
@@ -359,7 +323,7 @@ function waitUntil(predicate, { interval =50 , timeout =2000 , message  }) {
         nextInterval();
     });
 }
-function handlePageVisibilityChange(onHidden, onVisible) {
+function handlePageVisibilityChange1(onHidden, onVisible) {
     let hidden = "";
     let visibilityChange = "";
     if (typeof document.hidden !== "undefined") {
@@ -386,7 +350,7 @@ function handlePageVisibilityChange(onHidden, onVisible) {
         visibilityChange
     ];
 }
-function makeElementEditableOnDblclick(element) {
+function makeElementEditableOnDblclick1(element) {
     element.ondblclick = (event)=>{
         element.contentEditable = "true";
         element.blur();
@@ -398,50 +362,46 @@ function makeElementEditableOnDblclick(element) {
     element.onclick = (event)=>event.target.contentEditable = "false"
     ;
 }
-const mod10 = function() {
-    return {
-        waitUntil: waitUntil,
-        handlePageVisibilityChange: handlePageVisibilityChange,
-        makeElementEditableOnDblclick: makeElementEditableOnDblclick
-    };
-}();
-function convertCamelCaseToDash(str) {
+export { waitUntil1 as waitUntil };
+export { handlePageVisibilityChange1 as handlePageVisibilityChange };
+export { makeElementEditableOnDblclick1 as makeElementEditableOnDblclick };
+function convertCamelCaseToDash1(str) {
     return str.replace(/([a-zA-Z])(?=[A-Z])/g, "$1-").toLowerCase();
 }
-function convertDashToCamelCase(str) {
+function convertDashToCamelCase1(str) {
     return str.replace(/-([a-z])/g, function(g) {
         return g[1].toUpperCase();
     });
 }
-function concatWithSpace(...strings) {
+function concatWithSpace1(...strings) {
     return strings.join(" ");
 }
-function replaceCharAt(str, index, replace) {
+function replaceCharAt1(str, index, replace) {
     return str.substring(0, index) + replace + str.substring(index + 1);
 }
-function insert(str, index, newStr) {
+function insert1(str, index, newStr) {
     return str.slice(0, index) + newStr + str.slice(index);
 }
-function searchAndInsert(baseString, pattern, str) {
+function searchAndInsert1(baseString, pattern, str) {
     const index = baseString.search(pattern);
     return baseString.slice(0, index) + str + baseString.slice(index);
 }
-function hasWhiteSpace(str) {
+function hasWhiteSpace1(str) {
     return /\s/g.test(str);
 }
-function getTag(string, tag) {
+function getTag1(string, tag) {
     const regexp = new RegExp(`<${tag}\\b[^>]*>(.*?)<\/${tag}>`, "gs");
     return [
         ...s1.matchAll(regexp)
     ];
 }
-function convertStringToBase64(str) {
+function convertStringToBase641(str) {
     return window.btoa(unescape(encodeURIComponent(str)));
 }
-function convertBase64ToString(str) {
+function convertBase64ToString1(str) {
     return decodeURIComponent(escape(window.atob(str)));
 }
-function addPaddingToBase64url(base64url) {
+function addPaddingToBase64url1(base64url) {
     if (base64url.length % 4 === 2) return base64url + "==";
     if (base64url.length % 4 === 3) return base64url + "=";
     if (base64url.length % 4 === 1) {
@@ -449,30 +409,26 @@ function addPaddingToBase64url(base64url) {
     }
     return base64url;
 }
-function convertBase64urlToBase64(base64url) {
-    return addPaddingToBase64url(base64url).replace(/\-/g, "+").replace(/_/g, "/");
+function convertBase64urlToBase641(base64url) {
+    return addPaddingToBase64url1(base64url).replace(/\-/g, "+").replace(/_/g, "/");
 }
-function convertBase64ToBase64url(base64) {
+function convertBase64ToBase64url1(base64) {
     return base64.replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
 }
-const mod11 = function() {
-    return {
-        convertCamelCaseToDash: convertCamelCaseToDash,
-        convertDashToCamelCase: convertDashToCamelCase,
-        concatWithSpace: concatWithSpace,
-        replaceCharAt: replaceCharAt,
-        insert: insert,
-        searchAndInsert: searchAndInsert,
-        hasWhiteSpace: hasWhiteSpace,
-        getTag: getTag,
-        convertStringToBase64: convertStringToBase64,
-        convertBase64ToString: convertBase64ToString,
-        addPaddingToBase64url: addPaddingToBase64url,
-        convertBase64urlToBase64: convertBase64urlToBase64,
-        convertBase64ToBase64url: convertBase64ToBase64url
-    };
-}();
-function h(type, attributes, children) {
+export { convertCamelCaseToDash1 as convertCamelCaseToDash };
+export { convertDashToCamelCase1 as convertDashToCamelCase };
+export { concatWithSpace1 as concatWithSpace };
+export { replaceCharAt1 as replaceCharAt };
+export { insert1 as insert };
+export { searchAndInsert1 as searchAndInsert };
+export { hasWhiteSpace1 as hasWhiteSpace };
+export { getTag1 as getTag };
+export { convertStringToBase641 as convertStringToBase64 };
+export { convertBase64ToString1 as convertBase64ToString };
+export { addPaddingToBase64url1 as addPaddingToBase64url };
+export { convertBase64urlToBase641 as convertBase64urlToBase64 };
+export { convertBase64ToBase64url1 as convertBase64ToBase64url };
+function h1(type, attributes, children) {
     const element = document.createElement(type);
     for(let key in attributes){
         if (key in element) {
@@ -489,7 +445,7 @@ function h(type, attributes, children) {
     }
     return element;
 }
-function mount(node, view) {
+function mount1(node, view) {
     let currentApp;
     return function renderView(state) {
         const evaluatedView = view(state);
@@ -497,23 +453,6 @@ function mount(node, view) {
         return currentApp = evaluatedView;
     };
 }
-const mod12 = function() {
-    return {
-        h: h,
-        mount: mount
-    };
-}();
-export { mod1 as movement };
-export { mod as position };
-export { mod2 as errorPage };
-export { mod3 as escape };
-export { mod4 as cssFunctions };
-export { mod5 as events };
-export { mod6 as selection };
-export { mod7 as templates };
-export { mod8 as util };
-export { mod9 as wcReset };
-export { mod10 as tools };
-export { mod11 as stringFunctions };
-export { mod12 as hFunction };
+export { h1 as h };
+export { mount1 as mount };
 

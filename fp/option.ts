@@ -1,4 +1,4 @@
-import { isFunction } from "./higher-order-functions.ts";
+import { isFunction } from "./boolean-functions.ts";
 
 export type Some<T> = { value: T; kind: "Some" };
 
@@ -37,16 +37,16 @@ export function foldOption<T, U>(ifSome: ((x: T) => U) | U) {
   return <V>(ifNone: (() => V) | V): (x: Option<T>) => (U | V) =>
     (opt: Option<T>) =>
       isSome(opt)
-        ? (isFunction<T, U>(ifSome) ? ifSome(opt.value) : ifSome)
-        : (isFunction<undefined, V>(ifNone) ? ifNone() : ifNone);
+        ? (isFunction(ifSome) ? ifSome(opt.value) : ifSome)
+        : (isFunction(ifNone) ? ifNone() : ifNone);
 }
 
-/*
-    [ some(x), some(y) ] = some([x, y])
-    [ None, None ] = None
-    [ None, some(x) ] = None
-    [ some(x), None ] = None
- */
+/**
+      * [ some(x), some(y) ] = some([x, y])
+      * [ None, None ] = None
+      * [ None, some(x) ] = None
+      * [ some(x), None ] = None
+      */
 export function invertOptions<S extends Some<unknown>>(
   options: (S | None)[],
 ): Some<Array<S["value"]>> | None {
@@ -59,12 +59,12 @@ export function invertOptions<S extends Some<unknown>>(
   );
 }
 
-/*
-    [ some(x), some(y) ] = [x, y]
-    [ None, None ] = []
-    [ None, some(x) ] = [x]
-    [ some(x), None ] = [x]
- */
+/**
+      * [ some(x), some(y) ] = [x, y]
+      * [ None, None ] = []
+      * [ None, some(x) ] = [x]
+      * [ some(x), None ] = [x]
+      */
 export function concatOptions<T>(options: Option<T>[]): T[] {
   return options.reduce<any>(
     (arr, opt) => foldOption((value) => arr.concat([value]))(arr)(opt),
@@ -78,9 +78,7 @@ export function alternativeOption<T>(
   return <U>(opt: Option<U>) =>
     isSome(opt)
       ? opt
-      : (isFunction<undefined, Option<T>>(functionOrOption)
-        ? functionOrOption()
-        : functionOrOption);
+      : (isFunction(functionOrOption) ? functionOrOption() : functionOrOption);
 }
 
 export function alternativeValue<T, U>(
@@ -88,9 +86,7 @@ export function alternativeValue<T, U>(
 ): (opt: Option<U>) => (T | U) {
   return (opt: Option<U>) =>
     foldOption((x: U): U => x)(
-      isFunction<undefined, T>(functionOrValue)
-        ? functionOrValue()
-        : functionOrValue,
+      isFunction(functionOrValue) ? functionOrValue() : functionOrValue,
     )(opt);
 }
 

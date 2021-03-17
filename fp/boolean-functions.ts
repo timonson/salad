@@ -28,6 +28,11 @@ export function allPass<X>(predicates: ((x: X) => Boolean)[]) {
   };
 }
 
+// https://github.com/microsoft/TypeScript/pull/23039
+export function isFunction<T>(value: T): value is Extract<T, Function> {
+  return typeof value === "function";
+}
+
 export function isBoolean(input: unknown): input is Boolean {
   return input === true || input === false;
 }
@@ -58,13 +63,6 @@ export function isFalse(input: unknown): input is false {
 
 export function equals<B>(b: B) {
   return (a: unknown): a is B => a === b;
-}
-
-type AnyFunction = (...args: any) => any;
-export function isFunction<F = AnyFunction>(
-  input: unknown,
-): input is F {
-  return input === "function";
 }
 
 export function isObjectWide(obj: unknown): obj is Record<string, unknown> {
@@ -98,8 +96,8 @@ export function isObjectAndHasProp<K extends string>(
   );
 }
 
+// https://stackoverflow.com/a/46181
 export function isEmail(value: unknown): value is string {
-  // https://stackoverflow.com/a/46181
   const regex =
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return typeof value === "string" && regex.test(value.toLowerCase());

@@ -1,4 +1,4 @@
-import { isFunction } from "./higher-order-functions.ts";
+import { isFunction } from "./boolean-functions.ts";
 import { transformResultToPromise } from "./transformation.ts";
 
 export type Success<S> = {
@@ -60,8 +60,8 @@ export function foldResult<S, T>(
   return <F, G>(ifFailure: ((e: F) => G) | G): (x: Result<S, F>) => (T | G) =>
     (res: Result<S, F>): (T | G) =>
       isSuccess(res)
-        ? (isFunction<S, T>(ifSuccess) ? ifSuccess(res.value) : ifSuccess)
-        : (isFunction<F, G>(ifFailure) ? ifFailure(res.error) : ifFailure);
+        ? (isFunction(ifSuccess) ? ifSuccess(res.value) : ifSuccess)
+        : (isFunction(ifFailure) ? ifFailure(res.error) : ifFailure);
 }
 
 export function foldIfSuccessElseThrow<S, T>(ifSuccess: ((x: S) => T) | T) {

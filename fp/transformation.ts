@@ -1,7 +1,13 @@
-import { isFunction } from "./higher-order-functions.ts";
-import { failure, foldResult, Result, Success, success } from "./result.ts";
+import { isFunction } from "./boolean-functions.ts";
+import { failure, foldResult, Result, success } from "./result.ts";
 import { foldOption, Option } from "./option.ts";
 
+/**
+  * async function add(x: number) {
+  *   return x + 10
+  * }
+  * await transformResultToPromise(add)(success(20));
+  */
 export function transformResultToPromise<T, U>(
   mapOrResult: ((x: T) => Promise<U>),
 ): <F>(p: Result<T, F>) => Promise<U>;
@@ -11,7 +17,7 @@ export function transformResultToPromise<U, F>(
 export function transformResultToPromise<T, U, F>(
   mapOrResult: any,
 ): any {
-  return isFunction<T, Promise<U>>(mapOrResult)
+  return isFunction(mapOrResult)
     ? (result: Result<T, F>) =>
       foldResult(mapOrResult)((error) => Promise.reject(error))(
         result,
@@ -30,7 +36,7 @@ export function transformOptionToResult<V>(
 export function transformOptionToResult<T, U, V>(
   mapOrErrorMessage: any,
 ): any {
-  return isFunction<T, Success<U>>(mapOrErrorMessage)
+  return isFunction(mapOrErrorMessage)
     ? (errorMessage: V): (o: Option<T>) => Result<U, V> =>
       foldOption(mapOrErrorMessage)(() => failure(errorMessage))
     : foldOption(success)(() => failure(mapOrErrorMessage));

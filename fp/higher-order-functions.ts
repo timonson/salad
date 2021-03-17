@@ -1,7 +1,3 @@
-export function isFunction<T, U>(input: unknown): input is (x: T) => U {
-  return typeof input === "function";
-}
-
 export function apply<X>(x: X) {
   return <R>(f: (arg: X) => R) => f(x);
 }

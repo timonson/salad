@@ -1,4 +1,4 @@
-import { isFunction } from "./higher-order-functions.ts";
+import { isFunction } from "./boolean-functions.ts";
 
 interface NestedArray extends Array<NestedArray | Promise<unknown>> {}
 export function parallel<T = unknown>(
@@ -24,9 +24,7 @@ export function mapFulfilled<T, U>(
 ): (p: Promise<T>) => Promise<U> {
   return (promise: Promise<T>) =>
     promise.then(
-      isFunction<T, U>(functionOrValue)
-        ? functionOrValue
-        : () => functionOrValue,
+      isFunction(functionOrValue) ? functionOrValue : () => functionOrValue,
     );
 }
 
@@ -34,8 +32,8 @@ export function mapPromise<T, U>(ifFulfilled: ((x: T) => U) | U) {
   return <V>(ifRejected: ((x: T) => V) | V) => {
     return (promise: Promise<T>) =>
       promise.then(
-        isFunction<T, U>(ifFulfilled) ? ifFulfilled : () => ifFulfilled,
-        isFunction<T, V>(ifRejected) ? ifRejected : () => ifRejected,
+        isFunction(ifFulfilled) ? ifFulfilled : () => ifFulfilled,
+        isFunction(ifRejected) ? ifRejected : () => ifRejected,
       );
   };
 }

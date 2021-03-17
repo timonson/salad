@@ -12,7 +12,7 @@ function getEqualParts(amount) {
     return Array.from(Array(amount), (e, i)=>i * range
     );
 }
-function getCirclePoints(amount, radius, [Cx, Cy] = [
+function getCirclePoints1(amount, radius, [Cx, Cy] = [
     0,
     0
 ]) {
@@ -22,19 +22,9 @@ function getCirclePoints(amount, radius, [Cx, Cy] = [
         ]
     );
 }
-const mod = function() {
-    return {
-        getCirclePoints: getCirclePoints
-    };
-}();
-function mix(v0, v1, t) {
+export { getCirclePoints1 as getCirclePoints };
+function mix1(v0, v1, t) {
     return (1 - t) * v0 + t * v1;
 }
-const mod1 = function() {
-    return {
-        mix: mix
-    };
-}();
-export { mod as circle };
-export { mod1 as linearInterpolation };
+export { mix1 as mix };
 

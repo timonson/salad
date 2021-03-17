@@ -1,8 +1,8 @@
-function not(predicate) {
+function not1(predicate) {
     return (x)=>!predicate(x)
     ;
 }
-function anyPass(predicates) {
+function anyPass1(predicates) {
     return (x)=>{
         for(let i_p = 0; i_p < predicates.length; i_p++){
             if (predicates[i_p](x)) {
@@ -12,7 +12,7 @@ function anyPass(predicates) {
         return false;
     };
 }
-function allPass(predicates) {
+function allPass1(predicates) {
     return (x)=>{
         for(let i_p = 0; i_p < predicates.length; i_p++){
             if (!predicates[i_p](x)) {
@@ -22,133 +22,296 @@ function allPass(predicates) {
         return true;
     };
 }
-function isBoolean(input) {
+function isFunction1(value) {
+    return typeof value === "function";
+}
+function isBoolean1(input) {
     return input === true || input === false;
 }
-function isNull(input) {
+function isNull1(input) {
     return input === null;
 }
-function isUndefined(input) {
+function isUndefined1(input) {
     return input === undefined;
 }
-function isString(input) {
+function isString1(input) {
     return typeof input === "string";
 }
-function isNumber(input) {
+function isNumber1(input) {
     return typeof input === "number";
 }
-function isTrue(input) {
+function isTrue1(input) {
     return input === true;
 }
-function isFalse(input) {
+function isFalse1(input) {
     return input === false;
 }
-function equals(b) {
+function equals1(b) {
     return (a)=>a === b
     ;
 }
-function isFunction(input) {
-    return input === "function";
-}
-function isObjectWide(obj) {
+function isObjectWide1(obj) {
     return obj !== null && typeof obj === "object" && Array.isArray(obj) === false;
 }
-function isObject(obj) {
+function isObject1(obj) {
     return obj !== null && typeof obj === "object" && Array.isArray(obj) === false;
 }
-function hasProperty(key, obj) {
+function hasProperty1(key, obj) {
     return key in obj;
 }
-function isObjectAndHasProp(key, obj) {
+function isObjectAndHasProp1(key, obj) {
     return typeof obj === "object" && Array.isArray(obj) === false && obj !== null && key in obj;
 }
-function isEmail(value) {
+function isEmail1(value) {
     const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return typeof value === "string" && regex.test(value.toLowerCase());
 }
-function isPresent(t) {
+function isPresent1(t) {
     return t !== undefined && t !== null;
 }
-function isDefined(t) {
+function isDefined1(t) {
     return t !== undefined;
 }
-function isFilled(t) {
+function isFilled1(t) {
     return t !== null;
 }
-function hasPresentKey(k) {
+function hasPresentKey1(k) {
     return function(a) {
         return a[k] !== undefined && a[k] !== null;
     };
 }
-function hasValueAtKey(k, v) {
+function hasValueAtKey1(k, v) {
     return function(a) {
         return a[k] === v;
     };
 }
-const mod = function() {
+export { not1 as not };
+export { anyPass1 as anyPass };
+export { allPass1 as allPass };
+export { isFunction1 as isFunction };
+export { isBoolean1 as isBoolean };
+export { isNull1 as isNull };
+export { isUndefined1 as isUndefined };
+export { isString1 as isString };
+export { isNumber1 as isNumber };
+export { isTrue1 as isTrue };
+export { isFalse1 as isFalse };
+export { equals1 as equals };
+export { isObjectWide1 as isObjectWide };
+export { isObject1 as isObject };
+export { hasProperty1 as hasProperty };
+export { isObjectAndHasProp1 as isObjectAndHasProp };
+export { isEmail1 as isEmail };
+export { isPresent1 as isPresent };
+export { isDefined1 as isDefined };
+export { isFilled1 as isFilled };
+export { hasPresentKey1 as hasPresentKey };
+export { hasValueAtKey1 as hasValueAtKey };
+function some1(value) {
     return {
-        not: not,
-        anyPass: anyPass,
-        allPass: allPass,
-        isBoolean: isBoolean,
-        isNull: isNull,
-        isUndefined: isUndefined,
-        isString: isString,
-        isNumber: isNumber,
-        isTrue: isTrue,
-        isFalse: isFalse,
-        equals: equals,
-        isFunction: isFunction,
-        isObjectWide: isObjectWide,
-        isObject: isObject,
-        hasProperty: hasProperty,
-        isObjectAndHasProp: isObjectAndHasProp,
-        isEmail: isEmail,
-        isPresent: isPresent,
-        isDefined: isDefined,
-        isFilled: isFilled,
-        hasPresentKey: hasPresentKey,
-        hasValueAtKey: hasValueAtKey
+        value,
+        kind: "Some"
     };
-}();
-function isFunction1(input) {
-    return typeof input === "function";
 }
-function apply(x) {
+const None1 = {
+    kind: "None"
+};
+function isSome1(input) {
+    return input.kind === "Some";
+}
+function isNone1(input) {
+    return input.kind === "None";
+}
+function mapOption1(f) {
+    return (opt)=>isSome1(opt) ? some1(f(opt.value)) : None1
+    ;
+}
+function chainOption1(f) {
+    return (opt)=>isSome1(opt) ? f(opt.value) : None1
+    ;
+}
+function foldOption1(ifSome) {
+    return (ifNone)=>(opt)=>isSome1(opt) ? isFunction1(ifSome) ? ifSome(opt.value) : ifSome : isFunction1(ifNone) ? ifNone() : ifNone
+    ;
+}
+function invertOptions1(options) {
+    return options.reduce((acc, opt)=>chainOption1((arr)=>mapOption1((value)=>[
+                    ...arr,
+                    value
+                ]
+            )(opt)
+        )(acc)
+    , some1([]));
+}
+function concatOptions1(options) {
+    return options.reduce((arr, opt)=>foldOption1((value)=>arr.concat([
+                value
+            ])
+        )(arr)(opt)
+    , []);
+}
+function alternativeOption1(functionOrOption) {
+    return (opt)=>isSome1(opt) ? opt : isFunction1(functionOrOption) ? functionOrOption() : functionOrOption
+    ;
+}
+function alternativeValue1(functionOrValue) {
+    return (opt)=>foldOption1((x)=>x
+        )(isFunction1(functionOrValue) ? functionOrValue() : functionOrValue)(opt)
+    ;
+}
+function maybeNull1(nullable) {
+    return nullable === null ? None1 : some1(nullable);
+}
+function maybeUndefined1(undefinable) {
+    return undefinable === undefined ? None1 : some1(undefinable);
+}
+function ifPresent1(sideEffect) {
+    return (opt)=>{
+        if (isSome1(opt)) {
+            sideEffect(opt.value);
+        }
+    };
+}
+function ifAbsent1(sideEffect) {
+    return (opt)=>{
+        if (isNone1(opt)) {
+            sideEffect();
+        }
+    };
+}
+export { some1 as some };
+export { None1 as None };
+export { isSome1 as isSome };
+export { isNone1 as isNone };
+export { mapOption1 as mapOption };
+export { chainOption1 as chainOption };
+export { foldOption1 as foldOption };
+export { invertOptions1 as invertOptions };
+export { concatOptions1 as concatOptions };
+export { alternativeOption1 as alternativeOption };
+export { alternativeValue1 as alternativeValue };
+export { maybeNull1 as maybeNull };
+export { maybeUndefined1 as maybeUndefined };
+export { ifPresent1 as ifPresent };
+export { ifAbsent1 as ifAbsent };
+function success1(value) {
+    return {
+        value,
+        kind: "Success"
+    };
+}
+function failure1(error) {
+    return {
+        error,
+        kind: "Failure"
+    };
+}
+function isSuccess1(result) {
+    return result.kind === "Success";
+}
+function isFailure1(result) {
+    return result.kind === "Failure";
+}
+function mapResult1(f) {
+    return (result)=>isSuccess1(result) ? success1(f(result.value)) : result
+    ;
+}
+function chainResult1(f) {
+    return (result)=>isSuccess1(result) ? f(result.value) : failure1(result.error)
+    ;
+}
+function foldResult1(ifSuccess) {
+    return (ifFailure)=>(res)=>isSuccess1(res) ? isFunction1(ifSuccess) ? ifSuccess(res.value) : ifSuccess : isFunction1(ifFailure) ? ifFailure(res.error) : ifFailure
+    ;
+}
+export { foldResult1 as foldResult };
+function foldIfSuccessElseThrow1(ifSuccess) {
+    return (result)=>foldResult1(ifSuccess)((e)=>{
+            throw e;
+        })(result)
+    ;
+}
+function invertResults1(results) {
+    return results.reduce((acc, result)=>chainResult1((arr)=>mapResult1((value)=>arr.concat(value)
+            )(result)
+        )(acc)
+    , success1([]));
+}
+function ifSucceeded1(sideEffect) {
+    return (result)=>{
+        if (isSuccess1(result)) {
+            sideEffect(result.value);
+        }
+    };
+}
+function ifFailed1(sideEffect) {
+    return (result)=>{
+        if (isFailure1(result)) {
+            sideEffect(result.error);
+        }
+    };
+}
+export { success1 as success };
+export { failure1 as failure };
+export { isSuccess1 as isSuccess };
+export { isFailure1 as isFailure };
+export { mapResult1 as mapResult };
+export { chainResult1 as chainResult };
+export { foldIfSuccessElseThrow1 as foldIfSuccessElseThrow };
+export { invertResults1 as invertResults };
+export { ifSucceeded1 as ifSucceeded };
+export { ifFailed1 as ifFailed };
+function safeProperty1(key) {
+    return (obj)=>obj.hasOwnProperty(key) ? some1(obj[key]) : None1
+    ;
+}
+function safePropertyOf1(obj) {
+    return (key)=>safeProperty1(key)(obj)
+    ;
+}
+export { safeProperty1 as safeProperty };
+export { safePropertyOf1 as safePropertyOf };
+function isSafe1(...predicates) {
+    return (x)=>predicates.every((predicate)=>predicate(x)
+        ) ? some1(x) : None1
+    ;
+}
+export { isSafe1 as isSafe };
+function apply1(x) {
     return (f)=>f(x)
     ;
 }
-function applyTo(f) {
+function applyTo1(f) {
     return (x)=>f(x)
     ;
 }
-function applyPair([a, b]) {
+function applyPair1([a, b]) {
     return (f)=>f(a)(b)
     ;
 }
-function applyPairTo(f) {
+function applyPairTo1(f) {
     return ([a, b])=>f(a)(b)
     ;
 }
-function compose(...fns) {
+function compose1(...fns) {
     return fns.reduceRight((prevFn, nextFn)=>(...args)=>nextFn(prevFn(...args))
     , (value)=>value
     );
 }
-function perform(f) {
+function perform1(f) {
     return (x)=>{
         f(x);
         return x;
     };
 }
-function identity(x) {
+function identity1(x) {
     return x;
 }
-function constant(x) {
+function constant1(x) {
     return ()=>x
     ;
 }
-function curry(fn) {
+function curry1(fn) {
     const arity = fn.length;
     return function $curry(...args) {
         if (args.length < arity) {
@@ -157,225 +320,34 @@ function curry(fn) {
         return fn.call(null, ...args);
     };
 }
-const mod1 = function() {
-    return {
-        isFunction: isFunction1,
-        apply: apply,
-        applyTo: applyTo,
-        applyPair: applyPair,
-        applyPairTo: applyPairTo,
-        compose: compose,
-        perform: perform,
-        identity: identity,
-        constant: constant,
-        curry: curry
-    };
-}();
-function some(value) {
-    return {
-        value,
-        kind: "Some"
-    };
-}
-const None = {
-    kind: "None"
-};
-function isSome(input) {
-    return input.kind === "Some";
-}
-function isNone(input) {
-    return input.kind === "None";
-}
-function mapOption(f) {
-    return (opt)=>isSome(opt) ? some(f(opt.value)) : None
-    ;
-}
-function chainOption(f) {
-    return (opt)=>isSome(opt) ? f(opt.value) : None
-    ;
-}
-function foldOption(ifSome) {
-    return (ifNone)=>(opt)=>isSome(opt) ? isFunction1(ifSome) ? ifSome(opt.value) : ifSome : isFunction1(ifNone) ? ifNone() : ifNone
-    ;
-}
-function invertOptions(options) {
-    return options.reduce((acc, opt)=>chainOption((arr)=>mapOption((value)=>[
-                    ...arr,
-                    value
-                ]
-            )(opt)
-        )(acc)
-    , some([]));
-}
-function concatOptions(options) {
-    return options.reduce((arr, opt)=>foldOption((value)=>arr.concat([
-                value
-            ])
-        )(arr)(opt)
-    , []);
-}
-function alternativeOption(functionOrOption) {
-    return (opt)=>isSome(opt) ? opt : isFunction1(functionOrOption) ? functionOrOption() : functionOrOption
-    ;
-}
-function alternativeValue(functionOrValue) {
-    return (opt)=>foldOption((x)=>x
-        )(isFunction1(functionOrValue) ? functionOrValue() : functionOrValue)(opt)
-    ;
-}
-function maybeNull(nullable) {
-    return nullable === null ? None : some(nullable);
-}
-function maybeUndefined(undefinable) {
-    return undefinable === undefined ? None : some(undefinable);
-}
-function ifPresent(sideEffect) {
-    return (opt)=>{
-        if (isSome(opt)) {
-            sideEffect(opt.value);
-        }
-    };
-}
-function ifAbsent(sideEffect) {
-    return (opt)=>{
-        if (isNone(opt)) {
-            sideEffect();
-        }
-    };
-}
-const mod2 = function() {
-    return {
-        some: some,
-        None: None,
-        isSome: isSome,
-        isNone: isNone,
-        mapOption: mapOption,
-        chainOption: chainOption,
-        foldOption: foldOption,
-        invertOptions: invertOptions,
-        concatOptions: concatOptions,
-        alternativeOption: alternativeOption,
-        alternativeValue: alternativeValue,
-        maybeNull: maybeNull,
-        maybeUndefined: maybeUndefined,
-        ifPresent: ifPresent,
-        ifAbsent: ifAbsent
-    };
-}();
-function success(value) {
-    return {
-        value,
-        kind: "Success"
-    };
-}
-function failure(error) {
-    return {
-        error,
-        kind: "Failure"
-    };
-}
-function isSuccess(result) {
-    return result.kind === "Success";
-}
-function isFailure(result) {
-    return result.kind === "Failure";
-}
-function mapResult(f) {
-    return (result)=>isSuccess(result) ? success(f(result.value)) : result
-    ;
-}
-function chainResult(f) {
-    return (result)=>isSuccess(result) ? f(result.value) : failure(result.error)
-    ;
-}
-function foldResult(ifSuccess) {
-    return (ifFailure)=>(res)=>isSuccess(res) ? isFunction1(ifSuccess) ? ifSuccess(res.value) : ifSuccess : isFunction1(ifFailure) ? ifFailure(res.error) : ifFailure
-    ;
-}
-function foldIfSuccessElseThrow(ifSuccess) {
-    return (result)=>foldResult(ifSuccess)((e)=>{
-            throw e;
-        })(result)
-    ;
-}
-function invertResults(results) {
-    return results.reduce((acc, result)=>chainResult((arr)=>mapResult((value)=>arr.concat(value)
-            )(result)
-        )(acc)
-    , success([]));
-}
-function ifSucceeded(sideEffect) {
-    return (result)=>{
-        if (isSuccess(result)) {
-            sideEffect(result.value);
-        }
-    };
-}
-function ifFailed(sideEffect) {
-    return (result)=>{
-        if (isFailure(result)) {
-            sideEffect(result.error);
-        }
-    };
-}
-const mod3 = function() {
-    return {
-        success: success,
-        failure: failure,
-        isSuccess: isSuccess,
-        isFailure: isFailure,
-        mapResult: mapResult,
-        chainResult: chainResult,
-        foldResult: foldResult,
-        foldIfSuccessElseThrow: foldIfSuccessElseThrow,
-        invertResults: invertResults,
-        ifSucceeded: ifSucceeded,
-        ifFailed: ifFailed
-    };
-}();
-function safeProperty(key) {
-    return (obj)=>obj.hasOwnProperty(key) ? some(obj[key]) : None
-    ;
-}
-function safePropertyOf(obj) {
-    return (key)=>safeProperty(key)(obj)
-    ;
-}
-const mod4 = function() {
-    return {
-        safeProperty: safeProperty,
-        safePropertyOf: safePropertyOf
-    };
-}();
-function isSafe(...predicates) {
-    return (x)=>predicates.every((predicate)=>predicate(x)
-        ) ? some(x) : None
-    ;
-}
-const mod5 = function() {
-    return {
-        isSafe: isSafe
-    };
-}();
-function parallel(...promises) {
+export { apply1 as apply };
+export { applyTo1 as applyTo };
+export { applyPair1 as applyPair };
+export { applyPairTo1 as applyPairTo };
+export { compose1 as compose };
+export { perform1 as perform };
+export { identity1 as identity };
+export { constant1 as constant };
+export { curry1 as curry };
+function parallel1(...promises) {
     if (promises.length === 1) {
         const firstItem = promises[0];
         if (Array.isArray(firstItem)) {
-            return parallel(...firstItem);
+            return parallel1(...firstItem);
         }
     }
     return Promise.all(promises);
 }
-function parallelMap(f) {
-    return (arr)=>parallel(arr.map(f))
+function parallelMap1(f) {
+    return (arr)=>parallel1(arr.map(f))
     ;
 }
-function mapFulfilled(functionOrValue) {
+function mapFulfilled1(functionOrValue) {
     return (promise)=>promise.then(isFunction1(functionOrValue) ? functionOrValue : ()=>functionOrValue
         )
     ;
 }
-function mapPromise(ifFulfilled) {
+function mapPromise1(ifFulfilled) {
     return (ifRejected)=>{
         return (promise)=>promise.then(isFunction1(ifFulfilled) ? ifFulfilled : ()=>ifFulfilled
             , isFunction1(ifRejected) ? ifRejected : ()=>ifRejected
@@ -383,71 +355,49 @@ function mapPromise(ifFulfilled) {
         ;
     };
 }
-const mod6 = function() {
-    return {
-        parallel: parallel,
-        parallelMap: parallelMap,
-        mapFulfilled: mapFulfilled,
-        mapPromise: mapPromise
-    };
-}();
-function safeFirst(arr) {
-    return arr.length >= 1 ? some(arr[0]) : None;
+export { parallel1 as parallel };
+export { parallelMap1 as parallelMap };
+export { mapFulfilled1 as mapFulfilled };
+export { mapPromise1 as mapPromise };
+function safeFirst1(arr) {
+    return arr.length >= 1 ? some1(arr[0]) : None1;
 }
-function safeSingle(arr) {
-    return arr.length === 1 ? some(arr[0]) : None;
+function safeSingle1(arr) {
+    return arr.length === 1 ? some1(arr[0]) : None1;
 }
-function safeLast(arr) {
-    return arr.length >= 1 ? some(arr[arr.length - 1]) : None;
+function safeLast1(arr) {
+    return arr.length >= 1 ? some1(arr[arr.length - 1]) : None1;
 }
-function safeTake(n) {
-    return (arr)=>arr.length >= n ? some(arr.slice(0, n)) : None
+function safeTake1(n) {
+    return (arr)=>arr.length >= n ? some1(arr.slice(0, n)) : None1
     ;
 }
-function safeDrop(n) {
-    return (arr)=>arr.length >= n ? some(arr.slice(n)) : None
+function safeDrop1(n) {
+    return (arr)=>arr.length >= n ? some1(arr.slice(n)) : None1
     ;
 }
-function safeFind(predicate) {
-    return (arr)=>maybeUndefined(arr.find(predicate))
+function safeFind1(predicate) {
+    return (arr)=>maybeUndefined1(arr.find(predicate))
     ;
 }
-function safeFindIndex(predicate) {
+function safeFindIndex1(predicate) {
     return (arr)=>{
         const result = arr.findIndex(predicate);
-        return result !== -1 ? some(result) : None;
+        return result !== -1 ? some1(result) : None1;
     };
 }
-const mod7 = function() {
-    return {
-        safeFirst: safeFirst,
-        safeSingle: safeSingle,
-        safeLast: safeLast,
-        safeTake: safeTake,
-        safeDrop: safeDrop,
-        safeFind: safeFind,
-        safeFindIndex: safeFindIndex
-    };
-}();
-function match(regExp) {
+export { safeFirst1 as safeFirst };
+export { safeSingle1 as safeSingle };
+export { safeLast1 as safeLast };
+export { safeTake1 as safeTake };
+export { safeDrop1 as safeDrop };
+export { safeFind1 as safeFind };
+export { safeFindIndex1 as safeFindIndex };
+function match1(regExp) {
     return (s)=>{
         const r = s.match(regExp);
-        return r === null ? None : some(r[0]);
+        return r === null ? None1 : some1(r[0]);
     };
 }
-const mod8 = function() {
-    return {
-        match: match
-    };
-}();
-export { mod as booleanFunctions };
-export { mod2 as options };
-export { mod3 as result };
-export { mod4 as safeObjectFunctions };
-export { mod5 as safeValidationFunctions };
-export { mod1 as higherOrderFunctions };
-export { mod6 as promiseFunctions };
-export { mod7 as safeArrayFunctions };
-export { mod8 as safeStringFunctions };
-export * as transformation;
+export { match1 as match };
 

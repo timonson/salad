@@ -1,2 +1,2 @@
-export * as circle from "./circle.ts";
-export * as linearInterpolation from "./linear_interpolation.ts";
+export * from "./circle.ts";
+export * from "./linear_interpolation.ts";

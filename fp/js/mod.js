@@ -224,7 +224,6 @@ function foldResult1(ifSuccess) {
     return (ifFailure)=>(res)=>isSuccess1(res) ? isFunction1(ifSuccess) ? ifSuccess(res.value) : ifSuccess : isFunction1(ifFailure) ? ifFailure(res.error) : ifFailure
     ;
 }
-export { foldResult1 as foldResult };
 function foldIfSuccessElseThrow1(ifSuccess) {
     return (result)=>foldResult1(ifSuccess)((e)=>{
             throw e;
@@ -257,6 +256,7 @@ export { isSuccess1 as isSuccess };
 export { isFailure1 as isFailure };
 export { mapResult1 as mapResult };
 export { chainResult1 as chainResult };
+export { foldResult1 as foldResult };
 export { foldIfSuccessElseThrow1 as foldIfSuccessElseThrow };
 export { invertResults1 as invertResults };
 export { ifSucceeded1 as ifSucceeded };
@@ -293,11 +293,6 @@ function applyPairTo1(f) {
     return ([a, b])=>f(a)(b)
     ;
 }
-function compose1(...fns) {
-    return fns.reduceRight((prevFn, nextFn)=>(...args)=>nextFn(prevFn(...args))
-    , (value)=>value
-    );
-}
 function perform1(f) {
     return (x)=>{
         f(x);
@@ -320,15 +315,31 @@ function curry1(fn) {
         return fn.call(null, ...args);
     };
 }
+function composeMultivariate1(...fns) {
+    return fns.reduce((f, g)=>(...xs)=>f(...g(...xs))
+    );
+}
+function compose1(...funcs) {
+    if (funcs.length === 0) {
+        return (arg)=>arg
+        ;
+    }
+    if (funcs.length === 1) {
+        return funcs[0];
+    }
+    return funcs.reduce((a, b)=>(...args)=>a(b(...args))
+    );
+}
 export { apply1 as apply };
 export { applyTo1 as applyTo };
 export { applyPair1 as applyPair };
 export { applyPairTo1 as applyPairTo };
-export { compose1 as compose };
 export { perform1 as perform };
 export { identity1 as identity };
 export { constant1 as constant };
 export { curry1 as curry };
+export { composeMultivariate1 as composeMultivariate };
+export { compose1 as compose };
 function parallel1(...promises) {
     if (promises.length === 1) {
         const firstItem = promises[0];
@@ -400,4 +411,18 @@ function match1(regExp) {
     };
 }
 export { match1 as match };
+function transformResultToPromise1(mapOrResult) {
+    return isFunction1(mapOrResult) ? foldResult1(mapOrResult)((error)=>Promise.reject(error)
+    ) : foldResult1((value)=>Promise.resolve(value)
+    )((error)=>Promise.reject(error)
+    )(mapOrResult);
+}
+function transformOptionToResult1(mapOrErrorMessage) {
+    return isFunction1(mapOrErrorMessage) ? (errorMessage)=>foldOption1(mapOrErrorMessage)(()=>failure1(errorMessage)
+        )
+     : foldOption1(success1)(()=>failure1(mapOrErrorMessage)
+    );
+}
+export { transformResultToPromise1 as transformResultToPromise };
+export { transformOptionToResult1 as transformOptionToResult };
 

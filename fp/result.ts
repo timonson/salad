@@ -1,5 +1,4 @@
 import { isFunction } from "./boolean-functions.ts";
-import { transformResultToPromise } from "./transformation.ts";
 
 export type Success<S> = {
   value: S;
@@ -35,22 +34,13 @@ export function isFailure<S, F>(result: Result<S, F>): result is Failure<F> {
   return result.kind === "Failure";
 }
 
-export function mapResult<S, T>(
-  f: (x: S) => T,
-): <F>(result: Result<S, F>) => Result<T, F> {
-  return (result) => isSuccess(result) ? success<T>(f(result.value)) : result;
+export function mapResult<S, T>(f: (x: S) => T) {
+  return <F>(result: Result<S, F>): Result<T, F> =>
+    isSuccess(result) ? success<T>(f(result.value)) : result;
 }
 
-export function chainResult<S, T, F>(
-  f: ((x: S) => Result<T, F>),
-): (result: Result<S, F>) => Result<T, F>;
-export function chainResult<S, T, F>(
-  f: ((x: S) => Promise<Result<T, F>>),
-): (result: Result<S, F>) => Promise<Result<T, F>>;
-export function chainResult<S, T, F>(
-  f: any,
-): any {
-  return (result: Result<S, F>) =>
+export function chainResult<S, T, F>(f: ((x: S) => Result<T, F>)) {
+  return (result: Result<S, F>): Result<T, F> =>
     isSuccess(result) ? f(result.value) : failure(result.error);
 }
 
@@ -71,12 +61,12 @@ export function foldIfSuccessElseThrow<S, T>(ifSuccess: ((x: S) => T) | T) {
     })(result);
 }
 
-/*
-    [ success(val1), success(val2) ] = success([x, y])
-    [ failure(err1), failure(err2) ] = failure(err)
-    [ failure(err), success(val) ] = failure(err)
-    [ success(val), failure(err) ] = failure(err)
- */
+/**
+* [ success(val1), success(val2) ] = success([val1, val2])
+* [ failure(err1), failure(err2) ] = failure(err)
+* [ failure(err), success(val) ] = failure(err)
+* [ success(val), failure(err) ] = failure(err)
+*/
 export function invertResults<
   R extends Result<unknown, unknown>,
 >(

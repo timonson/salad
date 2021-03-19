@@ -7,6 +7,7 @@ import { foldOption, Option } from "./option.ts";
   *   return x + 10
   * }
   * await transformResultToPromise(add)(success(20));
+  * NOTE: The Promise rejections can't be typed.
   */
 export function transformResultToPromise<T, U>(
   mapOrResult: ((x: T) => Promise<U>),
@@ -18,10 +19,7 @@ export function transformResultToPromise<T, U, F>(
   mapOrResult: any,
 ): any {
   return isFunction(mapOrResult)
-    ? (result: Result<T, F>) =>
-      foldResult(mapOrResult)((error) => Promise.reject(error))(
-        result,
-      )
+    ? foldResult(mapOrResult)((error) => Promise.reject(error))
     : foldResult((value: U) => Promise.resolve(value))((error) =>
       Promise.reject(error)
     )(mapOrResult);

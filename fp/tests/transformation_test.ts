@@ -51,7 +51,7 @@ Deno.test("[transformation] transformOptionToResult", function () {
   );
   assertEquals(
     transformOptionToResult(add10)(err1)(some(val1)),
-    val2,
+    success(val2),
   );
   assertEquals(
     transformOptionToResult(err1)(None),

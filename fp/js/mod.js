@@ -418,7 +418,8 @@ function transformResultToPromise1(mapOrResult) {
     )(mapOrResult);
 }
 function transformOptionToResult1(mapOrErrorMessage) {
-    return isFunction1(mapOrErrorMessage) ? (errorMessage)=>foldOption1(mapOrErrorMessage)(()=>failure1(errorMessage)
+    return isFunction1(mapOrErrorMessage) ? (errorMessage)=>foldOption1((x)=>success1(mapOrErrorMessage(x))
+        )(()=>failure1(errorMessage)
         )
      : foldOption1(success1)(()=>failure1(mapOrErrorMessage)
     );

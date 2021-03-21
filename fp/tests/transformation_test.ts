@@ -10,6 +10,7 @@ import {
 } from "./deps.ts";
 import {
   transformOptionToResult,
+  transformPromiseToResult,
   transformResultToPromise,
 } from "../transformation.ts";
 import { failure, success } from "../result.ts";
@@ -24,11 +25,6 @@ function add10Option(v: number) {
   return some(add10(v));
 }
 
-let r1 = await transformResultToPromise(failure(err1)).catch(identity);
-let r2 = await transformResultToPromise(add10Async)(failure(err1)).catch(
-  identity,
-);
-r1 = 3;
 Deno.test("[transformation] transformResultToPromise", async function () {
   assertEquals(
     await transformResultToPromise(success(val2)),
@@ -63,6 +59,27 @@ Deno.test("[transformation] transformOptionToResult", function () {
   );
   assertEquals(
     transformOptionToResult(add10)(err1)(None),
+    failure(err1),
+  );
+});
+
+Deno.test("[transformation] transformPromiseToResult", async function () {
+  const promise = Promise.resolve(val1);
+  const rejected = Promise.reject(err1);
+  assertEquals(
+    await transformPromiseToResult(promise),
+    success(val1),
+  );
+  assertEquals(
+    await transformPromiseToResult(add10)(promise),
+    success(val2),
+  );
+  assertEquals(
+    await transformPromiseToResult(rejected),
+    failure(err1),
+  );
+  assertEquals(
+    await transformPromiseToResult(add10)(rejected),
     failure(err1),
   );
 });

@@ -423,6 +423,12 @@ function transformOptionToResult1(mapOrErrorMessage) {
      : foldOption1(success1)(()=>failure1(mapOrErrorMessage)
     );
 }
+function transformPromiseToResult1(mapOrPromise) {
+    return isFunction1(mapOrPromise) ? (promise)=>promise.then((x)=>success1(mapOrPromise(x))
+        ).catch(failure1)
+     : mapOrPromise.then(success1).catch(failure1);
+}
 export { transformResultToPromise1 as transformResultToPromise };
 export { transformOptionToResult1 as transformOptionToResult };
+export { transformPromiseToResult1 as transformPromiseToResult };
 

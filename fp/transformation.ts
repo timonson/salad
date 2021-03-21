@@ -39,3 +39,18 @@ export function transformOptionToResult<T, U, V>(
       foldOption(mapOrErrorMessage)(() => failure(errorMessage))
     : foldOption(success)(() => failure(mapOrErrorMessage));
 }
+
+export function transformPromiseToResult<U, T>(
+  mapOrPromise: ((x: T) => U),
+): <U, F = Error>(promise: Promise<T>) => Promise<Result<U, F>>;
+export function transformPromiseToResult<T, F = Error>(
+  mapOrPromise: Promise<T>,
+): Promise<Result<T, F>>;
+export function transformPromiseToResult<T, U, F>(
+  mapOrPromise: any,
+) {
+  return isFunction(mapOrPromise)
+    ? (promise: Promise<T>) =>
+      promise.then((x) => success(mapOrPromise(x))).catch(failure)
+    : (mapOrPromise as Promise<T>).then(success).catch(failure);
+}

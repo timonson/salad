@@ -1,7 +1,7 @@
 type JsonPrimitive = string | number | boolean | null;
-export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
 type JsonObject = { [member: string]: JsonValue };
 type JsonArray = JsonValue[];
+export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
 
 export type BodyMethod =
   | "arrayBuffer"

@@ -29,7 +29,9 @@ export function allPass<X>(predicates: ((x: X) => Boolean)[]) {
 }
 
 // https://github.com/microsoft/TypeScript/pull/23039
-export function isFunction<T>(value: T): value is Extract<T, Function> {
+export function isFunction<T>(
+  value: T,
+): value is Extract<T, (...args: never) => unknown> {
   return typeof value === "function";
 }
 

@@ -29,9 +29,7 @@ export function allPass<X>(predicates: ((x: X) => Boolean)[]) {
 }
 
 // https://github.com/microsoft/TypeScript/pull/23039
-export function isFunction<T>(
-  value: T,
-): value is Extract<T, Function> {
+export function isFunction<T>(value: T): value is Extract<T, Function> {
   return typeof value === "function";
 }
 
@@ -45,6 +43,24 @@ export function isNull(input: unknown): input is null {
 
 export function isUndefined(input: unknown): input is undefined {
   return input === undefined;
+}
+
+/*
+ * https://github.com/robertmassaioli/ts-is-present/blob/master/src/index.ts
+ * Removes falsey values:
+ * const foo: Array<number | null> = [2,3, null, 4];
+ * const bar = foo.filter(isPresent); // number[]
+ */
+export function isPresent<T>(t: T | undefined | null | void): t is T {
+  return t !== undefined && t !== null;
+}
+
+export function isDefined<T>(t: T | undefined): t is T {
+  return t !== undefined;
+}
+
+export function isNotNull<T>(t: T | null): t is T {
+  return t !== null;
 }
 
 export function isString(input: unknown): input is string {
@@ -65,6 +81,17 @@ export function isFalse(input: unknown): input is false {
 
 export function equals<B>(b: B) {
   return (a: unknown): a is B => a === b;
+}
+
+export function isArray(input: unknown): input is unknown[] {
+  return Array.isArray(input);
+}
+
+type NotArray<T> = T extends unknown[] ? never : T;
+export function isRested2dArray<T>(
+  input: NotArray<T>[] | [NotArray<T>[]],
+): input is [NotArray<T>[]] {
+  return input.length === 1 && Array.isArray(input[0]);
 }
 
 export function isObjectWide(obj: unknown): obj is Record<string, unknown> {
@@ -90,12 +117,7 @@ export function isObjectAndHasProp<K extends string>(
   key: K,
   obj: unknown,
 ): obj is { [key in K]: unknown } {
-  return (
-    typeof obj === "object" &&
-    Array.isArray(obj) === false &&
-    obj !== null &&
-    key in obj
-  );
+  return isObjectWide(obj) && key in obj;
 }
 
 // https://stackoverflow.com/a/46181
@@ -105,25 +127,8 @@ export function isEmail(value: unknown): value is string {
   return typeof value === "string" && regex.test(value.toLowerCase());
 }
 
-/*
- * CREDIT: https://github.com/robertmassaioli/ts-is-present/blob/master/src/index.ts
- * Removes falsey values:
- * const foo: Array<number | null> = [2,3, null, 4];
- * const bar = foo.filter(isPresent); // number[]
- */
-export function isPresent<T>(t: T | undefined | null | void): t is T {
-  return t !== undefined && t !== null;
-}
-
-export function isDefined<T>(t: T | undefined): t is T {
-  return t !== undefined;
-}
-
-export function isFilled<T>(t: T | null): t is T {
-  return t !== null;
-}
-
 /**
+ * https://github.com/robertmassaioli/ts-is-present/blob/master/src/index.ts
  * Returns a function that can be used to filter down objects
  * to the ones that have a defined non-null value under the key `k`.
  *
@@ -148,6 +153,7 @@ export function hasPresentKey<K extends string | number | symbol>(k: K) {
 }
 
 /**
+ * https://github.com/robertmassaioli/ts-is-present/blob/master/src/index.ts
  * Returns a function that can be used to filter down objects
  * to the ones that have a specific value V under a key `k`.
  *
@@ -159,7 +165,7 @@ export function hasPresentKey<K extends string | number | symbol>(k: K) {
  * const imageFiles = files.filter(file => file.type === "image");
  * files[0].type // In this case, TS will still treat it  as `"image" | "pdf"`
  *
- * const filesWithUrl = files.filter(hasValueKey("type", "image" as const));
+ * const filesWithUrl = files.filter(hasValueAtKey("type", "image" as const));
  * files[0].type // TS will now know that this is "image"
  * files[0].imageUrl // TS will know this is present, because already it excluded the other union members.
  *

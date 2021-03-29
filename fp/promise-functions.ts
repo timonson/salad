@@ -1,14 +1,10 @@
-import { isFunction } from "./boolean-functions.ts";
+import { isFunction, isRested2dArray } from "./boolean-functions.ts";
 
-export function parallel<T>(...promises: Promise<T>[]): Promise<T[]>;
-export function parallel<T>(...promises: Promise<T>[][]): Promise<T[]>;
-export function parallel<T>(...promises: any[]): Promise<T[]> {
-  if (promises.length === 1) {
-    const firstItem = promises[0];
-
-    if (Array.isArray(firstItem)) {
-      return parallel(...firstItem);
-    }
+export function parallel<T>(
+  ...promises: Promise<T>[] | [Promise<T>[]]
+): Promise<T[]> {
+  if (isRested2dArray(promises)) {
+    return parallel(...promises[0]);
   }
 
   return Promise.all(promises);

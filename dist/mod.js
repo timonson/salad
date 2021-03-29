@@ -1,19 +1,13 @@
-function delay1(value, duration = 0) {
-    return new Promise((resolve, reject)=>{
-        setTimeout(async ()=>resolve(typeof value === "function" ? await value() : value)
-        , duration);
-    });
-}
-function* generateDelayingIterable1(range, time) {
+function* delayingIterable1(range, time) {
     let i = 0;
     while((i++) < 200){
-        yield delay1(getRandomIntSimpel(...range), time);
+        yield delay(getRandomIntSimpel(...range), time);
     }
 }
-function* getLoopingRange1(from, to, time) {
+function* loopingRange1(from, to, time) {
     while(true){
-        if (from < to) yield delay1(++from, time);
-        else yield delay1(from = 0, time);
+        if (from < to) yield delay(++from, time);
+        else yield delay(from = 0, time);
     }
 }
 function makeObserver1(generatorFunction) {
@@ -46,12 +40,115 @@ function queue1(fn) {
         return returnedPromise;
     };
 }
-export { delay1 as delay };
-export { generateDelayingIterable1 as generateDelayingIterable };
-export { getLoopingRange1 as getLoopingRange };
+export { delayingIterable1 as delayingIterable };
+export { loopingRange1 as loopingRange };
 export { makeObserver1 as makeObserver };
 export { makeQueue1 as makeQueue };
 export { queue1 as queue };
+function delay1(value, duration = 0) {
+    return new Promise((resolve, reject)=>{
+        setTimeout(async ()=>resolve(typeof value === "function" ? await value() : value)
+        , duration);
+    });
+}
+function makeArray1(...arg) {
+    return [].concat(...arg);
+}
+function throwError1(mssg) {
+    throw new Error(mssg);
+}
+function pipe1(...fns) {
+    const _pipe = (accumulator, currentValue)=>(...arg)=>currentValue(accumulator(...arg))
+    ;
+    return fns.reduce(_pipe);
+}
+function memoize1(f) {
+    const cache = {
+    };
+    return (...args)=>{
+        const argStr = JSON.stringify(args);
+        cache[argStr] = cache[argStr] || f(...args);
+    };
+}
+function getRandomInt1(min, max) {
+    var byteArray = new Uint8Array(1);
+    window.crypto.getRandomValues(byteArray);
+    var range = max - min + 1;
+    var max_range = 256;
+    if (byteArray[0] >= Math.floor(max_range / range) * range) {
+        return getRandomInt1(min, max);
+    }
+    return min + byteArray[0] % range;
+}
+function getRandom1(min = 1, max = 100) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function getRandomItem1(array) {
+    return array[Math.floor(array.length * Math.random())];
+}
+function generateId1(size) {
+    const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+    for(var str = "", i = 0; i < size; i += 1){
+        str += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return str;
+}
+function valoo1(v = null, ...cb) {
+    function value(n) {
+        if (arguments.length) {
+            v = n;
+            cb.map((f)=>f && f(v)
+            );
+        }
+        return v;
+    }
+    value.on = (c)=>{
+        const i = cb.push(c) - 1;
+        return ()=>cb[i] = null
+        ;
+    };
+    return value;
+}
+function stringifyKeysInOrder1(data) {
+    function recursivelyOrderKeys(unordered) {
+        if (Array.isArray(unordered)) {
+            unordered.forEach(function(item, index) {
+                unordered[index] = recursivelyOrderKeys(item);
+            });
+            return unordered;
+        }
+        if (typeof unordered === "object") {
+            const ordered = {
+            };
+            Object.keys(unordered).sort().forEach(function(key) {
+                ordered[key] = recursivelyOrderKeys(unordered[key]);
+            });
+            return ordered;
+        }
+        return unordered;
+    }
+    return JSON.stringify(recursivelyOrderKeys(data), null, 2);
+}
+function getWordCnt1(text) {
+    return Object.entries(text.toLowerCase().split(/\W+/).filter((line)=>!!line
+    ).reduce((acc, el)=>{
+        acc[el] = acc[el] + 1 || 1;
+        return acc;
+    }, {
+    }));
+}
+export { delay1 as delay };
+export { makeArray1 as makeArray };
+export { throwError1 as throwError };
+export { pipe1 as pipe };
+export { memoize1 as memoize };
+export { getRandomInt1 as getRandomInt };
+export { getRandom1 as getRandom };
+export { getRandomItem1 as getRandomItem };
+export { generateId1 as generateId };
+export { valoo1 as valoo };
+export { stringifyKeysInOrder1 as stringifyKeysInOrder };
+export { getWordCnt1 as getWordCnt };
 class Dragon1 {
     fireDragons = [
         "Blaze",
@@ -166,101 +263,4 @@ function areEqual1(a, b) {
 export { concatTypedArrays1 as concatTypedArrays };
 export { concatBytes1 as concatBytes };
 export { areEqual1 as areEqual };
-function makeArray1(...arg) {
-    return [].concat(...arg);
-}
-function throwError1(mssg) {
-    throw new Error(mssg);
-}
-function pipe1(...fns) {
-    const _pipe = (accumulator, currentValue)=>(...arg)=>currentValue(accumulator(...arg))
-    ;
-    return fns.reduce(_pipe);
-}
-function memoize1(f) {
-    const cache = {
-    };
-    return (...args)=>{
-        const argStr = JSON.stringify(args);
-        cache[argStr] = cache[argStr] || f(...args);
-    };
-}
-function getRandomInt1(min, max) {
-    var byteArray = new Uint8Array(1);
-    window.crypto.getRandomValues(byteArray);
-    var range = max - min + 1;
-    var max_range = 256;
-    if (byteArray[0] >= Math.floor(max_range / range) * range) {
-        return getRandomInt1(min, max);
-    }
-    return min + byteArray[0] % range;
-}
-function getRandomIntSimpel1(min = 1, max = 100) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-function getRandomItem1(array) {
-    return array[Math.floor(array.length * Math.random())];
-}
-function generateId1(size) {
-    const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-    for(var str = "", i = 0; i < size; i += 1){
-        str += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return str;
-}
-function valoo1(v = null, ...cb) {
-    function value(n) {
-        if (arguments.length) {
-            v = n;
-            cb.map((f)=>f && f(v)
-            );
-        }
-        return v;
-    }
-    value.on = (c)=>{
-        const i = cb.push(c) - 1;
-        return ()=>cb[i] = null
-        ;
-    };
-    return value;
-}
-function stringifyKeysInOrder1(data) {
-    function recursivelyOrderKeys(unordered) {
-        if (Array.isArray(unordered)) {
-            unordered.forEach(function(item, index) {
-                unordered[index] = recursivelyOrderKeys(item);
-            });
-            return unordered;
-        }
-        if (typeof unordered === "object") {
-            const ordered = {
-            };
-            Object.keys(unordered).sort().forEach(function(key) {
-                ordered[key] = recursivelyOrderKeys(unordered[key]);
-            });
-            return ordered;
-        }
-        return unordered;
-    }
-    return JSON.stringify(recursivelyOrderKeys(data), null, 2);
-}
-function getWordCnt1(text) {
-    return Object.entries(text.toLowerCase().split(/\W+/).filter((line)=>!!line
-    ).reduce((acc, el)=>{
-        acc[el] = acc[el] + 1 || 1;
-        return acc;
-    }, {
-    }));
-}
-export { makeArray1 as makeArray };
-export { throwError1 as throwError };
-export { pipe1 as pipe };
-export { memoize1 as memoize };
-export { getRandomInt1 as getRandomInt };
-export { getRandomIntSimpel1 as getRandomIntSimpel };
-export { getRandomItem1 as getRandomItem };
-export { generateId1 as generateId };
-export { valoo1 as valoo };
-export { stringifyKeysInOrder1 as stringifyKeysInOrder };
-export { getWordCnt1 as getWordCnt };
 

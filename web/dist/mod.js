@@ -428,7 +428,7 @@ export { convertBase64ToString1 as convertBase64ToString };
 export { addPaddingToBase64url1 as addPaddingToBase64url };
 export { convertBase64urlToBase641 as convertBase64urlToBase64 };
 export { convertBase64ToBase64url1 as convertBase64ToBase64url };
-function h1(type, attributes, children) {
+function h1(type, attributes, ...children) {
     const element = document.createElement(type);
     for(let key in attributes){
         if (key in element) {
@@ -437,11 +437,15 @@ function h1(type, attributes, children) {
             attributes[key] ? element.setAttribute(key, attributes[key]) : element.removeAttribute(key);
         }
     }
-    if (typeof children === "string") {
-        element.appendChild(document.createTextNode(children));
-    } else if (children) {
-        Array.isArray(children) ? children.forEach((child)=>element.appendChild(child)
-        ) : element.appendChild(children);
+    for (const child of children){
+        if (typeof child === "string") {
+            element.appendChild(document.createTextNode(child));
+        } else {
+            [
+                child
+            ].flat(1).forEach((c)=>element.appendChild(c)
+            );
+        }
     }
     return element;
 }

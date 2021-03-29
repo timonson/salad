@@ -34,6 +34,15 @@ function isNull1(input) {
 function isUndefined1(input) {
     return input === undefined;
 }
+function isPresent1(t) {
+    return t !== undefined && t !== null;
+}
+function isDefined1(t) {
+    return t !== undefined;
+}
+function isNotNull1(t) {
+    return t !== null;
+}
 function isString1(input) {
     return typeof input === "string";
 }
@@ -50,6 +59,12 @@ function equals1(b) {
     return (a)=>a === b
     ;
 }
+function isArray1(input) {
+    return Array.isArray(input);
+}
+function isRested2dArray1(input) {
+    return input.length === 1 && Array.isArray(input[0]);
+}
 function isObjectWide1(obj) {
     return obj !== null && typeof obj === "object" && Array.isArray(obj) === false;
 }
@@ -60,20 +75,11 @@ function hasProperty1(key, obj) {
     return key in obj;
 }
 function isObjectAndHasProp1(key, obj) {
-    return typeof obj === "object" && Array.isArray(obj) === false && obj !== null && key in obj;
+    return isObjectWide1(obj) && key in obj;
 }
 function isEmail1(value) {
     const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return typeof value === "string" && regex.test(value.toLowerCase());
-}
-function isPresent1(t) {
-    return t !== undefined && t !== null;
-}
-function isDefined1(t) {
-    return t !== undefined;
-}
-function isFilled1(t) {
-    return t !== null;
 }
 function hasPresentKey1(k) {
     return function(a) {
@@ -92,19 +98,21 @@ export { isFunction1 as isFunction };
 export { isBoolean1 as isBoolean };
 export { isNull1 as isNull };
 export { isUndefined1 as isUndefined };
+export { isPresent1 as isPresent };
+export { isDefined1 as isDefined };
+export { isNotNull1 as isNotNull };
 export { isString1 as isString };
 export { isNumber1 as isNumber };
 export { isTrue1 as isTrue };
 export { isFalse1 as isFalse };
 export { equals1 as equals };
+export { isArray1 as isArray };
+export { isRested2dArray1 as isRested2dArray };
 export { isObjectWide1 as isObjectWide };
 export { isObject1 as isObject };
 export { hasProperty1 as hasProperty };
 export { isObjectAndHasProp1 as isObjectAndHasProp };
 export { isEmail1 as isEmail };
-export { isPresent1 as isPresent };
-export { isDefined1 as isDefined };
-export { isFilled1 as isFilled };
 export { hasPresentKey1 as hasPresentKey };
 export { hasValueAtKey1 as hasValueAtKey };
 function some1(value) {
@@ -341,11 +349,8 @@ export { curry1 as curry };
 export { composeMultivariate1 as composeMultivariate };
 export { compose1 as compose };
 function parallel1(...promises) {
-    if (promises.length === 1) {
-        const firstItem = promises[0];
-        if (Array.isArray(firstItem)) {
-            return parallel1(...firstItem);
-        }
+    if (isRested2dArray1(promises)) {
+        return parallel1(...promises[0]);
     }
     return Promise.all(promises);
 }

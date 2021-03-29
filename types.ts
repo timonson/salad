@@ -20,3 +20,6 @@ export type JsonPrimitive = string | number | boolean | null;
 export type JsonObject = { [member: string]: JsonValue };
 export type JsonArray = JsonValue[];
 export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
+
+export type NotFunction<T> = T extends Function ? never : T;
+export type NotArray<T> = T extends unknown[] ? never : T;

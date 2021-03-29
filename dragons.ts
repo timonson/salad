@@ -1,4 +1,4 @@
-import { delay } from "./async.js";
+import { delay } from "./tools.js";
 
 export class Dragon {
   fireDragons = [

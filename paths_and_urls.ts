@@ -1,4 +1,4 @@
-import type { ServerRequest } from "https://deno.land/std@0.88.0/http/server.ts";
+import type { ServerRequest } from "https://deno.land/std@0.91.0/http/server.ts";
 
 export function importMetaResolve(
   modulePath: string,

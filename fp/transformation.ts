@@ -3,11 +3,12 @@ import { failure, foldResult, Result, success } from "./result.ts";
 import { foldOption, Option } from "./option.ts";
 
 /**
+  * NOTE: The Promise rejections can't be typed.
+  * @example
   * async function add(x: number) {
   *   return x + 10
   * }
   * await transformResultToPromise(add)(success(20));
-  * NOTE: The Promise rejections can't be typed.
   */
 export function transformResultToPromise<T, U>(
   mapOrResult: (x: T) => Promise<U>,

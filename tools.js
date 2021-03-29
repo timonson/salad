@@ -1,4 +1,19 @@
-// makeArray(1, 'string', [3, 4, 5])
+/**
+  * Returns a promise that resolves with the specified value after the specified
+  * duration in milliseconds. The first arg can be an Error object:
+  */
+export function delay(value, duration = 0) {
+  return new Promise((resolve, reject) => {
+    setTimeout(
+      async () => resolve(typeof value === "function" ? await value() : value),
+      duration,
+    );
+  });
+}
+
+/**
+  * makeArray(1, 'string', [3, 4, 5])
+  */
 export function makeArray(...arg) {
   return [].concat(...arg);
 }
@@ -7,8 +22,10 @@ export function throwError(mssg) {
   throw new Error(mssg);
 }
 
-// Performs left-to-right function composition. The leftmost function may have
-// any arity; the remaining functions must be unary.
+/**
+  * Performs left-to-right function composition. The leftmost function may have
+  * any arity; the remaining functions must be unary.
+  */
 export function pipe(...fns) {
   const _pipe = (accumulator, currentValue) =>
     (...arg) => currentValue(accumulator(...arg));
@@ -35,7 +52,7 @@ export function getRandomInt(min, max) {
   return min + (byteArray[0] % range);
 }
 
-export function getRandomIntSimpel(min = 1, max = 100) {
+export function getRandom(min = 1, max = 100) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -51,7 +68,9 @@ export function generateId(size) {
   return str;
 }
 
-// valoo: just the bare necessities of state management
+/**
+  * valoo: just the bare necessities of state management
+  */
 export function valoo(v = null, ...cb) {
   function value(n) {
     if (arguments.length) {
@@ -92,14 +111,16 @@ export function stringifyKeysInOrder(data) {
   return JSON.stringify(recursivelyOrderKeys(data), null, 2);
 }
 
-// The function returns an array with nested key/value pairs, where the unique key
-// represents a word and the value the amount of the word's appearances:
-// Example:
-// let text = "Hello World, hello Sun!";
-// const words = getWordCnt(text); // [ [ "Hello", 2 ], [ "World", 1 ], [ "Sun", 1 ] ]
-// const strings = words.map(
-// ([key, value]) => `The word '${key}' appears ${value} time(s)`,
-// );
+/**
+  * The function returns an array with nested key/value pairs, where the unique key
+  * represents a word and the value the amount of the word's appearances:
+  * Example:
+  * let text = "Hello World, hello Sun!";
+  * const words = getWordCnt(text); // [ [ "Hello", 2 ], [ "World", 1 ], [ "Sun", 1 ] ]
+  * const strings = words.map(
+  * ([key, value]) => `The word '${key}' appears ${value} time(s)`,
+  * );
+  */
 export function getWordCnt(text) {
   return Object.entries(
     text

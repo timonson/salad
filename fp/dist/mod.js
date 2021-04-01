@@ -409,13 +409,13 @@ export { safeTake1 as safeTake };
 export { safeDrop1 as safeDrop };
 export { safeFind1 as safeFind };
 export { safeFindIndex1 as safeFindIndex };
-function match1(regExp) {
+function safeMatch1(regExp) {
     return (s)=>{
         const r = s.match(regExp);
         return r === null ? None1 : some1(r[0]);
     };
 }
-export { match1 as match };
+export { safeMatch1 as safeMatch };
 function transformResultToPromise1(mapOrResult) {
     return isFunction1(mapOrResult) ? foldResult1(mapOrResult)((error)=>Promise.reject(error)
     ) : foldResult1((value)=>Promise.resolve(value)

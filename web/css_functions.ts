@@ -31,7 +31,7 @@ export function changeCss(
   );
 }
 
-export function appendCss(cssString: string, parent: HTMLElement) {
+export function appendStyleElement(cssString: string, parent?: HTMLElement) {
   const style = document.createElement("style");
   style.type = "text/css";
   style.innerHTML = cssString;

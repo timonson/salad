@@ -93,7 +93,7 @@ function generateId1(size) {
     }
     return str;
 }
-function valoo1(v = null, ...cb) {
+function valoo1(v, ...cb) {
     function value(n) {
         if (arguments.length) {
             v = n;

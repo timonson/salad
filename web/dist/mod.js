@@ -162,7 +162,7 @@ function changeCss1(styles, ...elements) {
         )
     );
 }
-function appendCss1(cssString, parent) {
+function appendStyleElement1(cssString, parent) {
     const style = document.createElement("style");
     style.type = "text/css";
     style.innerHTML = cssString;
@@ -189,7 +189,7 @@ function logCssRulesText1() {
     , 300);
 }
 export { changeCss1 as changeCss };
-export { appendCss1 as appendCss };
+export { appendStyleElement1 as appendStyleElement };
 export { loadCss1 as loadCss };
 export { addCssRules1 as addCssRules };
 export { logCssRulesText1 as logCssRulesText };
@@ -294,7 +294,7 @@ function createElementWithHtml1(kind, html) {
 }
 export { isHTMLElement1 as isHTMLElement };
 export { createElementWithHtml1 as createElementWithHtml };
-const wcReset1 = createTemplate1(`<style>\n  :host {\n    display: block;\n    box-sizing: border-box;\n    cursor: default;\n    word-break: break-word;\n    overflow-x: hidden;\n  }\n  *,\n  *::before,\n  *::after {\n    box-sizing: inherit;\n    color: inherit;\n  }\n  p,\n  ol,\n  ul,\n  li,\n  dl,\n  dt,\n  dd,\n  blockquote,\n  figure,\n  fieldset,\n  legend,\n  textarea,\n  pre,\n  iframe,\n  hr,\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    margin: 0;\n    padding: 0;\n  }\n\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    font-size: 100%;\n    font-weight: normal;\n  }\n\n  p {\n    line-height: 1.555;\n  }\n\n  ul {\n    list-style: none;\n  }\n\n  button,\n  input,\n  select {\n    margin: 0;\n  }\n\n  img,\n  video {\n    height: auto;\n    max-width: 100%;\n  }\n  </style>`);
+const wcReset1 = createTemplate1(`<style>\n  :host {\n    display: block;\n    box-sizing: border-box;\n    cursor: default;\n    word-break: break-word;\n  }\n  \n  *,\n  *::before,\n  *::after {\n    box-sizing: inherit;\n    color: inherit;\n  }\n \n  p,\n  ol,\n  ul,\n  li,\n  dl,\n  dt,\n  dd,\n  blockquote,\n  figure,\n  fieldset,\n  legend,\n  textarea,\n  pre,\n  iframe,\n  hr,\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    margin: 0;\n    padding: 0;\n  }\n\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    font-size: 100%;\n    font-weight: normal;\n  }\n\n  p {\n    line-height: 1.555;\n  }\n\n  ul {\n    list-style: none;\n  }\n\n  button,\n  input,\n  select {\n    margin: 0;\n  }\n\n  img,\n  video {\n    height: auto;\n    max-width: 100%;\n  }\n  </style>`);
 const link1 = createTemplate1(`<style>.link {\n  font-family: inherit;\n  margin: 0;\n  padding: 0;\n  border: none;\n  outline: none;\n  background: none;\n  text-decoration: none;\n  transition: 150ms cubic-bezier(0.215, 0.61, 0.355, 1);\n  transition-property: background-color, opacity;\n  display: block;\n  white-space: nowrap;\n  user-select: none;\n  font-size: 15px;\n  line-height: 25px;\n  font-weight: inherit;\n  color: inherit;\n}\n\nlink.:hover {\n  background-color: var(--linkHoverBackgroundColor);\n  opacity: var(--linkHoverOpacity, 0.6);\n}</style>`);
 const center1 = createTemplate1(`<style>.center {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}</style>`);
 export { wcReset1 as wcReset };

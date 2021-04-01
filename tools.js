@@ -69,9 +69,9 @@ export function generateId(size) {
 }
 
 /**
-  * valoo: just the bare necessities of state management
+  * Just the bare necessities of state management
   */
-export function valoo(v = null, ...cb) {
+export function valoo(v, ...cb) {
   function value(n) {
     if (arguments.length) {
       v = n;

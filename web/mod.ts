@@ -7,7 +7,7 @@ export * from "./event.ts";
 export * from "./selection.ts";
 export * from "./template.ts";
 export * from "./util.ts";
-export * from "./cssTemplates.ts";
+export * from "./css_templates.ts";
 export * from "./tools.ts";
 export * from "./string_functions.js";
 export * from "./h_function.js";

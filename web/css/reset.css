@@ -3,7 +3,6 @@ html {
   box-sizing: border-box;
   cursor: default;
   word-break: break-word;
-  overflow-x: hidden;
 }
 *,
 *::before,

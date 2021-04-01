@@ -6,14 +6,15 @@ export const wcReset = createTemplate(`<style>
     box-sizing: border-box;
     cursor: default;
     word-break: break-word;
-    overflow-x: hidden;
   }
+  
   *,
   *::before,
   *::after {
     box-sizing: inherit;
     color: inherit;
   }
+ 
   p,
   ol,
   ul,

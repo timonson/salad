@@ -51,11 +51,11 @@ function delay1(value, duration = 0) {
         , duration);
     });
 }
-function makeArray1(...arg) {
+function alwaysArray1(...arg) {
     return [].concat(...arg);
 }
-function throwError1(mssg) {
-    throw new Error(mssg);
+function throwError1(msg) {
+    throw new Error(msg);
 }
 function pipe1(...fns) {
     const _pipe = (accumulator, currentValue)=>(...arg)=>currentValue(accumulator(...arg))
@@ -138,7 +138,7 @@ function getWordCnt1(text) {
     }));
 }
 export { delay1 as delay };
-export { makeArray1 as makeArray };
+export { alwaysArray1 as alwaysArray };
 export { throwError1 as throwError };
 export { pipe1 as pipe };
 export { memoize1 as memoize };
@@ -194,18 +194,18 @@ class Dragon1 {
     }
 }
 export { Dragon1 as Dragon };
-function slog(obj) {
+function slog1(obj) {
     Object.entries(obj).forEach(([key, value])=>console.log(key + ":", value)
     );
 }
-function pp(...objects) {
+function pp1(...objects) {
     function printPrettyObject(object) {
         return typeof object !== "object" ? console.log(object) : Object.entries(object).forEach(([key, value])=>globalThis.Deno ? console.log(`${key}: ${Deno.inspect(value)}`) : console.log(`${key}:`, value)
         );
     }
     return objects.forEach(printPrettyObject);
 }
-function add(fn, logger = console.log) {
+function add1(fn, logger = console.log) {
     return (...args)=>{
         logger(`entering ${fn.name}: ${args}`);
         try {
@@ -218,7 +218,7 @@ function add(fn, logger = console.log) {
         }
     };
 }
-function time(name, action) {
+function time1(name, action) {
     let start = Date.now();
     const result = action();
     if (result && "then" in result && typeof result.then === "function") {
@@ -232,10 +232,14 @@ function time(name, action) {
     console.log(name, "took", time1, "ms");
     return time1;
 }
-slog.pp = pp;
-slog.add = add;
-slog.time = time;
-const log1 = slog;
+const log1 = slog1;
+log1.pp = pp1;
+log1.add = add1;
+log1.time = time1;
+export { slog1 as slog };
+export { pp1 as pp };
+export { add1 as add };
+export { time1 as time };
 export { log1 as log };
 function importMetaResolve1(modulePath, filePath) {
     return new URL(filePath, modulePath).pathname;

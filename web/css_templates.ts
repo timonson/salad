@@ -12,7 +12,6 @@ export const wcReset = createTemplate(`<style>
   *::before,
   *::after {
     box-sizing: inherit;
-    color: inherit;
   }
  
   p,
@@ -68,6 +67,7 @@ export const wcReset = createTemplate(`<style>
   video {
     height: auto;
     max-width: 100%;
+    display:block;
   }
   </style>`);
 

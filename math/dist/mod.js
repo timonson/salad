@@ -27,4 +27,8 @@ function mix1(v0, v1, t) {
     return (1 - t) * v0 + t * v1;
 }
 export { mix1 as mix };
+function carryRatio1(value, biggestValue, actualLength) {
+    return value / biggestValue * actualLength;
+}
+export { carryRatio1 as carryRatio };
 

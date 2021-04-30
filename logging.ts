@@ -1,20 +1,15 @@
-type Log = {
-  (
-    obj: Record<string | number | symbol, any>,
-  ): void;
-  pp: typeof pp;
-  add: typeof add;
-  time: typeof time;
-};
-
-// const num=10
-// slog({num})
-function slog(obj: Record<string | number | symbol, any>): void {
+/**
+  * const num = 10
+  * slog({num})
+  */
+export function slog(obj: Record<string | number | symbol, any>): void {
   Object.entries(obj).forEach(([key, value]) => console.log(key + ":", value));
 }
 
-// pp("my obj:", obj)
-function pp(...objects: any) {
+/**
+  * pp("my obj:", obj)
+  */
+export function pp(...objects: any) {
   function printPrettyObject(object: any) {
     return typeof object !== "object"
       ? console.log(object)
@@ -27,7 +22,7 @@ function pp(...objects: any) {
   return objects.forEach(printPrettyObject);
 }
 
-function add(fn: (...args: any[]) => any, logger = console.log) {
+export function add(fn: (...args: any[]) => any, logger = console.log) {
   return (...args: any[]) => {
     logger(`entering ${fn.name}: ${args}`);
     try {
@@ -40,7 +35,8 @@ function add(fn: (...args: any[]) => any, logger = console.log) {
     }
   };
 }
-function time(name: string, action: () => (void | Promise<void>)) {
+
+export function time(name: string, action: () => (void | Promise<void>)) {
   let start = Date.now() // Current time in milliseconds
   ;
   const result = action();
@@ -56,7 +52,16 @@ function time(name: string, action: () => (void | Promise<void>)) {
   return time;
 }
 
-slog.pp = pp;
-slog.add = add;
-slog.time = time;
-export const log: Log = slog;
+type Log = {
+  (
+    obj: Record<string | number | symbol, any>,
+  ): void;
+  pp: typeof pp;
+  add: typeof add;
+  time: typeof time;
+};
+
+export const log = slog as Log;
+log.pp = pp;
+log.add = add;
+log.time = time;

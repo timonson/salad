@@ -19,12 +19,12 @@ export function reachedScrollingXEnd(element: HTMLElement) {
   );
 }
 
-export function getMousePositionRelativeToElement(event: MouseEvent) {
+export function getCursorPositionRelativeToElement(event: MouseEvent) {
   const rect = (event.target as HTMLElement).getBoundingClientRect();
   return [event.clientX - rect.left, event.clientY - rect.top];
 }
 
-export function surroundMouseWithElement(
+export function surroundCursorWithElement(
   pageX: number,
   pageY: number,
   element: HTMLElement,

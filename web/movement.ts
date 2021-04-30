@@ -1,26 +1,5 @@
 import { observe } from "./position.ts";
-
-/*
- * Linear Interpolation (Lerp function):
- * This method is monotonic only when a * b < 0.
- * Lerping between same values might not produce the same value
- * console.log(mix(10, 20, 0.6)); // 16
- * console.log(mix(20, 10, 0.6)); // 14
- * console.log(mix(20, 10, -0.6)); // 26
- */
-export function mix(a: number, b: number, amount: number) {
-  return (1 - amount) * a + amount * b;
-}
-
-// calculate the proportional share of the 40/300 ratio from 100:
-// getOffset(40, 300, 100) // 13.333333333333332
-export function getOffset(
-  value: number,
-  biggestValue: number,
-  actualLength: number,
-) {
-  return (value / biggestValue) * actualLength;
-}
+import { mix } from "../math/linear_interpolation.ts";
 
 function getPosition(
   element: HTMLElement,
@@ -70,13 +49,13 @@ function getListener(
 type Config = {
   observedElement: HTMLElement;
   targetElement: HTMLElement;
-  listener?: (e: any) => any;
   style: {
     top?: [number, number];
     right?: [number, number];
     bottom?: [number, number];
     left?: [number, number];
   };
+  listener?: (e: any) => any; // is used internally
 };
 
 function observerCallback(configs: Config[]) {

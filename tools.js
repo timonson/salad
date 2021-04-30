@@ -12,14 +12,14 @@ export function delay(value, duration = 0) {
 }
 
 /**
-  * makeArray(1, 'string', [3, 4, 5])
+  * alwaysArray(1, 'string', [3, 4, 5])
   */
-export function makeArray(...arg) {
+export function alwaysArray(...arg) {
   return [].concat(...arg);
 }
 
-export function throwError(mssg) {
-  throw new Error(mssg);
+export function throwError(msg) {
+  throw new Error(msg);
 }
 
 /**

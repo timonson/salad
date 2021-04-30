@@ -19,7 +19,10 @@ function getEqualParts(amount: number): number[] {
   return Array.from(Array(amount), (e, i) => i * range);
 }
 
-function getCirclePoints(
+/**
+  * getCirclePoints(10, 100)
+  */
+export function getCirclePoints(
   amount: number,
   radius: number,
   [Cx, Cy] = [0, 0],
@@ -29,7 +32,3 @@ function getCirclePoints(
     Math.round(getY(radius, getRadian(degree), Cy)),
   ]);
 }
-
-// let r1 = getCirclePoints(10, 100)
-// console.log(r1)
-export { getCirclePoints };

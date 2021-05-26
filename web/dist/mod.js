@@ -264,9 +264,15 @@ function getKeyboardFocusableElements1(element = document) {
     ].filter((el)=>!el.hasAttribute("disabled")
     );
 }
+function getChildren1(parentElement) {
+    return [
+        ...parentElement.children
+    ];
+}
 export { getSiblingByClass1 as getSiblingByClass };
 export { getIndexOfElement1 as getIndexOfElement };
 export { getKeyboardFocusableElements1 as getKeyboardFocusableElements };
+export { getChildren1 as getChildren };
 function createTemplate1(html) {
     const template = document.createElement("template");
     template.innerHTML = html.trim();
@@ -289,12 +295,14 @@ function createElementWithHtml1(kind, html) {
 }
 export { isHTMLElement1 as isHTMLElement };
 export { createElementWithHtml1 as createElementWithHtml };
-const wcReset1 = createTemplate1(`<style>\n  :host {\n    display: block;\n    box-sizing: border-box;\n    cursor: default;\n    word-break: break-word;\n  }\n  \n  *,\n  *::before,\n  *::after {\n    box-sizing: inherit;\n  }\n \n  p,\n  ol,\n  ul,\n  li,\n  dl,\n  dt,\n  dd,\n  blockquote,\n  figure,\n  fieldset,\n  legend,\n  textarea,\n  pre,\n  iframe,\n  hr,\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    margin: 0;\n    padding: 0;\n  }\n\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    font-size: 100%;\n    font-weight: normal;\n  }\n\n  p {\n    line-height: 1.555;\n  }\n\n  ul {\n    list-style: none;\n  }\n\n  button,\n  input,\n  select {\n    margin: 0;\n  }\n\n  img,\n  video {\n    height: auto;\n    max-width: 100%;\n    display:block;\n  }\n  </style>`);
+const wcReset1 = createTemplate1(`<style>\n  :host {\n    display: block;\n    box-sizing: border-box;\n    cursor: default;\n  }\n  \n  *,\n  *::before,\n  *::after {\n    box-sizing: inherit;\n  }\n \n  p,\n  ol,\n  ul,\n  li,\n  dl,\n  dt,\n  dd,\n  blockquote,\n  figure,\n  fieldset,\n  legend,\n  textarea,\n  pre,\n  iframe,\n  hr,\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    margin: 0;\n    padding: 0;\n  }\n\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    font-size: 100%;\n    font-weight: normal;\n  }\n\n  p {\n    line-height: 1.555;\n  }\n\n  ul {\n    list-style: none;\n  }\n\n  button,\n  input,\n  select {\n    margin: 0;\n  }\n\n  img,\n  video {\n    height: auto;\n    max-width: 100%;\n    display:block;\n  }\n  </style>`);
 const link1 = createTemplate1(`<style>.link {\n  font-family: inherit;\n  margin: 0;\n  padding: 0;\n  border: none;\n  outline: none;\n  background: none;\n  text-decoration: none;\n  transition: 150ms cubic-bezier(0.215, 0.61, 0.355, 1);\n  transition-property: background-color, opacity;\n  display: block;\n  white-space: nowrap;\n  user-select: none;\n  font-size: 15px;\n  line-height: 25px;\n  font-weight: inherit;\n  color: inherit;\n}\n\nlink.:hover {\n  background-color: var(--linkHoverBackgroundColor);\n  opacity: var(--linkHoverOpacity, 0.6);\n}</style>`);
 const center1 = createTemplate1(`<style>.center {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}</style>`);
+const grid1 = createTemplate1(`<style>#grid-container {\n  --grid-color: grey;\n  min-height: 100%;\n  max-width: 1112px;\n  margin: 0 auto;\n  padding: 0 16px;\n  display: flex;\n  position: fixed;\n  padding: 0 var(--columnPaddingNormal);\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  z-index: 2;\n  pointer-events: none;\n}\n\n.grid-bg {\n  width: 100%;\n  min-height: 100%;\n  border-color: grey !important;\n  border-color: var(--grid-color, grey) !important;\n  opacity: 0.13;\n  border-right: 0.2px dashed;\n}\n.grid-bg:first-child {\n  border-left: 0.1px solid;\n  border-right: 0.1px solid;\n}\n.grid-bg:last-child {\n  border-right: 0.1px solid;\n  display: none;\n}\n.grid-bg:nth-child(2) {\n  display: none;\n}\n.grid-bg:nth-child(3) {\n  display: none;\n}\n\n@media (min-width: 670px) {\n  .grid-bg {\n    width: 50%;\n  }\n  .grid-bg:first-child {\n    border-right: 0.1px dashed;\n  }\n  .grid-bg:last-child {\n    display: block;\n  }\n}\n\n@media (min-width: 880px) {\n  .grid-bg {\n    width: 25%;\n  }\n  .grid-bg:nth-child(2) {\n    display: block;\n  }\n  .grid-bg:nth-child(3) {\n    display: block;\n  }\n}</style>`);
 export { wcReset1 as wcReset };
 export { link1 as link };
 export { center1 as center };
+export { grid1 as grid };
 function waitUntil1(predicate, { interval =50 , timeout =2000 , message  }) {
     return new Promise((resolve, reject)=>{
         let timeoutId;

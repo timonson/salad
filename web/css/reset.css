@@ -2,7 +2,6 @@ html {
   display: block;
   box-sizing: border-box;
   cursor: default;
-  word-break: break-word;
 }
 *,
 *::before,

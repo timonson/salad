@@ -65,3 +65,8 @@ export const log = slog as Log;
 log.pp = pp;
 log.add = add;
 log.time = time;
+
+/**
+  * Inspect objects deeply
+  */
+// Deno.inspect(obj, { depth: Infinity })

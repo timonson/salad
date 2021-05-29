@@ -3,6 +3,9 @@ html {
   box-sizing: border-box;
   cursor: default;
 }
+body {
+  margin: 0 auto;
+}
 *,
 *::before,
 *::after {
@@ -59,7 +62,6 @@ select {
 
 img,
 video {
-  height: auto;
   max-width: 100%;
   display: block;
 }

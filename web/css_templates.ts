@@ -64,7 +64,6 @@ export const wcReset = createTemplate(`<style>
 
   img,
   video {
-    height: auto;
     max-width: 100%;
     display:block;
   }

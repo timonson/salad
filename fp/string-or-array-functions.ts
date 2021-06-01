@@ -1,4 +1,6 @@
-import { isArray, isFunction, isString } from "./boolean-functions.ts";
+import { isString } from "./string-functions.ts";
+import { isFunction } from "./higher-order-functions.ts";
+import { isArray } from "./array-functions.ts";
 
 type StringOrArray = string | unknown[];
 type Predicate = (x: unknown) => boolean;
@@ -196,6 +198,8 @@ export function isNotEmpty(input: StringOrArray): boolean {
 export function isOfLength(length: number) {
   return (input: StringOrArray): boolean => input.length === length;
 }
+
+export const isOfLengthOne = isOfLength(1);
 
 export function isShorterThan(length: number) {
   return (input: StringOrArray): boolean => input.length < length;

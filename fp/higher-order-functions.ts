@@ -1,3 +1,8 @@
+// https://github.com/microsoft/TypeScript/pull/23039
+export function isFunction<T>(value: T): value is Extract<T, Function> {
+  return typeof value === "function";
+}
+
 export function apply<X>(x: X) {
   return <R>(f: (arg: X) => R) => f(x);
 }
@@ -24,7 +29,7 @@ export function perform<S>(f: (x: S) => void): (x: S) => S {
 /**
   * The generic type of the identity function does not work with 'foldOption'
   * and 'foldResult'.
-  * add10(foldOption(identity)(identity)(some(5))) 
+  * add10(foldOption(identity)(identity)(some(5)))
   * // TS Error
   */
 export function identity<X>(x: X) {

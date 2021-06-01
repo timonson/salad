@@ -28,7 +28,6 @@ Deno.test("[promise-functions] parallel", async function () {
     [val1, val1],
   );
   assertEquals(await parallel(promises), [val1, val1]);
-  // assertEquals(await parallel(promises, promises), [val1, val1]);
 });
 
 Deno.test("[promise-functions] parallelMap", async function () {

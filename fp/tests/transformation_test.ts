@@ -10,6 +10,7 @@ import {
 } from "./deps.ts";
 import {
   transformOptionToResult,
+  transformOptionToResultWithAnyMap,
   transformPromiseToResult,
   transformResultToPromise,
 } from "../transformation.ts";
@@ -24,6 +25,48 @@ async function add10Async(v: number) {
 function add10Option(v: number) {
   return some(add10(v));
 }
+
+function add10Result(v: number) {
+  return success(add10(v));
+}
+
+Deno.test("[transformation] transformOptionToResult", function () {
+  assertEquals(
+    transformOptionToResult(err1)(some(val2)),
+    success(val2),
+  );
+  assertEquals(
+    transformOptionToResult(add10Result)(err1)(some(val1)),
+    success(val2),
+  );
+  assertEquals(
+    transformOptionToResult(err1)(None),
+    failure(err1),
+  );
+  assertEquals(
+    transformOptionToResult(add10Result)(err1)(None),
+    failure(err1),
+  );
+});
+
+Deno.test("[transformation] transformOptionToResultWithAnyMap", function () {
+  assertEquals(
+    transformOptionToResultWithAnyMap(err1)(some(val2)),
+    success(val2),
+  );
+  assertEquals(
+    transformOptionToResultWithAnyMap(add10)(err1)(some(val1)),
+    success(val2),
+  );
+  assertEquals(
+    transformOptionToResultWithAnyMap(err1)(None),
+    failure(err1),
+  );
+  assertEquals(
+    transformOptionToResultWithAnyMap(add10)(err1)(None),
+    failure(err1),
+  );
+});
 
 Deno.test("[transformation] transformResultToPromise", async function () {
   assertEquals(
@@ -41,25 +84,6 @@ Deno.test("[transformation] transformResultToPromise", async function () {
   assertEquals(
     await transformResultToPromise(add10Async)(failure(err1)).catch(identity),
     err1,
-  );
-});
-
-Deno.test("[transformation] transformOptionToResult", function () {
-  assertEquals(
-    transformOptionToResult(err1)(some(val2)),
-    success(val2),
-  );
-  assertEquals(
-    transformOptionToResult(add10)(err1)(some(val1)),
-    success(val2),
-  );
-  assertEquals(
-    transformOptionToResult(err1)(None),
-    failure(err1),
-  );
-  assertEquals(
-    transformOptionToResult(add10)(err1)(None),
-    failure(err1),
   );
 });
 

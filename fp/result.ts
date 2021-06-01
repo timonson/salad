@@ -1,4 +1,4 @@
-import { isFunction } from "./boolean-functions.ts";
+import { isFunction } from "./higher-order-functions.ts";
 
 export type Success<S> = {
   value: S;

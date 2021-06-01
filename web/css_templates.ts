@@ -4,26 +4,18 @@ export const wcReset = createTemplate(`<style>
   :host {
     display: block;
     box-sizing: border-box;
-    cursor: default;
   }
-  
   *,
   *::before,
   *::after {
     box-sizing: inherit;
   }
- 
   p,
   ol,
   ul,
   li,
-  dl,
-  dt,
-  dd,
   blockquote,
   figure,
-  fieldset,
-  legend,
   textarea,
   pre,
   iframe,
@@ -37,7 +29,6 @@ export const wcReset = createTemplate(`<style>
     margin: 0;
     padding: 0;
   }
-
   h1,
   h2,
   h3,
@@ -47,21 +38,14 @@ export const wcReset = createTemplate(`<style>
     font-size: 100%;
     font-weight: normal;
   }
-
-  p {
-    line-height: 1.555;
-  }
-
   ul {
     list-style: none;
   }
-
   button,
   input,
   select {
     margin: 0;
   }
-
   img,
   video {
     max-width: 100%;
@@ -82,8 +66,6 @@ export const link = createTemplate(`<style>.link {
   display: block;
   white-space: nowrap;
   user-select: none;
-  font-size: 15px;
-  line-height: 25px;
   font-weight: inherit;
   color: inherit;
 }

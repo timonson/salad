@@ -1,13 +1,19 @@
-import { isFunction, isRested2dArray } from "./boolean-functions.ts";
+import { isFunction } from "./higher-order-functions.ts";
+import { isArray } from "./array-functions.ts";
+import { first, isOfLengthOne } from "./string-or-array-functions.ts";
 
 export function parallel<T>(
   ...promises: Promise<T>[] | [Promise<T>[]]
 ): Promise<T[]> {
-  if (isRested2dArray(promises)) {
-    return parallel(...promises[0]);
+  if (isOfLengthOne(promises)) {
+    const firstItem = first(promises);
+
+    if (isArray(firstItem)) {
+      return parallel(...firstItem);
+    }
   }
 
-  return Promise.all(promises);
+  return Promise.all(promises as any) as Promise<T[]>;
 }
 
 export function parallelMap<T, U>(f: (x: Promise<T>) => Promise<U>) {

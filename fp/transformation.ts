@@ -1,9 +1,41 @@
-import { isFunction } from "./boolean-functions.ts";
+import { isFunction } from "./higher-order-functions.ts";
 import { failure, foldResult, Result, success } from "./result.ts";
 import { foldOption, Option } from "./option.ts";
 
+export function transformOptionToResult<T, U, V>(
+  mapOrErrorMessage: (x: T) => Result<U, V>,
+): <V>(e: V) => (o: Option<T>) => Result<U, V>;
+export function transformOptionToResult<V>(
+  mapOrErrorMessage: V,
+): <T>(o: Option<T>) => Result<T, V>;
+export function transformOptionToResult<T, U, V>(
+  mapOrErrorMessage: ((x: T) => Result<U, V>) | V,
+) {
+  return isFunction(mapOrErrorMessage)
+    ? (errorMessage: V): (o: Option<T>) => Result<U, V> =>
+      foldOption(mapOrErrorMessage)(() => failure(errorMessage))
+    : foldOption(success)(() => failure(mapOrErrorMessage));
+}
+
+export function transformOptionToResultWithAnyMap<T, U>(
+  mapOrErrorMessage: (x: T) => U,
+): <V>(e: V) => (o: Option<T>) => Result<U, V>;
+export function transformOptionToResultWithAnyMap<V>(
+  mapOrErrorMessage: V,
+): <T>(o: Option<T>) => Result<T, V>;
+export function transformOptionToResultWithAnyMap<T, U, V>(
+  mapOrErrorMessage: ((x: T) => U) | V,
+) {
+  return isFunction(mapOrErrorMessage)
+    ? (errorMessage: V): (o: Option<T>) => Result<U, V> =>
+      foldOption((x: T) => success(mapOrErrorMessage(x)))(() =>
+        failure(errorMessage)
+      )
+    : foldOption(success)(() => failure(mapOrErrorMessage));
+}
+
 /**
-  * NOTE: The Promise rejections can't be typed.
+  * NOTE: The promise-rejections can't be typed.
   * @example
   * async function add(x: number) {
   *   return x + 10
@@ -24,23 +56,6 @@ export function transformResultToPromise<T, U, F>(
     : foldResult((value: U) => Promise.resolve(value))((error) =>
       Promise.reject(error)
     )(mapOrResult);
-}
-
-export function transformOptionToResult<T, U>(
-  mapOrErrorMessage: (x: T) => U,
-): <V>(e: V) => (o: Option<T>) => Result<U, V>;
-export function transformOptionToResult<V>(
-  mapOrErrorMessage: V,
-): <T>(o: Option<T>) => Result<T, V>;
-export function transformOptionToResult<T, U, V>(
-  mapOrErrorMessage: ((x: T) => U) | V,
-) {
-  return isFunction(mapOrErrorMessage)
-    ? (errorMessage: V): (o: Option<T>) => Result<U, V> =>
-      foldOption((x: T) => success(mapOrErrorMessage(x)))(() =>
-        failure(errorMessage)
-      )
-    : foldOption(success)(() => failure(mapOrErrorMessage));
 }
 
 export function transformPromiseToResult<U, T>(

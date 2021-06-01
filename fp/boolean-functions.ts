@@ -28,11 +28,6 @@ export function allPass<X>(predicates: ((x: X) => Boolean)[]) {
   };
 }
 
-// https://github.com/microsoft/TypeScript/pull/23039
-export function isFunction<T>(value: T): value is Extract<T, Function> {
-  return typeof value === "function";
-}
-
 export function isBoolean(input: unknown): input is Boolean {
   return input === true || input === false;
 }
@@ -63,14 +58,6 @@ export function isNotNull<T>(t: T | null): t is T {
   return t !== null;
 }
 
-export function isString(input: unknown): input is string {
-  return typeof input === "string";
-}
-
-export function isNumber(input: unknown): input is number {
-  return typeof input === "number";
-}
-
 export function isTrue(input: unknown): input is true {
   return input === true;
 }
@@ -81,17 +68,6 @@ export function isFalse(input: unknown): input is false {
 
 export function equals<B>(b: B) {
   return (a: unknown): a is B => a === b;
-}
-
-export function isArray(input: unknown): input is unknown[] {
-  return Array.isArray(input);
-}
-
-type NotArray<T> = T extends unknown[] ? never : T;
-export function isRested2dArray<T>(
-  input: NotArray<T>[] | [NotArray<T>[]],
-): input is [NotArray<T>[]] {
-  return input.length === 1 && Array.isArray(input[0]);
 }
 
 export function isObjectWide(obj: unknown): obj is Record<string, unknown> {

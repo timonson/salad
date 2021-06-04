@@ -51,6 +51,9 @@ export const wcReset = createTemplate(`<style>
     max-width: 100%;
     display:block;
   }
+  picture {
+    display: block;
+  }
   </style>`);
 
 export const link = createTemplate(`<style>.link {
@@ -83,13 +86,13 @@ export const center = createTemplate(`<style>.center {
 }</style>`);
 
 /**
-  * <div id="grid-container">
-  *     <div class="grid-bg"></div>
-  *     <div class="grid-bg"></div>
-  *     <div class="grid-bg"></div>
-  *     <div class="grid-bg"></div>
-  * </div>
-  */
+ * <div id="grid-container">
+ *     <div class="grid-bg"></div>
+ *     <div class="grid-bg"></div>
+ *     <div class="grid-bg"></div>
+ *     <div class="grid-bg"></div>
+ * </div>
+ */
 export const grid = createTemplate(`<style>#grid-container {
   --grid-color: grey;
   min-height: 100%;

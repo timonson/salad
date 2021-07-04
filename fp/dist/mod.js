@@ -341,6 +341,170 @@ export { mapFirst1 as mapFirst };
 export { mapSecond1 as mapSecond };
 export { mapPair1 as mapPair };
 export { foldPair1 as foldPair };
+function parallel1(...promises) {
+    if (promises.length === 1) {
+        const firstItem = promises[0];
+        if (Array.isArray(firstItem)) {
+            return parallel1(...firstItem);
+        }
+    }
+    return Promise.all(promises);
+}
+function parallelMap1(f) {
+    return (arr)=>parallel1(arr.map(f))
+    ;
+}
+function mapFulfilled1(functionOrValue) {
+    return (promise)=>promise.then(isFunction1(functionOrValue) ? functionOrValue : ()=>functionOrValue
+        )
+    ;
+}
+function mapPromise1(ifFulfilled) {
+    return (ifRejected)=>{
+        return (promise)=>promise.then(isFunction1(ifFulfilled) ? ifFulfilled : ()=>ifFulfilled
+            , isFunction1(ifRejected) ? ifRejected : ()=>ifRejected
+            )
+        ;
+    };
+}
+export { parallel1 as parallel };
+export { parallelMap1 as parallelMap };
+export { mapFulfilled1 as mapFulfilled };
+export { mapPromise1 as mapPromise };
+function success1(value) {
+    return {
+        value,
+        kind: "Success"
+    };
+}
+function failure1(error) {
+    return {
+        error,
+        kind: "Failure"
+    };
+}
+function isSuccess1(result) {
+    return result.kind === "Success";
+}
+function isFailure1(result) {
+    return result.kind === "Failure";
+}
+function mapResult1(f) {
+    return (result)=>isSuccess1(result) ? success1(f(result.value)) : result
+    ;
+}
+function chainResult1(f) {
+    return (result)=>isSuccess1(result) ? f(result.value) : failure1(result.error)
+    ;
+}
+function tryCatch1(f) {
+    return (value)=>{
+        try {
+            return success1(f(value));
+        } catch (err) {
+            return failure1(err);
+        }
+    };
+}
+function foldResult1(ifSuccess) {
+    return (ifFailure)=>(res)=>isSuccess1(res) ? isFunction1(ifSuccess) ? ifSuccess(res.value) : ifSuccess : isFunction1(ifFailure) ? ifFailure(res.error) : ifFailure
+    ;
+}
+function foldIfSuccessElseThrow1(ifSuccess) {
+    return (result)=>foldResult1(ifSuccess)((e)=>{
+            throw e;
+        })(result)
+    ;
+}
+function invertResults1(results) {
+    return results.reduce((acc, result)=>chainResult1((arr)=>mapResult1((value)=>arr.concat(value)
+            )(result)
+        )(acc)
+    , success1([]));
+}
+function ifSucceeded1(sideEffect) {
+    return (result)=>{
+        if (isSuccess1(result)) {
+            sideEffect(result.value);
+        }
+    };
+}
+function ifFailed1(sideEffect) {
+    return (result)=>{
+        if (isFailure1(result)) {
+            sideEffect(result.error);
+        }
+    };
+}
+export { success1 as success };
+export { failure1 as failure };
+export { isSuccess1 as isSuccess };
+export { isFailure1 as isFailure };
+export { mapResult1 as mapResult };
+export { chainResult1 as chainResult };
+export { tryCatch1 as tryCatch };
+export { foldResult1 as foldResult };
+export { foldIfSuccessElseThrow1 as foldIfSuccessElseThrow };
+export { invertResults1 as invertResults };
+export { ifSucceeded1 as ifSucceeded };
+export { ifFailed1 as ifFailed };
+function safeFirst1(arr) {
+    return arr.length >= 1 ? some1(arr[0]) : None1;
+}
+function safeSingle1(arr) {
+    return arr.length === 1 ? some1(arr[0]) : None1;
+}
+function safeLast1(arr) {
+    return arr.length >= 1 ? some1(arr[arr.length - 1]) : None1;
+}
+function safeTake1(n) {
+    return (arr)=>arr.length >= n ? some1(arr.slice(0, n)) : None1
+    ;
+}
+function safeDrop1(n) {
+    return (arr)=>arr.length >= n ? some1(arr.slice(n)) : None1
+    ;
+}
+function safeFind1(predicate) {
+    return (arr)=>maybeUndefined1(arr.find(predicate))
+    ;
+}
+function safeFindIndex1(predicate) {
+    return (arr)=>{
+        const result = arr.findIndex(predicate);
+        return result !== -1 ? some1(result) : None1;
+    };
+}
+export { safeFirst1 as safeFirst };
+export { safeSingle1 as safeSingle };
+export { safeLast1 as safeLast };
+export { safeTake1 as safeTake };
+export { safeDrop1 as safeDrop };
+export { safeFind1 as safeFind };
+export { safeFindIndex1 as safeFindIndex };
+function safeProperty1(key) {
+    return (obj)=>obj.hasOwnProperty(key) ? some1(obj[key]) : None1
+    ;
+}
+function safePropertyOf1(obj) {
+    return (key)=>safeProperty1(key)(obj)
+    ;
+}
+export { safeProperty1 as safeProperty };
+export { safePropertyOf1 as safePropertyOf };
+function safeMatch1(regExp) {
+    return (s)=>{
+        const r = s.match(regExp);
+        return r === null ? None1 : some1(r[0]);
+    };
+}
+export { safeMatch1 as safeMatch };
+function isSafe1(...predicates) {
+    return (x)=>predicates.every((predicate)=>predicate(x)
+        ) ? some1(x) : None1
+    ;
+}
+export { isSafe1 as isSafe };
 function split1(separator) {
     return (s)=>s.split(separator)
     ;
@@ -517,7 +681,7 @@ function prependTo1(input) {
 function concat1(...items) {
     if (items.length === 1) {
         const firstItem = items[0];
-        if (isArray1(firstItem)) {
+        if (Array.isArray(firstItem)) {
             if (firstItem.length === 1) {
                 return firstItem[0];
             } else {
@@ -586,160 +750,6 @@ export { isShorterThan1 as isShorterThan };
 export { isLongerThan1 as isLongerThan };
 export { length1 as length };
 export { reverse1 as reverse };
-function parallel1(...promises) {
-    if (isOfLengthOne1(promises)) {
-        const firstItem = first1(promises);
-        if (isArray1(firstItem)) {
-            return parallel1(...firstItem);
-        }
-    }
-    return Promise.all(promises);
-}
-function parallelMap1(f) {
-    return (arr)=>parallel1(arr.map(f))
-    ;
-}
-function mapFulfilled1(functionOrValue) {
-    return (promise)=>promise.then(isFunction1(functionOrValue) ? functionOrValue : ()=>functionOrValue
-        )
-    ;
-}
-function mapPromise1(ifFulfilled) {
-    return (ifRejected)=>{
-        return (promise)=>promise.then(isFunction1(ifFulfilled) ? ifFulfilled : ()=>ifFulfilled
-            , isFunction1(ifRejected) ? ifRejected : ()=>ifRejected
-            )
-        ;
-    };
-}
-export { parallel1 as parallel };
-export { parallelMap1 as parallelMap };
-export { mapFulfilled1 as mapFulfilled };
-export { mapPromise1 as mapPromise };
-function success1(value) {
-    return {
-        value,
-        kind: "Success"
-    };
-}
-function failure1(error) {
-    return {
-        error,
-        kind: "Failure"
-    };
-}
-function isSuccess1(result) {
-    return result.kind === "Success";
-}
-function isFailure1(result) {
-    return result.kind === "Failure";
-}
-function mapResult1(f) {
-    return (result)=>isSuccess1(result) ? success1(f(result.value)) : result
-    ;
-}
-function chainResult1(f) {
-    return (result)=>isSuccess1(result) ? f(result.value) : failure1(result.error)
-    ;
-}
-function foldResult1(ifSuccess) {
-    return (ifFailure)=>(res)=>isSuccess1(res) ? isFunction1(ifSuccess) ? ifSuccess(res.value) : ifSuccess : isFunction1(ifFailure) ? ifFailure(res.error) : ifFailure
-    ;
-}
-function foldIfSuccessElseThrow1(ifSuccess) {
-    return (result)=>foldResult1(ifSuccess)((e)=>{
-            throw e;
-        })(result)
-    ;
-}
-function invertResults1(results) {
-    return results.reduce((acc, result)=>chainResult1((arr)=>mapResult1((value)=>arr.concat(value)
-            )(result)
-        )(acc)
-    , success1([]));
-}
-function ifSucceeded1(sideEffect) {
-    return (result)=>{
-        if (isSuccess1(result)) {
-            sideEffect(result.value);
-        }
-    };
-}
-function ifFailed1(sideEffect) {
-    return (result)=>{
-        if (isFailure1(result)) {
-            sideEffect(result.error);
-        }
-    };
-}
-export { success1 as success };
-export { failure1 as failure };
-export { isSuccess1 as isSuccess };
-export { isFailure1 as isFailure };
-export { mapResult1 as mapResult };
-export { chainResult1 as chainResult };
-export { foldResult1 as foldResult };
-export { foldIfSuccessElseThrow1 as foldIfSuccessElseThrow };
-export { invertResults1 as invertResults };
-export { ifSucceeded1 as ifSucceeded };
-export { ifFailed1 as ifFailed };
-function safeFirst1(arr) {
-    return arr.length >= 1 ? some1(arr[0]) : None1;
-}
-function safeSingle1(arr) {
-    return arr.length === 1 ? some1(arr[0]) : None1;
-}
-function safeLast1(arr) {
-    return arr.length >= 1 ? some1(arr[arr.length - 1]) : None1;
-}
-function safeTake1(n) {
-    return (arr)=>arr.length >= n ? some1(arr.slice(0, n)) : None1
-    ;
-}
-function safeDrop1(n) {
-    return (arr)=>arr.length >= n ? some1(arr.slice(n)) : None1
-    ;
-}
-function safeFind1(predicate) {
-    return (arr)=>maybeUndefined1(arr.find(predicate))
-    ;
-}
-function safeFindIndex1(predicate) {
-    return (arr)=>{
-        const result = arr.findIndex(predicate);
-        return result !== -1 ? some1(result) : None1;
-    };
-}
-export { safeFirst1 as safeFirst };
-export { safeSingle1 as safeSingle };
-export { safeLast1 as safeLast };
-export { safeTake1 as safeTake };
-export { safeDrop1 as safeDrop };
-export { safeFind1 as safeFind };
-export { safeFindIndex1 as safeFindIndex };
-function safeProperty1(key) {
-    return (obj)=>obj.hasOwnProperty(key) ? some1(obj[key]) : None1
-    ;
-}
-function safePropertyOf1(obj) {
-    return (key)=>safeProperty1(key)(obj)
-    ;
-}
-export { safeProperty1 as safeProperty };
-export { safePropertyOf1 as safePropertyOf };
-function safeMatch1(regExp) {
-    return (s)=>{
-        const r = s.match(regExp);
-        return r === null ? None1 : some1(r[0]);
-    };
-}
-export { safeMatch1 as safeMatch };
-function isSafe1(...predicates) {
-    return (x)=>predicates.every((predicate)=>predicate(x)
-        ) ? some1(x) : None1
-    ;
-}
-export { isSafe1 as isSafe };
 function transformOptionToResult1(mapOrErrorMessage) {
     return isFunction1(mapOrErrorMessage) ? (errorMessage)=>foldOption1(mapOrErrorMessage)(()=>failure1(errorMessage)
         )

@@ -38,21 +38,20 @@ export function iterate<T>(f: (x: T) => T, x: T, n?: number) {
   }
 }
 
-import { delay } from "./tools.js";
+// import { delay } from "./tools.js";
+// let g = iterate((x: number) => {
+// delay(x);
+// return x + 1;
+// }, 0);
 
-let g = iterate((x: number) => {
-  delay(x);
-  return x + 1;
-}, 0);
+// export async function run(iter: AsyncGenerator<unknown> | Generator<unknown>) {
+// try {
+// for await (let x of iter) {
+// console.log(x);
+// }
+// } catch (err) {
+// console.log(err.message, err.code);
+// }
+// }
 
-export async function run(iter: AsyncGenerator<unknown> | Generator<unknown>) {
-  try {
-    for await (let x of iter) {
-      console.log(x);
-    }
-  } catch (err) {
-    console.log(err.message, err.code);
-  }
-}
-
-run(g);
+// run(g);

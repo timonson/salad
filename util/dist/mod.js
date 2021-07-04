@@ -1,50 +1,3 @@
-function* delayingIterable1(range, time) {
-    let i = 0;
-    while((i++) < 200){
-        yield delay(getRandomIntSimpel(...range), time);
-    }
-}
-function* loopingRange1(from, to, time) {
-    while(true){
-        if (from < to) yield delay(++from, time);
-        else yield delay(from = 0, time);
-    }
-}
-function makeObserver1(generatorFunction) {
-    return function(...args) {
-        const generatorObject = generatorFunction(...args);
-        generatorObject.next();
-        return generatorObject;
-    };
-}
-function makeQueue1(...callbacks) {
-    async function* makeGenerator(callbacks1) {
-        while(true){
-            const request = yield;
-            for (const callback of callbacks1){
-                await callback(request);
-            }
-        }
-    }
-    const generatorObject = makeGenerator(callbacks);
-    generatorObject.next();
-    return generatorObject;
-}
-function queue1(fn) {
-    let lastPromise = Promise.resolve();
-    return function(...args) {
-        let returnedPromise = lastPromise.then(()=>fn(...args)
-        );
-        lastPromise = returnedPromise.catch(()=>{
-        });
-        return returnedPromise;
-    };
-}
-export { delayingIterable1 as delayingIterable };
-export { loopingRange1 as loopingRange };
-export { makeObserver1 as makeObserver };
-export { makeQueue1 as makeQueue };
-export { queue1 as queue };
 function delay1(value, duration = 0) {
     return new Promise((resolve, reject)=>{
         setTimeout(async ()=>resolve(typeof value === "function" ? await value() : value)
@@ -194,6 +147,83 @@ class Dragon1 {
     }
 }
 export { Dragon1 as Dragon };
+function* delayingIterable1(range, time) {
+    let i = 0;
+    while((i++) < 200){
+        yield delay(getRandomIntSimpel(...range), time);
+    }
+}
+function* loopingRange1(from, to, time) {
+    while(true){
+        if (from < to) yield delay(++from, time);
+        else yield delay(from = 0, time);
+    }
+}
+function makeObserver1(generatorFunction) {
+    return function(...args) {
+        const generatorObject = generatorFunction(...args);
+        generatorObject.next();
+        return generatorObject;
+    };
+}
+function makeQueue1(...callbacks) {
+    async function* makeGenerator(callbacks1) {
+        while(true){
+            const request = yield;
+            for (const callback of callbacks1){
+                await callback(request);
+            }
+        }
+    }
+    const generatorObject = makeGenerator(callbacks);
+    generatorObject.next();
+    return generatorObject;
+}
+function queue1(fn) {
+    let lastPromise = Promise.resolve();
+    return function(...args) {
+        let returnedPromise = lastPromise.then(()=>fn(...args)
+        );
+        lastPromise = returnedPromise.catch(()=>{
+        });
+        return returnedPromise;
+    };
+}
+export { delayingIterable1 as delayingIterable };
+export { loopingRange1 as loopingRange };
+export { makeObserver1 as makeObserver };
+export { makeQueue1 as makeQueue };
+export { queue1 as queue };
+function takeN1(iter, n) {
+    const res = [];
+    let count = 0;
+    for(count = 0; count < n; count++){
+        const ir = iter.next();
+        if (ir.done) {
+            break;
+        }
+        res.push(ir.value);
+    }
+    return [
+        count,
+        res
+    ];
+}
+function iterate1(f, x, n) {
+    function* iterateGen(f1, x1) {
+        while(true){
+            yield x1;
+            x1 = f1(x1);
+        }
+    }
+    if (n === undefined) {
+        return iterateGen(f, x);
+    } else {
+        return takeN1(iterateGen(f, x), n)[1];
+    }
+}
+export { takeN1 as takeN };
+export { iterate1 as iterate };
 function slog1(obj) {
     Object.entries(obj).forEach(([key, value])=>console.log(key + ":", value)
     );

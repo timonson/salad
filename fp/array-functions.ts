@@ -1,4 +1,4 @@
-export function isArray<T = unknown>(a: unknown): a is T[] {
+export function isArray<T>(a: T[] | unknown): a is T[] {
   return Array.isArray(a);
 }
 

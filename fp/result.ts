@@ -44,6 +44,16 @@ export function chainResult<S, T, F>(f: ((x: S) => Result<T, F>)) {
     isSuccess(result) ? f(result.value) : failure(result.error);
 }
 
+export function tryCatch<S, T>(f: (x: S) => T) {
+  return (value: S): Result<T, Error> => {
+    try {
+      return success(f(value));
+    } catch (err) {
+      return failure(err);
+    }
+  };
+}
+
 export function foldResult<S, T>(
   ifSuccess: ((x: S) => T) | T,
 ) {

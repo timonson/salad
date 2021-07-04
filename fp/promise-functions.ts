@@ -1,14 +1,12 @@
 import { isFunction } from "./higher-order-functions.ts";
-import { isArray } from "./array-functions.ts";
-import { first, isOfLengthOne } from "./string-or-array-functions.ts";
 
 export function parallel<T>(
   ...promises: Promise<T>[] | [Promise<T>[]]
 ): Promise<T[]> {
-  if (isOfLengthOne(promises)) {
-    const firstItem = first(promises);
+  if (promises.length === 1) {
+    const firstItem = promises[0];
 
-    if (isArray(firstItem)) {
+    if (Array.isArray(firstItem)) {
       return parallel(...firstItem);
     }
   }

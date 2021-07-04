@@ -1,6 +1,5 @@
 import { isString } from "./string-functions.ts";
 import { isFunction } from "./higher-order-functions.ts";
-import { isArray } from "./array-functions.ts";
 
 type StringOrArray = string | unknown[];
 type Predicate = (x: unknown) => boolean;
@@ -166,7 +165,7 @@ export function concat<R>(...items: string[] | unknown[][]): any {
   if (items.length === 1) {
     const firstItem = items[0];
 
-    if (isArray(firstItem)) {
+    if (Array.isArray(firstItem)) {
       // 2D array with a single item
       if (firstItem.length === 1) {
         return firstItem[0];

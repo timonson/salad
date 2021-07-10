@@ -2,10 +2,8 @@ export function isArray<T>(a: T[] | unknown): a is T[] {
   return Array.isArray(a);
 }
 
-type NotArray<T> = T extends unknown[] ? never : T;
-
 export function is2DArray<T>(
-  input: NotArray<T>[] | [NotArray<T>[]],
-): input is [NotArray<T>[]] {
+  input: unknown | T[][],
+): input is T[][] {
   return Array.isArray(input) && Array.isArray(input[0]);
 }

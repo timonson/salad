@@ -64,11 +64,13 @@ function isObjectWide1(obj) {
 function isObject1(obj) {
     return obj !== null && typeof obj === "object" && Array.isArray(obj) === false;
 }
-function hasProperty1(key, obj) {
-    return key in obj;
+function hasProperty1(key) {
+    return (obj)=>key in obj
+    ;
 }
-function isObjectAndHasProp1(key, obj) {
-    return isObjectWide1(obj) && key in obj;
+function isObjectAndHasProp1(key) {
+    return (obj)=>isObject1(obj) && hasProperty1(key)(obj)
+    ;
 }
 function isEmail1(value) {
     const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

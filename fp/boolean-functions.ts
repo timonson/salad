@@ -82,18 +82,12 @@ export function isObject(obj: unknown): obj is object {
   );
 }
 
-export function hasProperty<K extends string>(
-  key: K,
-  obj: object,
-): obj is { [key in K]: unknown } {
-  return key in obj;
+export function hasProperty<K extends string>(key: K) {
+  return (obj: object): obj is { [key in K]: unknown } => key in obj;
 }
 
-export function isObjectAndHasProp<K extends string>(
-  key: K,
-  obj: unknown,
-): obj is { [key in K]: unknown } {
-  return isObjectWide(obj) && key in obj;
+export function isObjectAndHasProp<K extends string>(key: K) {
+  return (obj: object) => isObject(obj) && hasProperty(key)(obj);
 }
 
 // https://stackoverflow.com/a/46181

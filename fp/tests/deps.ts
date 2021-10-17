@@ -2,7 +2,7 @@ export {
   assertEquals,
   assertThrows,
   assertThrowsAsync,
-} from "https://deno.land/std@0.97.0/testing/asserts.ts";
+} from "https://deno.land/std@0.111.0/testing/asserts.ts";
 
 export const val1 = 10;
 export const val2 = 20;

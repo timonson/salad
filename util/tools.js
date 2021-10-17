@@ -12,9 +12,9 @@ export function delay(value, duration = 0) {
 }
 
 /**
-  * alwaysArray(1, 'string', [3, 4, 5])
+  * assureArray(1, 'string', [3, 4, 5])
   */
-export function alwaysArray(...arg) {
+export function assureArray(...arg) {
   return [].concat(...arg);
 }
 

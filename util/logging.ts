@@ -1,14 +1,14 @@
 /**
-  * const num = 10
-  * slog({num})
-  */
+ * const num = 10
+ * slog({num})
+ */
 export function slog(obj: Record<string | number | symbol, any>): void {
   Object.entries(obj).forEach(([key, value]) => console.log(key + ":", value));
 }
 
 /**
-  * pp("my obj:", obj)
-  */
+ * pp("my obj:", obj)
+ */
 export function pp(...objects: any) {
   function printPrettyObject(object: any) {
     return typeof object !== "object"
@@ -66,7 +66,13 @@ log.pp = pp;
 log.add = add;
 log.time = time;
 
+export function getDateFormat() {
+  const d = new Date().toISOString();
+  const dateFmt = `[${d.slice(0, 10)} ${d.slice(11, 19)}]`;
+  return dateFmt;
+}
+
 /**
-  * Inspect objects deeply
-  */
+ * Inspect objects deeply
+ */
 // Deno.inspect(obj, { depth: Infinity })

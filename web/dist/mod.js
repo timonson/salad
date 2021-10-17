@@ -43,7 +43,7 @@ export { addCssRules1 as addCssRules };
 export { logCssRulesText1 as logCssRulesText };
 function createTemplate1(html) {
     const template = document.createElement("template");
-    template.innerHTML = html.trim();
+    template.innerHTML = html;
     return template;
 }
 function cloneTemplateIntoParent1(template, parent, sibling) {
@@ -53,10 +53,151 @@ function cloneTemplateIntoParent1(template, parent, sibling) {
 }
 export { createTemplate1 as createTemplate };
 export { cloneTemplateIntoParent1 as cloneTemplateIntoParent };
-const wcReset1 = createTemplate1(`<style>\n  :host {\n    display: block;\n    box-sizing: border-box;\n  }\n  *,\n  *::before,\n  *::after {\n    box-sizing: inherit;\n  }\n  p,\n  ol,\n  ul,\n  li,\n  blockquote,\n  figure,\n  textarea,\n  pre,\n  iframe,\n  hr,\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    margin: 0;\n    padding: 0;\n  }\n  h1,\n  h2,\n  h3,\n  h4,\n  h5,\n  h6 {\n    font-size: 100%;\n    font-weight: normal;\n  }\n  ul {\n    list-style: none;\n  }\n  button,\n  input,\n  select {\n    margin: 0;\n  }\n  img,\n  video {\n    max-width: 100%;\n    display:block;\n  }\n  picture {\n    display: block;\n  }\n  </style>`);
-const link1 = createTemplate1(`<style>.link {\n  font-family: inherit;\n  margin: 0;\n  padding: 0;\n  border: none;\n  outline: none;\n  background: none;\n  text-decoration: none;\n  transition: 150ms cubic-bezier(0.215, 0.61, 0.355, 1);\n  transition-property: background-color, opacity;\n  display: block;\n  white-space: nowrap;\n  user-select: none;\n  font-weight: inherit;\n  color: inherit;\n}\n\nlink.:hover {\n  background-color: var(--linkHoverBackgroundColor);\n  opacity: var(--linkHoverOpacity, 0.6);\n}</style>`);
-const center1 = createTemplate1(`<style>.center {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}</style>`);
-const grid1 = createTemplate1(`<style>#grid-container {\n  --grid-color: grey;\n  min-height: 100%;\n  max-width: 1112px;\n  margin: 0 auto;\n  padding: 0 16px;\n  display: flex;\n  position: fixed;\n  padding: 0 var(--columnPaddingNormal);\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  z-index: 2;\n  pointer-events: none;\n}\n\n.grid-bg {\n  width: 100%;\n  min-height: 100%;\n  border-color: grey !important;\n  border-color: var(--grid-color, grey) !important;\n  opacity: 0.13;\n  border-right: 0.2px dashed;\n}\n.grid-bg:first-child {\n  border-left: 0.1px solid;\n  border-right: 0.1px solid;\n}\n.grid-bg:last-child {\n  border-right: 0.1px solid;\n  display: none;\n}\n.grid-bg:nth-child(2) {\n  display: none;\n}\n.grid-bg:nth-child(3) {\n  display: none;\n}\n\n@media (min-width: 670px) {\n  .grid-bg {\n    width: 50%;\n  }\n  .grid-bg:first-child {\n    border-right: 0.1px dashed;\n  }\n  .grid-bg:last-child {\n    display: block;\n  }\n}\n\n@media (min-width: 880px) {\n  .grid-bg {\n    width: 25%;\n  }\n  .grid-bg:nth-child(2) {\n    display: block;\n  }\n  .grid-bg:nth-child(3) {\n    display: block;\n  }\n}</style>`);
+const wcReset1 = createTemplate1(`<style>
+  :host {
+    display: block;
+    box-sizing: border-box;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+  p,
+  ol,
+  ul,
+  li,
+  blockquote,
+  figure,
+  textarea,
+  pre,
+  iframe,
+  hr,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    padding: 0;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 100%;
+    font-weight: normal;
+  }
+  ul {
+    list-style: none;
+  }
+  button,
+  input,
+  select {
+    margin: 0;
+  }
+  img,
+  video {
+    max-width: 100%;
+    display:block;
+  }
+  picture {
+    display: block;
+  }
+  </style>`);
+const link1 = createTemplate1(`<style>.link {
+  font-family: inherit;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: none;
+  text-decoration: none;
+  transition: 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition-property: background-color, opacity;
+  display: block;
+  white-space: nowrap;
+  user-select: none;
+  font-weight: inherit;
+  color: inherit;
+}
+
+link.:hover {
+  background-color: var(--linkHoverBackgroundColor);
+  opacity: var(--linkHoverOpacity, 0.6);
+}</style>`);
+const center1 = createTemplate1(`<style>.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}</style>`);
+const grid1 = createTemplate1(`<style>#grid-container {
+  --grid-color: grey;
+  min-height: 100%;
+  max-width: 1112px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  position: fixed;
+  padding: 0 var(--columnPaddingNormal);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.grid-bg {
+  width: 100%;
+  min-height: 100%;
+  border-color: grey !important;
+  border-color: var(--grid-color, grey) !important;
+  opacity: 0.13;
+  border-right: 0.2px dashed;
+}
+.grid-bg:first-child {
+  border-left: 0.1px solid;
+  border-right: 0.1px solid;
+}
+.grid-bg:last-child {
+  border-right: 0.1px solid;
+  display: none;
+}
+.grid-bg:nth-child(2) {
+  display: none;
+}
+.grid-bg:nth-child(3) {
+  display: none;
+}
+
+@media (min-width: 670px) {
+  .grid-bg {
+    width: 50%;
+  }
+  .grid-bg:first-child {
+    border-right: 0.1px dashed;
+  }
+  .grid-bg:last-child {
+    display: block;
+  }
+}
+
+@media (min-width: 880px) {
+  .grid-bg {
+    width: 25%;
+  }
+  .grid-bg:nth-child(2) {
+    display: block;
+  }
+  .grid-bg:nth-child(3) {
+    display: block;
+  }
+}</style>`);
 export { wcReset1 as wcReset };
 export { link1 as link };
 export { center1 as center };
@@ -72,7 +213,274 @@ function createElementWithHtml1(kind, html) {
 export { isHTMLElement1 as isHTMLElement };
 export { createElementWithHtml1 as createElementWithHtml };
 function getErrorPage1(status, message) {
-    return `<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="UTF-8" />\n    <title>Error</title>\n    <link rel="icon" href="./media/favicon.ico" />\n  </head>\n  <body>\n    <style>\n      body {\n        background: #33cc99;\n        color: #fff;\n        font-family: "Open Sans", sans-serif;\n        max-height: 700px;\n        overflow: hidden;\n      }\n      .c {\n        text-align: center;\n        display: block;\n        position: relative;\n        width: 80%;\n        margin: 100px auto;\n      }\n      ._404 {\n        font-size: 220px;\n        position: relative;\n        display: inline-block;\n        z-index: 2;\n        height: 250px;\n        letter-spacing: 15px;\n      }\n      ._1 {\n        text-align: center;\n        display: block;\n        position: relative;\n        letter-spacing: 12px;\n        font-size: 4em;\n        line-height: 80%;\n      }\n      ._2 {\n        text-align: center;\n        display: block;\n        position: relative;\n        font-size: 20px;\n      }\n      .text {\n        font-size: 70px;\n        text-align: center;\n        position: relative;\n        display: inline-block;\n        margin: 19px 0px 0px 0px;\n        /* top: 256.301px; */\n        z-index: 3;\n        width: 100%;\n        line-height: 1.2em;\n        display: inline-block;\n      }\n\n      .btn {\n        background-color: rgb(255, 255, 255);\n        position: relative;\n        display: inline-block;\n        width: 358px;\n        padding: 5px;\n        z-index: 5;\n        font-size: 25px;\n        margin: 0 auto;\n        color: #33cc99;\n        text-decoration: none;\n        margin-right: 10px;\n      }\n      .right {\n        float: right;\n        width: 60%;\n      }\n\n      hr {\n        padding: 0;\n        border: none;\n        border-top: 5px solid #fff;\n        color: #fff;\n        text-align: center;\n        margin: 0px auto;\n        width: 420px;\n        height: 10px;\n        z-index: -10;\n      }\n\n      hr:after {\n        content: "\\2022";\n        display: inline-block;\n        position: relative;\n        top: -0.75em;\n        font-size: 2em;\n        padding: 0 0.2em;\n        background: #33cc99;\n      }\n\n      .cloud {\n        width: 350px;\n        height: 120px;\n\n        background: #fff;\n        background: linear-gradient(top, #fff 100%);\n        background: -webkit-linear-gradient(top, #fff 100%);\n        background: -moz-linear-gradient(top, #fff 100%);\n        background: -ms-linear-gradient(top, #fff 100%);\n        background: -o-linear-gradient(top, #fff 100%);\n\n        border-radius: 100px;\n        -webkit-border-radius: 100px;\n        -moz-border-radius: 100px;\n\n        position: absolute;\n        margin: 120px auto 20px;\n        z-index: -1;\n        transition: ease 1s;\n      }\n\n      .cloud:after,\n      .cloud:before {\n        content: "";\n        position: absolute;\n        background: #fff;\n        z-index: -1;\n      }\n\n      .cloud:after {\n        width: 100px;\n        height: 100px;\n        top: -50px;\n        left: 50px;\n\n        border-radius: 100px;\n        -webkit-border-radius: 100px;\n        -moz-border-radius: 100px;\n      }\n\n      .cloud:before {\n        width: 180px;\n        height: 180px;\n        top: -90px;\n        right: 50px;\n\n        border-radius: 200px;\n        -webkit-border-radius: 200px;\n        -moz-border-radius: 200px;\n      }\n\n      .x1 {\n        top: -50px;\n        left: 100px;\n        -webkit-transform: scale(0.3);\n        -moz-transform: scale(0.3);\n        transform: scale(0.3);\n        opacity: 0.9;\n        -webkit-animation: moveclouds 15s linear infinite;\n        -moz-animation: moveclouds 15s linear infinite;\n        -o-animation: moveclouds 15s linear infinite;\n      }\n\n      .x1_5 {\n        top: -80px;\n        left: 250px;\n        -webkit-transform: scale(0.3);\n        -moz-transform: scale(0.3);\n        transform: scale(0.3);\n        -webkit-animation: moveclouds 17s linear infinite;\n        -moz-animation: moveclouds 17s linear infinite;\n        -o-animation: moveclouds 17s linear infinite;\n      }\n\n      .x2 {\n        left: 250px;\n        top: 30px;\n        -webkit-transform: scale(0.6);\n        -moz-transform: scale(0.6);\n        transform: scale(0.6);\n        opacity: 0.6;\n        -webkit-animation: moveclouds 25s linear infinite;\n        -moz-animation: moveclouds 25s linear infinite;\n        -o-animation: moveclouds 25s linear infinite;\n      }\n\n      .x3 {\n        left: 250px;\n        bottom: -70px;\n\n        -webkit-transform: scale(0.6);\n        -moz-transform: scale(0.6);\n        transform: scale(0.6);\n        opacity: 0.8;\n\n        -webkit-animation: moveclouds 25s linear infinite;\n        -moz-animation: moveclouds 25s linear infinite;\n        -o-animation: moveclouds 25s linear infinite;\n      }\n\n      .x4 {\n        left: 470px;\n        botttom: 20px;\n\n        -webkit-transform: scale(0.75);\n        -moz-transform: scale(0.75);\n        transform: scale(0.75);\n        opacity: 0.75;\n\n        -webkit-animation: moveclouds 18s linear infinite;\n        -moz-animation: moveclouds 18s linear infinite;\n        -o-animation: moveclouds 18s linear infinite;\n      }\n\n      .x5 {\n        left: 200px;\n        top: 300px;\n\n        -webkit-transform: scale(0.5);\n        -moz-transform: scale(0.5);\n        transform: scale(0.5);\n        opacity: 0.8;\n\n        -webkit-animation: moveclouds 20s linear infinite;\n        -moz-animation: moveclouds 20s linear infinite;\n        -o-animation: moveclouds 20s linear infinite;\n      }\n\n      @-webkit-keyframes moveclouds {\n        0% {\n          margin-left: 1000px;\n        }\n        100% {\n          margin-left: -1000px;\n        }\n      }\n      @-moz-keyframes moveclouds {\n        0% {\n          margin-left: 1000px;\n        }\n        100% {\n          margin-left: -1000px;\n        }\n      }\n      @-o-keyframes moveclouds {\n        0% {\n          margin-left: 1000px;\n        }\n        100% {\n          margin-left: -1000px;\n        }\n      }\n    </style>\n    <div id="clouds">\n      <div class="cloud x1"></div>\n      <div class="cloud x1_5"></div>\n      <div class="cloud x2"></div>\n      <div class="cloud x3"></div>\n      <div class="cloud x4"></div>\n      <div class="cloud x5"></div>\n    </div>\n    <div class="c">\n      <div class="_404">${status}</div>\n      <hr />\n      <div class="_1">PAGE</div>\n      <div class="_2">${message}</div>\n      <a class="btn" href="/">BACK TO HOME</a>\n    </div>\n  </body>\n</html>`;
+    return `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Error</title>
+    <link rel="icon" href="./media/favicon.ico" />
+  </head>
+  <body>
+    <style>
+      body {
+        background: #33cc99;
+        color: #fff;
+        font-family: "Open Sans", sans-serif;
+        max-height: 700px;
+        overflow: hidden;
+      }
+      .c {
+        text-align: center;
+        display: block;
+        position: relative;
+        width: 80%;
+        margin: 100px auto;
+      }
+      ._404 {
+        font-size: 220px;
+        position: relative;
+        display: inline-block;
+        z-index: 2;
+        height: 250px;
+        letter-spacing: 15px;
+      }
+      ._1 {
+        text-align: center;
+        display: block;
+        position: relative;
+        letter-spacing: 12px;
+        font-size: 4em;
+        line-height: 80%;
+      }
+      ._2 {
+        text-align: center;
+        display: block;
+        position: relative;
+        font-size: 20px;
+      }
+      .text {
+        font-size: 70px;
+        text-align: center;
+        position: relative;
+        display: inline-block;
+        margin: 19px 0px 0px 0px;
+        /* top: 256.301px; */
+        z-index: 3;
+        width: 100%;
+        line-height: 1.2em;
+        display: inline-block;
+      }
+
+      .btn {
+        background-color: rgb(255, 255, 255);
+        position: relative;
+        display: inline-block;
+        width: 358px;
+        padding: 5px;
+        z-index: 5;
+        font-size: 25px;
+        margin: 0 auto;
+        color: #33cc99;
+        text-decoration: none;
+        margin-right: 10px;
+      }
+      .right {
+        float: right;
+        width: 60%;
+      }
+
+      hr {
+        padding: 0;
+        border: none;
+        border-top: 5px solid #fff;
+        color: #fff;
+        text-align: center;
+        margin: 0px auto;
+        width: 420px;
+        height: 10px;
+        z-index: -10;
+      }
+
+      hr:after {
+        content: "\\2022";
+        display: inline-block;
+        position: relative;
+        top: -0.75em;
+        font-size: 2em;
+        padding: 0 0.2em;
+        background: #33cc99;
+      }
+
+      .cloud {
+        width: 350px;
+        height: 120px;
+
+        background: #fff;
+        background: linear-gradient(top, #fff 100%);
+        background: -webkit-linear-gradient(top, #fff 100%);
+        background: -moz-linear-gradient(top, #fff 100%);
+        background: -ms-linear-gradient(top, #fff 100%);
+        background: -o-linear-gradient(top, #fff 100%);
+
+        border-radius: 100px;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+
+        position: absolute;
+        margin: 120px auto 20px;
+        z-index: -1;
+        transition: ease 1s;
+      }
+
+      .cloud:after,
+      .cloud:before {
+        content: "";
+        position: absolute;
+        background: #fff;
+        z-index: -1;
+      }
+
+      .cloud:after {
+        width: 100px;
+        height: 100px;
+        top: -50px;
+        left: 50px;
+
+        border-radius: 100px;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+      }
+
+      .cloud:before {
+        width: 180px;
+        height: 180px;
+        top: -90px;
+        right: 50px;
+
+        border-radius: 200px;
+        -webkit-border-radius: 200px;
+        -moz-border-radius: 200px;
+      }
+
+      .x1 {
+        top: -50px;
+        left: 100px;
+        -webkit-transform: scale(0.3);
+        -moz-transform: scale(0.3);
+        transform: scale(0.3);
+        opacity: 0.9;
+        -webkit-animation: moveclouds 15s linear infinite;
+        -moz-animation: moveclouds 15s linear infinite;
+        -o-animation: moveclouds 15s linear infinite;
+      }
+
+      .x1_5 {
+        top: -80px;
+        left: 250px;
+        -webkit-transform: scale(0.3);
+        -moz-transform: scale(0.3);
+        transform: scale(0.3);
+        -webkit-animation: moveclouds 17s linear infinite;
+        -moz-animation: moveclouds 17s linear infinite;
+        -o-animation: moveclouds 17s linear infinite;
+      }
+
+      .x2 {
+        left: 250px;
+        top: 30px;
+        -webkit-transform: scale(0.6);
+        -moz-transform: scale(0.6);
+        transform: scale(0.6);
+        opacity: 0.6;
+        -webkit-animation: moveclouds 25s linear infinite;
+        -moz-animation: moveclouds 25s linear infinite;
+        -o-animation: moveclouds 25s linear infinite;
+      }
+
+      .x3 {
+        left: 250px;
+        bottom: -70px;
+
+        -webkit-transform: scale(0.6);
+        -moz-transform: scale(0.6);
+        transform: scale(0.6);
+        opacity: 0.8;
+
+        -webkit-animation: moveclouds 25s linear infinite;
+        -moz-animation: moveclouds 25s linear infinite;
+        -o-animation: moveclouds 25s linear infinite;
+      }
+
+      .x4 {
+        left: 470px;
+        botttom: 20px;
+
+        -webkit-transform: scale(0.75);
+        -moz-transform: scale(0.75);
+        transform: scale(0.75);
+        opacity: 0.75;
+
+        -webkit-animation: moveclouds 18s linear infinite;
+        -moz-animation: moveclouds 18s linear infinite;
+        -o-animation: moveclouds 18s linear infinite;
+      }
+
+      .x5 {
+        left: 200px;
+        top: 300px;
+
+        -webkit-transform: scale(0.5);
+        -moz-transform: scale(0.5);
+        transform: scale(0.5);
+        opacity: 0.8;
+
+        -webkit-animation: moveclouds 20s linear infinite;
+        -moz-animation: moveclouds 20s linear infinite;
+        -o-animation: moveclouds 20s linear infinite;
+      }
+
+      @-webkit-keyframes moveclouds {
+        0% {
+          margin-left: 1000px;
+        }
+        100% {
+          margin-left: -1000px;
+        }
+      }
+      @-moz-keyframes moveclouds {
+        0% {
+          margin-left: 1000px;
+        }
+        100% {
+          margin-left: -1000px;
+        }
+      }
+      @-o-keyframes moveclouds {
+        0% {
+          margin-left: 1000px;
+        }
+        100% {
+          margin-left: -1000px;
+        }
+      }
+    </style>
+    <div id="clouds">
+      <div class="cloud x1"></div>
+      <div class="cloud x1_5"></div>
+      <div class="cloud x2"></div>
+      <div class="cloud x3"></div>
+      <div class="cloud x4"></div>
+      <div class="cloud x5"></div>
+    </div>
+    <div class="c">
+      <div class="_404">${status}</div>
+      <hr />
+      <div class="_1">PAGE</div>
+      <div class="_2">${message}</div>
+      <a class="btn" href="/">BACK TO HOME</a>
+    </div>
+  </body>
+</html>`;
 }
 export { getErrorPage1 as getErrorPage };
 function escape1(unescapedHtml) {
@@ -82,34 +490,35 @@ function escape1(unescapedHtml) {
     if (!match) {
         return str;
     }
-    let escape1;
+    let escape;
     let html = "";
     let index = 0;
     let lastIndex = 0;
     for(index = match.index; index < str.length; index++){
         switch(str.charCodeAt(index)){
             case 34:
-                escape1 = "&quot;";
+                escape = "&quot;";
                 break;
             case 38:
-                escape1 = "&amp;";
+                escape = "&amp;";
                 break;
             case 39:
-                escape1 = "&#39;";
+                escape = "&#39;";
                 break;
             case 60:
-                escape1 = "&lt;";
+                escape = "&lt;";
                 break;
             case 62:
-                escape1 = "&gt;";
+                escape = "&gt;";
                 break;
-            default: continue;
+            default:
+                continue;
         }
         if (lastIndex !== index) {
             html += str.substring(lastIndex, index);
         }
         lastIndex = index + 1;
-        html += escape1;
+        html += escape;
     }
     return lastIndex !== index ? html + str.substring(lastIndex, index) : html;
 }
@@ -433,7 +842,7 @@ function handlePageVisibilityChange1(onHidden, onVisible) {
         hidden = "webkitHidden";
         visibilityChange = "webkitvisibilitychange";
     }
-    var videoElement = document.getElementById("videoElement");
+    document.getElementById("videoElement");
     function handleVisibilityChange() {
         if (document[hidden]) {
             onHidden();

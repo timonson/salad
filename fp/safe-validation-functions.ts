@@ -1,6 +1,8 @@
 import { None, Option, some } from "./option.ts";
 
-// import { isNumber, isPresent, isString } from "./boolean-functions.ts";
+// import { isPresent } from "./boolean-functions.ts";
+// import { isNumber } from "./number-functions.ts";
+// import { isString } from "./string-functions.ts";
 // isSafe<string>(isString)("abc");
 // isSafe<string>(isString, isPresent)("abc");
 // isSafe<never>(isString, isPresent, isNumber)("abc");

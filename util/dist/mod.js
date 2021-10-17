@@ -4,7 +4,7 @@ function delay1(value, duration = 0) {
         , duration);
     });
 }
-function alwaysArray1(...arg) {
+function assureArray1(...arg) {
     return [].concat(...arg);
 }
 function throwError1(msg) {
@@ -91,7 +91,7 @@ function getWordCnt1(text) {
     }));
 }
 export { delay1 as delay };
-export { alwaysArray1 as alwaysArray };
+export { assureArray1 as assureArray };
 export { throwError1 as throwError };
 export { pipe1 as pipe };
 export { memoize1 as memoize };
@@ -149,7 +149,7 @@ class Dragon1 {
 export { Dragon1 as Dragon };
 function* delayingIterable1(range, time) {
     let i = 0;
-    while((i++) < 200){
+    while(i++ < 200){
         yield delay(getRandomIntSimpel(...range), time);
     }
 }
@@ -167,10 +167,10 @@ function makeObserver1(generatorFunction) {
     };
 }
 function makeQueue1(...callbacks) {
-    async function* makeGenerator(callbacks1) {
+    async function* makeGenerator(callbacks) {
         while(true){
             const request = yield;
-            for (const callback of callbacks1){
+            for (const callback of callbacks){
                 await callback(request);
             }
         }
@@ -210,10 +210,10 @@ function takeN1(iter, n) {
     ];
 }
 function iterate1(f, x, n) {
-    function* iterateGen(f1, x1) {
+    function* iterateGen(f, x) {
         while(true){
-            yield x1;
-            x1 = f1(x1);
+            yield x;
+            x = f(x);
         }
     }
     if (n === undefined) {
@@ -253,24 +253,30 @@ function time1(name, action) {
     const result = action();
     if (result && "then" in result && typeof result.then === "function") {
         return result.then((r)=>{
-            const time1 = Date.now() - start;
-            console.log(name, "took", time1, "ms");
-            return time1;
+            const time = Date.now() - start;
+            console.log(name, "took", time, "ms");
+            return time;
         });
     }
-    const time1 = Date.now() - start;
-    console.log(name, "took", time1, "ms");
-    return time1;
+    const time = Date.now() - start;
+    console.log(name, "took", time, "ms");
+    return time;
 }
 const log1 = slog1;
 log1.pp = pp1;
 log1.add = add1;
 log1.time = time1;
+function getDateFormat1() {
+    const d = new Date().toISOString();
+    const dateFmt = `[${d.slice(0, 10)} ${d.slice(11, 19)}]`;
+    return dateFmt;
+}
 export { slog1 as slog };
 export { pp1 as pp };
 export { add1 as add };
 export { time1 as time };
 export { log1 as log };
+export { getDateFormat1 as getDateFormat };
 function importMetaResolve1(modulePath, filePath) {
     return new URL(filePath, modulePath).pathname;
 }
@@ -279,6 +285,8 @@ function createUrlFromRequest1(req, proto = "http") {
 }
 export { importMetaResolve1 as importMetaResolve };
 export { createUrlFromRequest1 as createUrlFromRequest };
+const env1 = typeof Deno !== "undefined" ? "deno" : typeof process !== "undefined" ? "node" : typeof document !== "undefined" ? "browser" : "unknown";
+export { env1 as env };
 function concatTypedArrays1(a, b) {
     const c = new a.constructor(a.length + b.length);
     c.set(a, 0);

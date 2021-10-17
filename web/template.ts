@@ -1,6 +1,6 @@
 export function createTemplate(html: string): HTMLTemplateElement {
   const template = document.createElement("template");
-  template.innerHTML = html.trim(); // Never return a text node of whitespace as the result
+  template.innerHTML = html;
   return template;
 }
 

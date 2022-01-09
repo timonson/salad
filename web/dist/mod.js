@@ -112,33 +112,33 @@ const wcReset = createTemplate(`<style>
     display: block;
   }
   </style>`);
-const link = createTemplate(`<style>.link {
-  font-family: inherit;
-  margin: 0;
-  padding: 0;
-  border: none;
-  outline: none;
-  background: none;
-  text-decoration: none;
-  transition: 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
-  transition-property: background-color, opacity;
-  display: block;
-  white-space: nowrap;
-  user-select: none;
-  font-weight: inherit;
-  color: inherit;
-}
+const link = createTemplate(`<style>
+  .link {
+      padding:0;
+      margin:0;
+      color: var(--linkColor);
+      font-weight: var(--fontWeight, 600);
+      transition: 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
+      transition-property: all;
+      text-decoration: none;
+      outline: none;
+      border-radius:2px;
+    }
 
-link.:hover {
-  background-color: var(--linkHoverBackgroundColor);
-  opacity: var(--linkHoverOpacity, 0.6);
-}</style>`);
-const center = createTemplate(`<style>.center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}</style>`);
+    .link:visited {
+      color: var(--linkVisitedColor, var(--linkColor));
+    }
+
+    .link:hover {
+      color: var(--linkHoverColor, var(--linkColor));
+      cursor: pointer;
+      opacity: var(--linkHoverOpacity, 1);
+    }
+
+    .link:focus-visible {
+      box-shadow: var(--focusBoxShadow);
+    }
+</style>`);
 const grid = createTemplate(`<style>#grid-container {
   --grid-color: grey;
   min-height: 100%;
@@ -204,7 +204,6 @@ const grid = createTemplate(`<style>#grid-container {
 }</style>`);
 export { wcReset as wcReset };
 export { link as link };
-export { center as center };
 export { grid as grid };
 function isHTMLElement(element) {
     return element instanceof HTMLElement;

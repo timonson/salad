@@ -72,11 +72,11 @@ export function foldIfSuccessElseThrow<S, T>(ifSuccess: ((x: S) => T) | T) {
 }
 
 /**
-* [ success(val1), success(val2) ] = success([val1, val2])
-* [ failure(err1), failure(err2) ] = failure(err)
-* [ failure(err), success(val) ] = failure(err)
-* [ success(val), failure(err) ] = failure(err)
-*/
+ * [ success(val1), success(val2) ] = success([val1, val2])
+ * [ failure(err1), failure(err2) ] = failure(err)
+ * [ failure(err), success(val) ] = failure(err)
+ * [ success(val), failure(err) ] = failure(err)
+ */
 export function invertResults<
   R extends Result<unknown, unknown>,
 >(

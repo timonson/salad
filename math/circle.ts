@@ -20,8 +20,8 @@ function getEqualParts(amount: number): number[] {
 }
 
 /**
-  * getCirclePoints(10, 100)
-  */
+ * getCirclePoints(10, 100)
+ */
 export function getCirclePoints(
   amount: number,
   radius: number,

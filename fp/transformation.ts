@@ -35,13 +35,13 @@ export function transformOptionToResultWithAnyMap<T, U, V>(
 }
 
 /**
-  * NOTE: The promise-rejections can't be typed.
-  * @example
-  * async function add(x: number) {
-  *   return x + 10
-  * }
-  * await transformResultToPromise(add)(success(20));
-  */
+ * NOTE: The promise-rejections can't be typed.
+ * @example
+ * async function add(x: number) {
+ *   return x + 10
+ * }
+ * await transformResultToPromise(add)(success(20));
+ */
 export function transformResultToPromise<T, U>(
   mapOrResult: (x: T) => Promise<U>,
 ): <F>(p: Result<T, F>) => Promise<U>;

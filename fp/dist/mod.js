@@ -1,16 +1,16 @@
-function isArray1(a) {
+function isArray(a) {
     return Array.isArray(a);
 }
-function is2DArray1(input) {
+function is2DArray(input) {
     return Array.isArray(input) && Array.isArray(input[0]);
 }
-export { isArray1 as isArray };
-export { is2DArray1 as is2DArray };
-function not1(predicate) {
+export { isArray as isArray };
+export { is2DArray as is2DArray };
+function not(predicate) {
     return (x)=>!predicate(x)
     ;
 }
-function anyPass1(predicates) {
+function anyPass(predicates) {
     return (x)=>{
         for(let i_p = 0; i_p < predicates.length; i_p++){
             if (predicates[i_p](x)) {
@@ -20,7 +20,7 @@ function anyPass1(predicates) {
         return false;
     };
 }
-function allPass1(predicates) {
+function allPass(predicates) {
     return (x)=>{
         for(let i_p = 0; i_p < predicates.length; i_p++){
             if (!predicates[i_p](x)) {
@@ -30,114 +30,114 @@ function allPass1(predicates) {
         return true;
     };
 }
-function isBoolean1(input) {
+function isBoolean(input) {
     return input === true || input === false;
 }
-function isNull1(input) {
+function isNull(input) {
     return input === null;
 }
-function isUndefined1(input) {
+function isUndefined(input) {
     return input === undefined;
 }
-function isPresent1(t) {
+function isPresent(t) {
     return t !== undefined && t !== null;
 }
-function isDefined1(t) {
+function isDefined(t) {
     return t !== undefined;
 }
-function isNotNull1(t) {
+function isNotNull(t) {
     return t !== null;
 }
-function isTrue1(input) {
+function isTrue(input) {
     return input === true;
 }
-function isFalse1(input) {
+function isFalse(input) {
     return input === false;
 }
-function equals1(b) {
+function equals(b) {
     return (a)=>a === b
     ;
 }
-function isObjectWide1(obj) {
+function isObjectWide(obj) {
     return obj !== null && typeof obj === "object" && Array.isArray(obj) === false;
 }
-function isObject1(obj) {
+function isObject(obj) {
     return obj !== null && typeof obj === "object" && Array.isArray(obj) === false;
 }
-function hasProperty1(key) {
+function hasProperty(key) {
     return (obj)=>key in obj
     ;
 }
-function isObjectAndHasProp1(key) {
-    return (obj)=>isObject1(obj) && hasProperty1(key)(obj)
+function isObjectAndHasProp(key) {
+    return (obj)=>isObject(obj) && hasProperty(key)(obj)
     ;
 }
-function isEmail1(value) {
+function isEmail(value) {
     const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return typeof value === "string" && regex.test(value.toLowerCase());
 }
-function hasPresentKey1(k) {
+function hasPresentKey(k) {
     return function(a) {
         return a[k] !== undefined && a[k] !== null;
     };
 }
-function hasValueAtKey1(k, v) {
+function hasValueAtKey(k, v) {
     return function(a) {
         return a[k] === v;
     };
 }
-export { not1 as not };
-export { anyPass1 as anyPass };
-export { allPass1 as allPass };
-export { isBoolean1 as isBoolean };
-export { isNull1 as isNull };
-export { isUndefined1 as isUndefined };
-export { isPresent1 as isPresent };
-export { isDefined1 as isDefined };
-export { isNotNull1 as isNotNull };
-export { isTrue1 as isTrue };
-export { isFalse1 as isFalse };
-export { equals1 as equals };
-export { isObjectWide1 as isObjectWide };
-export { isObject1 as isObject };
-export { hasProperty1 as hasProperty };
-export { isObjectAndHasProp1 as isObjectAndHasProp };
-export { isEmail1 as isEmail };
-export { hasPresentKey1 as hasPresentKey };
-export { hasValueAtKey1 as hasValueAtKey };
-function isFunction1(value) {
+export { not as not };
+export { anyPass as anyPass };
+export { allPass as allPass };
+export { isBoolean as isBoolean };
+export { isNull as isNull };
+export { isUndefined as isUndefined };
+export { isPresent as isPresent };
+export { isDefined as isDefined };
+export { isNotNull as isNotNull };
+export { isTrue as isTrue };
+export { isFalse as isFalse };
+export { equals as equals };
+export { isObjectWide as isObjectWide };
+export { isObject as isObject };
+export { hasProperty as hasProperty };
+export { isObjectAndHasProp as isObjectAndHasProp };
+export { isEmail as isEmail };
+export { hasPresentKey as hasPresentKey };
+export { hasValueAtKey as hasValueAtKey };
+function isFunction(value) {
     return typeof value === "function";
 }
-function apply1(x) {
+function apply(x) {
     return (f)=>f(x)
     ;
 }
-function applyTo1(f) {
+function applyTo(f) {
     return (x)=>f(x)
     ;
 }
-function applyPair1([a, b]) {
+function applyPair([a, b]) {
     return (f)=>f(a)(b)
     ;
 }
-function applyPairTo1(f) {
+function applyPairTo(f) {
     return ([a, b])=>f(a)(b)
     ;
 }
-function perform1(f) {
+function perform(f) {
     return (x)=>{
         f(x);
         return x;
     };
 }
-function identity1(x) {
+function identity(x) {
     return x;
 }
-function constant1(x) {
+function constant(x) {
     return ()=>x
     ;
 }
-function curry1(fn) {
+function curry(fn) {
     const arity = fn.length;
     return function $curry(...args) {
         if (args.length < arity) {
@@ -146,11 +146,11 @@ function curry1(fn) {
         return fn.call(null, ...args);
     };
 }
-function composeMultivariate1(...fns) {
+function composeMultivariate(...fns) {
     return fns.reduce((f, g)=>(...xs)=>f(...g(...xs))
     );
 }
-function compose1(...funcs) {
+function compose(...funcs) {
     if (funcs.length === 0) {
         return (arg)=>arg
         ;
@@ -161,407 +161,407 @@ function compose1(...funcs) {
     return funcs.reduce((a, b)=>(...args)=>a(b(...args))
     );
 }
-export { isFunction1 as isFunction };
-export { apply1 as apply };
-export { applyTo1 as applyTo };
-export { applyPair1 as applyPair };
-export { applyPairTo1 as applyPairTo };
-export { perform1 as perform };
-export { identity1 as identity };
-export { constant1 as constant };
-export { curry1 as curry };
-export { composeMultivariate1 as composeMultivariate };
-export { compose1 as compose };
-function add1(x) {
+export { isFunction as isFunction };
+export { apply as apply };
+export { applyTo as applyTo };
+export { applyPair as applyPair };
+export { applyPairTo as applyPairTo };
+export { perform as perform };
+export { identity as identity };
+export { constant as constant };
+export { curry as curry };
+export { composeMultivariate as composeMultivariate };
+export { compose as compose };
+function add(x) {
     return (y)=>x + y
     ;
 }
-function multiply1(x) {
+function multiply(x) {
     return (y)=>x * y
     ;
 }
-function greaterThan1(value) {
+function greaterThan(value) {
     return (x)=>x > value
     ;
 }
-function lessThan1(value) {
+function lessThan(value) {
     return (x)=>x < value
     ;
 }
-function isNumber1(input) {
+function isNumber(input) {
     return typeof input === "number";
 }
-export { add1 as add };
-export { multiply1 as multiply };
-export { greaterThan1 as greaterThan };
-export { lessThan1 as lessThan };
-export { isNumber1 as isNumber };
-function some1(value) {
+export { add as add };
+export { multiply as multiply };
+export { greaterThan as greaterThan };
+export { lessThan as lessThan };
+export { isNumber as isNumber };
+function some(value) {
     return {
         value,
         kind: "Some"
     };
 }
-const None1 = {
+const None = {
     kind: "None"
 };
-function isSome1(input) {
+function isSome(input) {
     return input.kind === "Some";
 }
-function isNone1(input) {
+function isNone(input) {
     return input.kind === "None";
 }
-function mapOption1(f) {
-    return (opt)=>isSome1(opt) ? some1(f(opt.value)) : None1
+function mapOption(f) {
+    return (opt)=>isSome(opt) ? some(f(opt.value)) : None
     ;
 }
-function chainOption1(f) {
-    return (opt)=>isSome1(opt) ? f(opt.value) : None1
+function chainOption(f) {
+    return (opt)=>isSome(opt) ? f(opt.value) : None
     ;
 }
-function foldOption1(ifSome) {
-    return (ifNone)=>(opt)=>isSome1(opt) ? isFunction1(ifSome) ? ifSome(opt.value) : ifSome : isFunction1(ifNone) ? ifNone() : ifNone
+function foldOption(ifSome) {
+    return (ifNone)=>(opt)=>isSome(opt) ? isFunction(ifSome) ? ifSome(opt.value) : ifSome : isFunction(ifNone) ? ifNone() : ifNone
     ;
 }
-function invertOptions1(options) {
-    return options.reduce((acc, opt)=>chainOption1((arr)=>mapOption1((value)=>[
+function invertOptions(options) {
+    return options.reduce((acc, opt)=>chainOption((arr)=>mapOption((value)=>[
                     ...arr,
                     value
                 ]
             )(opt)
         )(acc)
-    , some1([]));
+    , some([]));
 }
-function concatOptions1(options) {
-    return options.reduce((arr, opt)=>foldOption1((value)=>arr.concat([
+function concatOptions(options) {
+    return options.reduce((arr, opt)=>foldOption((value)=>arr.concat([
                 value
             ])
         )(arr)(opt)
     , []);
 }
-function alternativeOption1(functionOrOption) {
-    return (opt)=>isSome1(opt) ? opt : isFunction1(functionOrOption) ? functionOrOption() : functionOrOption
+function alternativeOption(functionOrOption) {
+    return (opt)=>isSome(opt) ? opt : isFunction(functionOrOption) ? functionOrOption() : functionOrOption
     ;
 }
-function alternativeValue1(functionOrValue) {
-    return (opt)=>foldOption1((x)=>x
-        )(isFunction1(functionOrValue) ? functionOrValue() : functionOrValue)(opt)
+function alternativeValue(functionOrValue) {
+    return (opt)=>foldOption((x)=>x
+        )(isFunction(functionOrValue) ? functionOrValue() : functionOrValue)(opt)
     ;
 }
-function maybeNull1(nullable) {
-    return nullable === null ? None1 : some1(nullable);
+function maybeNull(nullable) {
+    return nullable === null ? None : some(nullable);
 }
-function maybeUndefined1(undefinable) {
-    return undefinable === undefined ? None1 : some1(undefinable);
+function maybeUndefined(undefinable) {
+    return undefinable === undefined ? None : some(undefinable);
 }
-function ifPresent1(sideEffect) {
+function ifPresent(sideEffect) {
     return (opt)=>{
-        if (isSome1(opt)) {
+        if (isSome(opt)) {
             sideEffect(opt.value);
         }
     };
 }
-function ifAbsent1(sideEffect) {
+function ifAbsent(sideEffect) {
     return (opt)=>{
-        if (isNone1(opt)) {
+        if (isNone(opt)) {
             sideEffect();
         }
     };
 }
-export { some1 as some };
-export { None1 as None };
-export { isSome1 as isSome };
-export { isNone1 as isNone };
-export { mapOption1 as mapOption };
-export { chainOption1 as chainOption };
-export { foldOption1 as foldOption };
-export { invertOptions1 as invertOptions };
-export { concatOptions1 as concatOptions };
-export { alternativeOption1 as alternativeOption };
-export { alternativeValue1 as alternativeValue };
-export { maybeNull1 as maybeNull };
-export { maybeUndefined1 as maybeUndefined };
-export { ifPresent1 as ifPresent };
-export { ifAbsent1 as ifAbsent };
-function pair1(a) {
+export { some as some };
+export { None as None };
+export { isSome as isSome };
+export { isNone as isNone };
+export { mapOption as mapOption };
+export { chainOption as chainOption };
+export { foldOption as foldOption };
+export { invertOptions as invertOptions };
+export { concatOptions as concatOptions };
+export { alternativeOption as alternativeOption };
+export { alternativeValue as alternativeValue };
+export { maybeNull as maybeNull };
+export { maybeUndefined as maybeUndefined };
+export { ifPresent as ifPresent };
+export { ifAbsent as ifAbsent };
+function pair(a) {
     return (b)=>[
             a,
             b
         ]
     ;
 }
-function pairWith1(b) {
+function pairWith(b) {
     return (a)=>[
             a,
             b
         ]
     ;
 }
-function pairBy1(f) {
+function pairBy(f) {
     return (a)=>[
             a,
             f(a)
         ]
     ;
 }
-function duplicate1(a) {
+function duplicate(a) {
     return [
         a,
         a
     ];
 }
-function mapFirst1(f) {
+function mapFirst(f) {
     return ([a, b])=>[
             f(a),
             b
         ]
     ;
 }
-function mapSecond1(g) {
+function mapSecond(g) {
     return ([a, b])=>[
             a,
             g(b)
         ]
     ;
 }
-function mapPair1(g) {
+function mapPair(g) {
     return ([a, b])=>[
             a,
             g(a)(b)
         ]
     ;
 }
-function foldPair1(f) {
+function foldPair(f) {
     return ([a, b])=>f(a)(b)
     ;
 }
-export { pair1 as pair };
-export { pairWith1 as pairWith };
-export { pairBy1 as pairBy };
-export { duplicate1 as duplicate };
-export { mapFirst1 as mapFirst };
-export { mapSecond1 as mapSecond };
-export { mapPair1 as mapPair };
-export { foldPair1 as foldPair };
-function parallel1(...promises) {
+export { pair as pair };
+export { pairWith as pairWith };
+export { pairBy as pairBy };
+export { duplicate as duplicate };
+export { mapFirst as mapFirst };
+export { mapSecond as mapSecond };
+export { mapPair as mapPair };
+export { foldPair as foldPair };
+function parallel(...promises) {
     if (promises.length === 1) {
         const firstItem = promises[0];
         if (Array.isArray(firstItem)) {
-            return parallel1(...firstItem);
+            return parallel(...firstItem);
         }
     }
     return Promise.all(promises);
 }
-function parallelMap1(f) {
-    return (arr)=>parallel1(arr.map(f))
+function parallelMap(f) {
+    return (arr)=>parallel(arr.map(f))
     ;
 }
-function mapFulfilled1(functionOrValue) {
-    return (promise)=>promise.then(isFunction1(functionOrValue) ? functionOrValue : ()=>functionOrValue
+function mapFulfilled(functionOrValue) {
+    return (promise)=>promise.then(isFunction(functionOrValue) ? functionOrValue : ()=>functionOrValue
         )
     ;
 }
-function mapPromise1(ifFulfilled) {
+function mapPromise(ifFulfilled) {
     return (ifRejected)=>{
-        return (promise)=>promise.then(isFunction1(ifFulfilled) ? ifFulfilled : ()=>ifFulfilled
-            , isFunction1(ifRejected) ? ifRejected : ()=>ifRejected
+        return (promise)=>promise.then(isFunction(ifFulfilled) ? ifFulfilled : ()=>ifFulfilled
+            , isFunction(ifRejected) ? ifRejected : ()=>ifRejected
             )
         ;
     };
 }
-export { parallel1 as parallel };
-export { parallelMap1 as parallelMap };
-export { mapFulfilled1 as mapFulfilled };
-export { mapPromise1 as mapPromise };
-function success1(value) {
+export { parallel as parallel };
+export { parallelMap as parallelMap };
+export { mapFulfilled as mapFulfilled };
+export { mapPromise as mapPromise };
+function success(value) {
     return {
         value,
         kind: "Success"
     };
 }
-function failure1(error) {
+function failure(error) {
     return {
         error,
         kind: "Failure"
     };
 }
-function isSuccess1(result) {
+function isSuccess(result) {
     return result.kind === "Success";
 }
-function isFailure1(result) {
+function isFailure(result) {
     return result.kind === "Failure";
 }
-function mapResult1(f) {
-    return (result)=>isSuccess1(result) ? success1(f(result.value)) : result
+function mapResult(f) {
+    return (result)=>isSuccess(result) ? success(f(result.value)) : result
     ;
 }
-function chainResult1(f) {
-    return (result)=>isSuccess1(result) ? f(result.value) : failure1(result.error)
+function chainResult(f) {
+    return (result)=>isSuccess(result) ? f(result.value) : failure(result.error)
     ;
 }
-function tryCatch1(f) {
+function tryCatch(f) {
     return (value)=>{
         try {
-            return success1(f(value));
+            return success(f(value));
         } catch (err) {
-            return failure1(err);
+            return failure(err);
         }
     };
 }
-function foldResult1(ifSuccess) {
-    return (ifFailure)=>(res)=>isSuccess1(res) ? isFunction1(ifSuccess) ? ifSuccess(res.value) : ifSuccess : isFunction1(ifFailure) ? ifFailure(res.error) : ifFailure
+function foldResult(ifSuccess) {
+    return (ifFailure)=>(res)=>isSuccess(res) ? isFunction(ifSuccess) ? ifSuccess(res.value) : ifSuccess : isFunction(ifFailure) ? ifFailure(res.error) : ifFailure
     ;
 }
-function foldIfSuccessElseThrow1(ifSuccess) {
-    return (result)=>foldResult1(ifSuccess)((e)=>{
+function foldIfSuccessElseThrow(ifSuccess) {
+    return (result)=>foldResult(ifSuccess)((e)=>{
             throw e;
         })(result)
     ;
 }
-function invertResults1(results) {
-    return results.reduce((acc, result)=>chainResult1((arr)=>mapResult1((value)=>arr.concat(value)
+function invertResults(results) {
+    return results.reduce((acc, result)=>chainResult((arr)=>mapResult((value)=>arr.concat(value)
             )(result)
         )(acc)
-    , success1([]));
+    , success([]));
 }
-function ifSucceeded1(sideEffect) {
+function ifSucceeded(sideEffect) {
     return (result)=>{
-        if (isSuccess1(result)) {
+        if (isSuccess(result)) {
             sideEffect(result.value);
         }
     };
 }
-function ifFailed1(sideEffect) {
+function ifFailed(sideEffect) {
     return (result)=>{
-        if (isFailure1(result)) {
+        if (isFailure(result)) {
             sideEffect(result.error);
         }
     };
 }
-export { success1 as success };
-export { failure1 as failure };
-export { isSuccess1 as isSuccess };
-export { isFailure1 as isFailure };
-export { mapResult1 as mapResult };
-export { chainResult1 as chainResult };
-export { tryCatch1 as tryCatch };
-export { foldResult1 as foldResult };
-export { foldIfSuccessElseThrow1 as foldIfSuccessElseThrow };
-export { invertResults1 as invertResults };
-export { ifSucceeded1 as ifSucceeded };
-export { ifFailed1 as ifFailed };
-function safeFirst1(arr) {
-    return arr.length >= 1 ? some1(arr[0]) : None1;
+export { success as success };
+export { failure as failure };
+export { isSuccess as isSuccess };
+export { isFailure as isFailure };
+export { mapResult as mapResult };
+export { chainResult as chainResult };
+export { tryCatch as tryCatch };
+export { foldResult as foldResult };
+export { foldIfSuccessElseThrow as foldIfSuccessElseThrow };
+export { invertResults as invertResults };
+export { ifSucceeded as ifSucceeded };
+export { ifFailed as ifFailed };
+function safeFirst(arr) {
+    return arr.length >= 1 ? some(arr[0]) : None;
 }
-function safeSingle1(arr) {
-    return arr.length === 1 ? some1(arr[0]) : None1;
+function safeSingle(arr) {
+    return arr.length === 1 ? some(arr[0]) : None;
 }
-function safeLast1(arr) {
-    return arr.length >= 1 ? some1(arr[arr.length - 1]) : None1;
+function safeLast(arr) {
+    return arr.length >= 1 ? some(arr[arr.length - 1]) : None;
 }
-function safeTake1(n) {
-    return (arr)=>arr.length >= n ? some1(arr.slice(0, n)) : None1
+function safeTake(n) {
+    return (arr)=>arr.length >= n ? some(arr.slice(0, n)) : None
     ;
 }
-function safeDrop1(n) {
-    return (arr)=>arr.length >= n ? some1(arr.slice(n)) : None1
+function safeDrop(n) {
+    return (arr)=>arr.length >= n ? some(arr.slice(n)) : None
     ;
 }
-function safeFind1(predicate) {
-    return (arr)=>maybeUndefined1(arr.find(predicate))
+function safeFind(predicate) {
+    return (arr)=>maybeUndefined(arr.find(predicate))
     ;
 }
-function safeFindIndex1(predicate) {
+function safeFindIndex(predicate) {
     return (arr)=>{
         const result = arr.findIndex(predicate);
-        return result !== -1 ? some1(result) : None1;
+        return result !== -1 ? some(result) : None;
     };
 }
-export { safeFirst1 as safeFirst };
-export { safeSingle1 as safeSingle };
-export { safeLast1 as safeLast };
-export { safeTake1 as safeTake };
-export { safeDrop1 as safeDrop };
-export { safeFind1 as safeFind };
-export { safeFindIndex1 as safeFindIndex };
-function safeProperty1(key) {
-    return (obj)=>obj.hasOwnProperty(key) ? some1(obj[key]) : None1
+export { safeFirst as safeFirst };
+export { safeSingle as safeSingle };
+export { safeLast as safeLast };
+export { safeTake as safeTake };
+export { safeDrop as safeDrop };
+export { safeFind as safeFind };
+export { safeFindIndex as safeFindIndex };
+function safeProperty(key) {
+    return (obj)=>obj.hasOwnProperty(key) ? some(obj[key]) : None
     ;
 }
-function safePropertyOf1(obj) {
-    return (key)=>safeProperty1(key)(obj)
+function safePropertyOf(obj) {
+    return (key)=>safeProperty(key)(obj)
     ;
 }
-export { safeProperty1 as safeProperty };
-export { safePropertyOf1 as safePropertyOf };
-function safeMatch1(regExp) {
+export { safeProperty as safeProperty };
+export { safePropertyOf as safePropertyOf };
+function safeMatch(regExp) {
     return (s)=>{
         const r = s.match(regExp);
-        return r === null ? None1 : some1(r[0]);
+        return r === null ? None : some(r[0]);
     };
 }
-export { safeMatch1 as safeMatch };
-function isSafe1(...predicates) {
+export { safeMatch as safeMatch };
+function isSafe(...predicates) {
     return (x)=>predicates.every((predicate)=>predicate(x)
-        ) ? some1(x) : None1
+        ) ? some(x) : None
     ;
 }
-export { isSafe1 as isSafe };
-function split1(separator) {
+export { isSafe as isSafe };
+function split(separator) {
     return (s)=>s.split(separator)
     ;
 }
-function join1(separator) {
+function join(separator) {
     return (...items)=>{
-        if (is2DArray1(items)) {
-            return join1(separator)(...items[0]);
+        if (is2DArray(items)) {
+            return join(separator)(...items[0]);
         }
         return items.join(separator);
     };
 }
-function surroundWith1(beginning) {
+function surroundWith(beginning) {
     return (end)=>(str)=>beginning + str + end
     ;
 }
-function lower1(input) {
+function lower(input) {
     return input.toLowerCase();
 }
-function upper1(input) {
+function upper(input) {
     return input.toUpperCase();
 }
-function capitalize1(input) {
+function capitalize(input) {
     return input.charAt(0).toUpperCase() + input.slice(1);
 }
-function trim1(input) {
+function trim(input) {
     return input.trim();
 }
-function containsSubstring1(substring) {
+function containsSubstring(substring) {
     return (candidate)=>candidate.includes(substring)
     ;
 }
-function isSubstringOf1(text) {
-    return (candidate)=>containsSubstring1(candidate)(text)
+function isSubstringOf(text) {
+    return (candidate)=>containsSubstring(candidate)(text)
     ;
 }
-function isString1(input) {
+function isString(input) {
     return typeof input === "string";
 }
-export { split1 as split };
-export { join1 as join };
-export { surroundWith1 as surroundWith };
-export { lower1 as lower };
-export { upper1 as upper };
-export { capitalize1 as capitalize };
-export { trim1 as trim };
-export { containsSubstring1 as containsSubstring };
-export { isSubstringOf1 as isSubstringOf };
-export { isString1 as isString };
-function nth1(index) {
+export { split as split };
+export { join as join };
+export { surroundWith as surroundWith };
+export { lower as lower };
+export { upper as upper };
+export { capitalize as capitalize };
+export { trim as trim };
+export { containsSubstring as containsSubstring };
+export { isSubstringOf as isSubstringOf };
+export { isString as isString };
+function nth(index) {
     return (input)=>input[index]
     ;
 }
-function first1(predicateOrInput) {
-    if (isFunction1(predicateOrInput)) {
+function first(predicateOrInput) {
+    if (isFunction(predicateOrInput)) {
         return (input)=>{
             for(let i = 0; i < input.length; i++){
                 const item = input[i];
@@ -575,11 +575,11 @@ function first1(predicateOrInput) {
         return predicateOrInput[0];
     }
 }
-function second1(input) {
+function second(input) {
     return input[1];
 }
-function last1(predicateOrInput) {
-    if (isFunction1(predicateOrInput)) {
+function last(predicateOrInput) {
+    if (isFunction(predicateOrInput)) {
         return (input)=>{
             for(let i = input.length - 1; i >= 0; i--){
                 const item = input[i];
@@ -593,23 +593,23 @@ function last1(predicateOrInput) {
         return predicateOrInput[0];
     }
 }
-function take1(n) {
+function take(n) {
     return (input)=>input.slice(0, n)
     ;
 }
-function takeFrom1(input) {
-    return (n)=>take1(n)(input)
+function takeFrom(input) {
+    return (n)=>take(n)(input)
     ;
 }
-function takeLast1(n) {
+function takeLast(n) {
     return (input)=>input.slice(Math.max(input.length - n, 0))
     ;
 }
-function takeLastFrom1(input) {
-    return (n)=>takeLast1(n)(input)
+function takeLastFrom(input) {
+    return (n)=>takeLast(n)(input)
     ;
 }
-function takeWhile1(predicate) {
+function takeWhile(predicate) {
     return (input)=>{
         const res = [];
         for(let i = 0; i < input.length; i++){
@@ -622,23 +622,23 @@ function takeWhile1(predicate) {
         return res;
     };
 }
-function drop1(n) {
+function drop(n) {
     return (input)=>input.slice(n)
     ;
 }
-function dropFrom1(input) {
-    return (n)=>drop1(n)(input)
+function dropFrom(input) {
+    return (n)=>drop(n)(input)
     ;
 }
-function dropLast1(n) {
+function dropLast(n) {
     return (input)=>input.slice(0, -n)
     ;
 }
-function dropLastFrom1(input) {
-    return (n)=>isString1(input) ? dropLast1(n)(input) : dropLast1(n)(input)
+function dropLastFrom(input) {
+    return (n)=>isString(input) ? dropLast(n)(input) : dropLast(n)(input)
     ;
 }
-function dropWhile1(predicate) {
+function dropWhile(predicate) {
     return (input)=>{
         let dropped = 0;
         while(dropped < input.length){
@@ -652,72 +652,72 @@ function dropWhile1(predicate) {
         return input.slice(dropped);
     };
 }
-function append1(item) {
-    return (input)=>isString1(input) ? input + item : [
+function append(item) {
+    return (input)=>isString(input) ? input + item : [
             ...input,
             item
         ]
     ;
 }
-function appendTo1(input) {
-    return (item)=>isString1(item) ? input + item : [
+function appendTo(input) {
+    return (item)=>isString(item) ? input + item : [
             ...input,
             item
         ]
     ;
 }
-function prepend1(item) {
-    return (input)=>isString1(input) ? item + input : [
+function prepend(item) {
+    return (input)=>isString(input) ? item + input : [
             item,
             ...input
         ]
     ;
 }
-function prependTo1(input) {
-    return (item)=>isString1(input) ? item + input : [
+function prependTo(input) {
+    return (item)=>isString(input) ? item + input : [
             item,
             ...input
         ]
     ;
 }
-function concat1(...items) {
+function concat(...items) {
     if (items.length === 1) {
         const firstItem = items[0];
         if (Array.isArray(firstItem)) {
             if (firstItem.length === 1) {
                 return firstItem[0];
             } else {
-                return concat1(...firstItem);
+                return concat(...firstItem);
             }
         }
     }
-    return isString1(items[0]) ? items.reduce((acc, s)=>acc.concat(s)
+    return isString(items[0]) ? items.reduce((acc, s)=>acc.concat(s)
     , "") : items.reduce((acc, s)=>acc.concat(s)
     , []);
 }
-function isEmpty1(input) {
+function isEmpty(input) {
     return input.length === 0;
 }
-function isNotEmpty1(input) {
+function isNotEmpty(input) {
     return input.length > 0;
 }
-function isOfLength1(length) {
-    return (input)=>input.length === length
+function isOfLength(length1) {
+    return (input)=>input.length === length1
     ;
 }
-const isOfLengthOne1 = isOfLength1(1);
-function isShorterThan1(length) {
-    return (input)=>input.length < length
+const isOfLengthOne = isOfLength(1);
+function isShorterThan(length2) {
+    return (input)=>input.length < length2
     ;
 }
-function isLongerThan1(length) {
-    return (input)=>input.length > length
+function isLongerThan(length3) {
+    return (input)=>input.length > length3
     ;
 }
-function length1(input) {
+function length(input) {
     return input.length;
 }
-function reverse1(input) {
+function reverse(input) {
     const inputLength = input.length;
     const reversedArray = Array(inputLength);
     for(let i = 0; i < inputLength; i++){
@@ -725,59 +725,59 @@ function reverse1(input) {
     }
     return reversedArray;
 }
-export { nth1 as nth };
-export { first1 as first };
-export { second1 as second };
-export { last1 as last };
-export { take1 as take };
-export { takeFrom1 as takeFrom };
-export { takeLast1 as takeLast };
-export { takeLastFrom1 as takeLastFrom };
-export { takeWhile1 as takeWhile };
-export { drop1 as drop };
-export { dropFrom1 as dropFrom };
-export { dropLast1 as dropLast };
-export { dropLastFrom1 as dropLastFrom };
-export { dropWhile1 as dropWhile };
-export { append1 as append };
-export { appendTo1 as appendTo };
-export { prepend1 as prepend };
-export { prependTo1 as prependTo };
-export { concat1 as concat };
-export { isEmpty1 as isEmpty };
-export { isNotEmpty1 as isNotEmpty };
-export { isOfLength1 as isOfLength };
-export { isOfLengthOne1 as isOfLengthOne };
-export { isShorterThan1 as isShorterThan };
-export { isLongerThan1 as isLongerThan };
-export { length1 as length };
-export { reverse1 as reverse };
-function transformOptionToResult1(mapOrErrorMessage) {
-    return isFunction1(mapOrErrorMessage) ? (errorMessage)=>foldOption1(mapOrErrorMessage)(()=>failure1(errorMessage)
+export { nth as nth };
+export { first as first };
+export { second as second };
+export { last as last };
+export { take as take };
+export { takeFrom as takeFrom };
+export { takeLast as takeLast };
+export { takeLastFrom as takeLastFrom };
+export { takeWhile as takeWhile };
+export { drop as drop };
+export { dropFrom as dropFrom };
+export { dropLast as dropLast };
+export { dropLastFrom as dropLastFrom };
+export { dropWhile as dropWhile };
+export { append as append };
+export { appendTo as appendTo };
+export { prepend as prepend };
+export { prependTo as prependTo };
+export { concat as concat };
+export { isEmpty as isEmpty };
+export { isNotEmpty as isNotEmpty };
+export { isOfLength as isOfLength };
+export { isOfLengthOne as isOfLengthOne };
+export { isShorterThan as isShorterThan };
+export { isLongerThan as isLongerThan };
+export { length as length };
+export { reverse as reverse };
+function transformOptionToResult(mapOrErrorMessage) {
+    return isFunction(mapOrErrorMessage) ? (errorMessage)=>foldOption(mapOrErrorMessage)(()=>failure(errorMessage)
         )
-     : foldOption1(success1)(()=>failure1(mapOrErrorMessage)
+     : foldOption(success)(()=>failure(mapOrErrorMessage)
     );
 }
-function transformOptionToResultWithAnyMap1(mapOrErrorMessage) {
-    return isFunction1(mapOrErrorMessage) ? (errorMessage)=>foldOption1((x)=>success1(mapOrErrorMessage(x))
-        )(()=>failure1(errorMessage)
+function transformOptionToResultWithAnyMap(mapOrErrorMessage) {
+    return isFunction(mapOrErrorMessage) ? (errorMessage)=>foldOption((x)=>success(mapOrErrorMessage(x))
+        )(()=>failure(errorMessage)
         )
-     : foldOption1(success1)(()=>failure1(mapOrErrorMessage)
+     : foldOption(success)(()=>failure(mapOrErrorMessage)
     );
 }
-function transformResultToPromise1(mapOrResult) {
-    return isFunction1(mapOrResult) ? foldResult1(mapOrResult)((error)=>Promise.reject(error)
-    ) : foldResult1((value)=>Promise.resolve(value)
+function transformResultToPromise(mapOrResult) {
+    return isFunction(mapOrResult) ? foldResult(mapOrResult)((error)=>Promise.reject(error)
+    ) : foldResult((value)=>Promise.resolve(value)
     )((error)=>Promise.reject(error)
     )(mapOrResult);
 }
-function transformPromiseToResult1(mapOrPromise) {
-    return isFunction1(mapOrPromise) ? (promise)=>promise.then((x)=>success1(mapOrPromise(x))
-        ).catch(failure1)
-     : mapOrPromise.then(success1).catch(failure1);
+function transformPromiseToResult(mapOrPromise) {
+    return isFunction(mapOrPromise) ? (promise)=>promise.then((x)=>success(mapOrPromise(x))
+        ).catch(failure)
+     : mapOrPromise.then(success).catch(failure);
 }
-export { transformOptionToResult1 as transformOptionToResult };
-export { transformOptionToResultWithAnyMap1 as transformOptionToResultWithAnyMap };
-export { transformResultToPromise1 as transformResultToPromise };
-export { transformPromiseToResult1 as transformPromiseToResult };
+export { transformOptionToResult as transformOptionToResult };
+export { transformOptionToResultWithAnyMap as transformOptionToResultWithAnyMap };
+export { transformResultToPromise as transformResultToPromise };
+export { transformPromiseToResult as transformPromiseToResult };
 

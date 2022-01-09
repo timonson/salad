@@ -1,15 +1,15 @@
-const file = Deno.args[0]
+const file = Deno.args[0];
 
 import(file)
-  .then(module => {
+  .then((module) => {
     const modulesString = Object.entries(module)
       .reduce((acc, [key, value]) => {
-        acc += key === "default" ? `${value.name} (default)\n` : `${key}\n`
-        return acc
+        acc += key === "default" ? `${value.name} (default)\n` : `${key}\n`;
+        return acc;
       }, "")
-      .trim()
-    console.log(modulesString)
+      .trim();
+    console.log(modulesString);
   })
-  .catch(err => {
-    console.log(err)
-  })
+  .catch((err) => {
+    console.log(err);
+  });

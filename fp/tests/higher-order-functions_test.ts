@@ -22,7 +22,7 @@ function add10Chainable(v: number) {
 Deno.test("[higher-order-functions] identity", function () {
   assertEquals(
     chainOption(add10Chainable)(
-      (mapOption(identity)(mapOption(add10)(some(5)))),
+      mapOption(identity)(mapOption(add10)(some(5))),
     ),
     {
       kind: "Some",

@@ -5,55 +5,59 @@ function changeInlineStyles(element, [property, value]) {
         element.style[property] = value;
     }
 }
-function changeCss1(styles, ...elements) {
+function changeCss(styles, ...elements) {
     Object.entries(styles).forEach((entry)=>elements.forEach((element)=>changeInlineStyles(element, entry)
         )
     );
 }
-function appendStyleElement1(cssString, parent) {
+function getComputedCssPropertyValue(property, element = document.body) {
+    return getComputedStyle(element).getPropertyValue(property);
+}
+function appendStyleElement(cssString, parent) {
     const style = document.createElement("style");
     style.type = "text/css";
     style.innerHTML = cssString;
     parent ? parent.appendChild(style) : document.getElementsByTagName("head")[0].appendChild(style);
 }
-function loadCss1(path, target = document.head) {
+function loadCss(path, target = document.head) {
     return new Promise(function(resolve, reject) {
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = path;
-        target.appendChild(link);
-        link.onload = ()=>resolve("CSS has loaded!")
+        const link1 = document.createElement("link");
+        link1.rel = "stylesheet";
+        link1.href = path;
+        target.appendChild(link1);
+        link1.onload = ()=>resolve("CSS has loaded!")
         ;
     });
 }
-function addCssRules1(styleElement, ruleSet) {
+function addCssRules(styleElement, ruleSet) {
     return styleElement.sheet?.insertRule(ruleSet, styleElement.sheet.cssRules.length);
 }
-function logCssRulesText1() {
+function logCssRulesText() {
     setTimeout(()=>[
             ...document.styleSheets[0].cssRules
         ].forEach((rule, i)=>console.log(i, rule.cssText)
         )
     , 300);
 }
-export { changeCss1 as changeCss };
-export { appendStyleElement1 as appendStyleElement };
-export { loadCss1 as loadCss };
-export { addCssRules1 as addCssRules };
-export { logCssRulesText1 as logCssRulesText };
-function createTemplate1(html) {
+export { changeCss as changeCss };
+export { getComputedCssPropertyValue as getComputedCssPropertyValue };
+export { appendStyleElement as appendStyleElement };
+export { loadCss as loadCss };
+export { addCssRules as addCssRules };
+export { logCssRulesText as logCssRulesText };
+function createTemplate(html) {
     const template = document.createElement("template");
     template.innerHTML = html;
     return template;
 }
-function cloneTemplateIntoParent1(template, parent, sibling) {
+function cloneTemplateIntoParent(template, parent, sibling) {
     if (sibling) parent.insertBefore(template.content.cloneNode(true), sibling);
     else parent.append(template.content.cloneNode(true));
     return template;
 }
-export { createTemplate1 as createTemplate };
-export { cloneTemplateIntoParent1 as cloneTemplateIntoParent };
-const wcReset1 = createTemplate1(`<style>
+export { createTemplate as createTemplate };
+export { cloneTemplateIntoParent as cloneTemplateIntoParent };
+const wcReset = createTemplate(`<style>
   :host {
     display: block;
     box-sizing: border-box;
@@ -108,7 +112,7 @@ const wcReset1 = createTemplate1(`<style>
     display: block;
   }
   </style>`);
-const link1 = createTemplate1(`<style>.link {
+const link = createTemplate(`<style>.link {
   font-family: inherit;
   margin: 0;
   padding: 0;
@@ -129,13 +133,13 @@ link.:hover {
   background-color: var(--linkHoverBackgroundColor);
   opacity: var(--linkHoverOpacity, 0.6);
 }</style>`);
-const center1 = createTemplate1(`<style>.center {
+const center = createTemplate(`<style>.center {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }</style>`);
-const grid1 = createTemplate1(`<style>#grid-container {
+const grid = createTemplate(`<style>#grid-container {
   --grid-color: grey;
   min-height: 100%;
   max-width: 1112px;
@@ -198,21 +202,21 @@ const grid1 = createTemplate1(`<style>#grid-container {
     display: block;
   }
 }</style>`);
-export { wcReset1 as wcReset };
-export { link1 as link };
-export { center1 as center };
-export { grid1 as grid };
-function isHTMLElement1(element) {
+export { wcReset as wcReset };
+export { link as link };
+export { center as center };
+export { grid as grid };
+function isHTMLElement(element) {
     return element instanceof HTMLElement;
 }
-function createElementWithHtml1(kind, html) {
+function createElementWithHtml(kind, html) {
     const element = document.createElement(kind);
     element.innerHTML = html.trim();
     return element;
 }
-export { isHTMLElement1 as isHTMLElement };
-export { createElementWithHtml1 as createElementWithHtml };
-function getErrorPage1(status, message) {
+export { isHTMLElement as isHTMLElement };
+export { createElementWithHtml as createElementWithHtml };
+function getErrorPage(status, message) {
     return `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -482,7 +486,7 @@ function getErrorPage1(status, message) {
   </body>
 </html>`;
 }
-export { getErrorPage1 as getErrorPage };
+export { getErrorPage as getErrorPage };
 function escape1(unescapedHtml) {
     const matchHtmlRegExp = /["'&<>]/;
     const str = "" + unescapedHtml;
@@ -490,26 +494,26 @@ function escape1(unescapedHtml) {
     if (!match) {
         return str;
     }
-    let escape;
+    let escape1;
     let html = "";
     let index = 0;
     let lastIndex = 0;
     for(index = match.index; index < str.length; index++){
         switch(str.charCodeAt(index)){
             case 34:
-                escape = "&quot;";
+                escape1 = "&quot;";
                 break;
             case 38:
-                escape = "&amp;";
+                escape1 = "&amp;";
                 break;
             case 39:
-                escape = "&#39;";
+                escape1 = "&#39;";
                 break;
             case 60:
-                escape = "&lt;";
+                escape1 = "&lt;";
                 break;
             case 62:
-                escape = "&gt;";
+                escape1 = "&gt;";
                 break;
             default:
                 continue;
@@ -518,13 +522,12 @@ function escape1(unescapedHtml) {
             html += str.substring(lastIndex, index);
         }
         lastIndex = index + 1;
-        html += escape;
+        html += escape1;
     }
     return lastIndex !== index ? html + str.substring(lastIndex, index) : html;
 }
 export { escape1 as escape };
-function dispatchCustomEvent1(eventName, element, { bubbles =true , composed =true , detail =null  } = {
-}) {
+function dispatchCustomEvent(eventName, element, { bubbles =true , composed =true , detail =null  } = {}) {
     return element.dispatchEvent(new CustomEvent(eventName, {
         bubbles,
         composed,
@@ -533,20 +536,20 @@ function dispatchCustomEvent1(eventName, element, { bubbles =true , composed =tr
         } : detail
     }));
 }
-function isInEventPath1(event, element) {
+function isInEventPath(event, element) {
     return event.composedPath().some((eventTarget)=>eventTarget === element
     );
 }
-function findElementInEventPath1(event, selector) {
+function findElementInEventPath(event, selector) {
     const result = event.composedPath().find((eventTarget)=>eventTarget instanceof HTMLElement ? eventTarget.matches(selector) : false
     );
     return result ?? null;
 }
-function findElementInEventPathByInnerHtml1(event, selector, ...innerHtml) {
-    const element = findElementInEventPath1(event, selector);
+function findElementInEventPathByInnerHtml(event, selector, ...innerHtml) {
+    const element = findElementInEventPath(event, selector);
     return element ? innerHtml.includes(element.innerHTML) ? element : null : null;
 }
-function waitForEventOnce1(eventTarget, eventName) {
+function waitForEventOnce(eventTarget, eventName) {
     return new Promise((resolve)=>{
         function listener(event) {
             resolve(event);
@@ -555,7 +558,7 @@ function waitForEventOnce1(eventTarget, eventName) {
         eventTarget.addEventListener(eventName, listener);
     });
 }
-function waitForImages1(images) {
+function waitForImages(images) {
     return Promise.all(images.map((img)=>{
         if (img.complete) {
             return Promise.resolve(img);
@@ -574,13 +577,13 @@ function waitForImages1(images) {
         }
     }));
 }
-export { dispatchCustomEvent1 as dispatchCustomEvent };
-export { isInEventPath1 as isInEventPath };
-export { findElementInEventPath1 as findElementInEventPath };
-export { findElementInEventPathByInnerHtml1 as findElementInEventPathByInnerHtml };
-export { waitForEventOnce1 as waitForEventOnce };
-export { waitForImages1 as waitForImages };
-function h1(type, attributes, ...children) {
+export { dispatchCustomEvent as dispatchCustomEvent };
+export { isInEventPath as isInEventPath };
+export { findElementInEventPath as findElementInEventPath };
+export { findElementInEventPathByInnerHtml as findElementInEventPathByInnerHtml };
+export { waitForEventOnce as waitForEventOnce };
+export { waitForImages as waitForImages };
+function h(type, attributes, ...children) {
     const element = document.createElement(type);
     for(let key in attributes){
         if (key in element) {
@@ -601,7 +604,7 @@ function h1(type, attributes, ...children) {
     }
     return element;
 }
-function mount1(node, view) {
+function mount(node, view) {
     let currentApp;
     return function renderView(state) {
         const evaluatedView = view(state);
@@ -609,35 +612,34 @@ function mount1(node, view) {
         return currentApp = evaluatedView;
     };
 }
-export { h1 as h };
-export { mount1 as mount };
-function getViewportSize1() {
+export { h as h };
+export { mount as mount };
+function getViewportSize() {
     return [
         document.documentElement.clientWidth || window.innerWidth,
         document.documentElement.clientHeight || window.innerHeight, 
     ];
 }
-function reachedScrollingYEnd1(element) {
+function reachedScrollingYEnd(element) {
     return Math.abs(element.scrollHeight - element.scrollTop - element.clientHeight) <= 3;
 }
-function reachedScrollingXEnd1(element) {
+function reachedScrollingXEnd(element) {
     return Math.abs(element.scrollWidth - element.scrollLeft - element.clientWidth) <= 3;
 }
-function getCursorPositionRelativeToElement1(event) {
+function getCursorPositionRelativeToElement(event) {
     const rect = event.target.getBoundingClientRect();
     return [
         event.clientX - rect.left,
         event.clientY - rect.top
     ];
 }
-function surroundCursorWithElement1(pageX, pageY, element) {
+function surroundCursorWithElement(pageX, pageY, element) {
     return [
         pageX - (pageXOffset + element.offsetParent.getBoundingClientRect().left) - element.offsetWidth / 2,
         pageY - (pageYOffset + element.offsetParent.getBoundingClientRect().top) - element.offsetHeight / 2, 
     ];
 }
-function observe1(elements, callback, options = {
-}) {
+function observe(elements, callback, options = {}) {
     let isDone = false;
     const observer = new IntersectionObserver((entries)=>{
         entries.forEach((entry)=>{
@@ -656,13 +658,13 @@ function observe1(elements, callback, options = {
     else observer.observe(elements);
     return observer;
 }
-export { getViewportSize1 as getViewportSize };
-export { reachedScrollingYEnd1 as reachedScrollingYEnd };
-export { reachedScrollingXEnd1 as reachedScrollingXEnd };
-export { getCursorPositionRelativeToElement1 as getCursorPositionRelativeToElement };
-export { surroundCursorWithElement1 as surroundCursorWithElement };
-export { observe1 as observe };
-function mix(v0, v1, t) {
+export { getViewportSize as getViewportSize };
+export { reachedScrollingYEnd as reachedScrollingYEnd };
+export { reachedScrollingXEnd as reachedScrollingXEnd };
+export { getCursorPositionRelativeToElement as getCursorPositionRelativeToElement };
+export { surroundCursorWithElement as surroundCursorWithElement };
+export { observe as observe };
+function lerp(v0, v1, t) {
     return (1 - t) * v0 + t * v1;
 }
 function getPosition(element, [start, end]) {
@@ -670,7 +672,7 @@ function getPosition(element, [start, end]) {
     const elementHeight = element.clientHeight;
     const totalRange = Math.max(1, viewportHeight - elementHeight);
     const elementDistanceFromTop = totalRange - Math.max(0, element.getBoundingClientRect().top);
-    const result = mix(start, end, elementDistanceFromTop / totalRange) + "%";
+    const result = lerp(start, end, elementDistanceFromTop / totalRange) + "%";
     return result;
 }
 function getListener(config) {
@@ -706,80 +708,80 @@ function observerCallback(configs) {
         return false;
     };
 }
-function moveElementsAlongScrolling1(configs) {
-    return observe1(configs.map((config)=>config.observedElement
+function moveElementsAlongScrolling(configs) {
+    return observe(configs.map((config)=>config.observedElement
     ), observerCallback(configs), {
         threshold: [
             1
         ]
     });
 }
-export { moveElementsAlongScrolling1 as moveElementsAlongScrolling };
-function getSiblingByClass1(element, className) {
+export { moveElementsAlongScrolling as moveElementsAlongScrolling };
+function getSiblingByClass(element, className) {
     const result = [
         ...element.parentNode?.children ?? []
     ].find((el)=>el.classList.contains(className)
     );
     return result ?? null;
 }
-function getIndexOfElement1(element) {
+function getIndexOfElement(element) {
     const result = [
         ...element.parentNode?.children ?? []
     ].indexOf(element);
     return result === -1 ? null : result;
 }
-function getKeyboardFocusableElements1(element = document) {
+function getKeyboardFocusableElements(element = document) {
     return [
         ...element.querySelectorAll('a, button, input:not([type="hidden"], textarea, select, details,[tabindex]:not([tabindex="-1"])')
     ].filter((el)=>!el.hasAttribute("disabled")
     );
 }
-function getChildren1(parentElement) {
+function getChildren(parentElement) {
     return [
         ...parentElement.children
     ];
 }
-export { getSiblingByClass1 as getSiblingByClass };
-export { getIndexOfElement1 as getIndexOfElement };
-export { getKeyboardFocusableElements1 as getKeyboardFocusableElements };
-export { getChildren1 as getChildren };
-function convertCamelCaseToDash1(str) {
+export { getSiblingByClass as getSiblingByClass };
+export { getIndexOfElement as getIndexOfElement };
+export { getKeyboardFocusableElements as getKeyboardFocusableElements };
+export { getChildren as getChildren };
+function convertCamelCaseToDash(str) {
     return str.replace(/([a-zA-Z])(?=[A-Z])/g, "$1-").toLowerCase();
 }
-function convertDashToCamelCase1(str) {
+function convertDashToCamelCase(str) {
     return str.replace(/-([a-z])/g, function(g) {
         return g[1].toUpperCase();
     });
 }
-function concatWithSpace1(...strings) {
+function concatWithSpace(...strings) {
     return strings.join(" ");
 }
-function replaceCharAt1(str, index, replace) {
+function replaceCharAt(str, index, replace) {
     return str.substring(0, index) + replace + str.substring(index + 1);
 }
-function insert1(str, index, newStr) {
+function insert(str, index, newStr) {
     return str.slice(0, index) + newStr + str.slice(index);
 }
-function searchAndInsert1(baseString, pattern, str) {
+function searchAndInsert(baseString, pattern, str) {
     const index = baseString.search(pattern);
     return baseString.slice(0, index) + str + baseString.slice(index);
 }
-function hasWhiteSpace1(str) {
+function hasWhiteSpace(str) {
     return /\s/g.test(str);
 }
-function getTag1(string, tag) {
+function getTag(string, tag) {
     const regexp = new RegExp(`<${tag}\\b[^>]*>(.*?)<\/${tag}>`, "gs");
     return [
         ...s1.matchAll(regexp)
     ];
 }
-function convertStringToBase641(str) {
+function convertStringToBase64(str) {
     return window.btoa(unescape(encodeURIComponent(str)));
 }
-function convertBase64ToString1(str) {
+function convertBase64ToString(str) {
     return decodeURIComponent(escape(window.atob(str)));
 }
-function addPaddingToBase64url1(base64url) {
+function addPaddingToBase64url(base64url) {
     if (base64url.length % 4 === 2) return base64url + "==";
     if (base64url.length % 4 === 3) return base64url + "=";
     if (base64url.length % 4 === 1) {
@@ -787,26 +789,26 @@ function addPaddingToBase64url1(base64url) {
     }
     return base64url;
 }
-function convertBase64urlToBase641(base64url) {
-    return addPaddingToBase64url1(base64url).replace(/\-/g, "+").replace(/_/g, "/");
+function convertBase64urlToBase64(base64url) {
+    return addPaddingToBase64url(base64url).replace(/\-/g, "+").replace(/_/g, "/");
 }
-function convertBase64ToBase64url1(base64) {
+function convertBase64ToBase64url(base64) {
     return base64.replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
 }
-export { convertCamelCaseToDash1 as convertCamelCaseToDash };
-export { convertDashToCamelCase1 as convertDashToCamelCase };
-export { concatWithSpace1 as concatWithSpace };
-export { replaceCharAt1 as replaceCharAt };
-export { insert1 as insert };
-export { searchAndInsert1 as searchAndInsert };
-export { hasWhiteSpace1 as hasWhiteSpace };
-export { getTag1 as getTag };
-export { convertStringToBase641 as convertStringToBase64 };
-export { convertBase64ToString1 as convertBase64ToString };
-export { addPaddingToBase64url1 as addPaddingToBase64url };
-export { convertBase64urlToBase641 as convertBase64urlToBase64 };
-export { convertBase64ToBase64url1 as convertBase64ToBase64url };
-function waitUntil1(predicate, { interval =50 , timeout =2000 , message  }) {
+export { convertCamelCaseToDash as convertCamelCaseToDash };
+export { convertDashToCamelCase as convertDashToCamelCase };
+export { concatWithSpace as concatWithSpace };
+export { replaceCharAt as replaceCharAt };
+export { insert as insert };
+export { searchAndInsert as searchAndInsert };
+export { hasWhiteSpace as hasWhiteSpace };
+export { getTag as getTag };
+export { convertStringToBase64 as convertStringToBase64 };
+export { convertBase64ToString as convertBase64ToString };
+export { addPaddingToBase64url as addPaddingToBase64url };
+export { convertBase64urlToBase64 as convertBase64urlToBase64 };
+export { convertBase64ToBase64url as convertBase64ToBase64url };
+function waitUntil(predicate, { interval =50 , timeout =2000 , message  }) {
     return new Promise((resolve, reject)=>{
         let timeoutId;
         setTimeout(()=>{
@@ -829,7 +831,7 @@ function waitUntil1(predicate, { interval =50 , timeout =2000 , message  }) {
         nextInterval();
     });
 }
-function handlePageVisibilityChange1(onHidden, onVisible) {
+function handlePageVisibilityChange(onHidden, onVisible) {
     let hidden = "";
     let visibilityChange = "";
     if (typeof document.hidden !== "undefined") {
@@ -856,7 +858,7 @@ function handlePageVisibilityChange1(onHidden, onVisible) {
         visibilityChange
     ];
 }
-function makeElementEditableOnDblclick1(element) {
+function makeElementEditableOnDblclick(element) {
     element.ondblclick = (event)=>{
         element.contentEditable = "true";
         element.blur();
@@ -868,7 +870,7 @@ function makeElementEditableOnDblclick1(element) {
     element.onclick = (event)=>event.target.contentEditable = "false"
     ;
 }
-export { waitUntil1 as waitUntil };
-export { handlePageVisibilityChange1 as handlePageVisibilityChange };
-export { makeElementEditableOnDblclick1 as makeElementEditableOnDblclick };
+export { waitUntil as waitUntil };
+export { handlePageVisibilityChange as handlePageVisibilityChange };
+export { makeElementEditableOnDblclick as makeElementEditableOnDblclick };
 

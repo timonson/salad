@@ -4,49 +4,44 @@ function delay1(value, duration = 0) {
         , duration);
     });
 }
-function assureArray1(...arg) {
+function assertArray(...arg) {
     return [].concat(...arg);
 }
-function throwError1(msg) {
+function throwError(msg) {
     throw new Error(msg);
 }
-function pipe1(...fns) {
+function pipe(...fns) {
     const _pipe = (accumulator, currentValue)=>(...arg)=>currentValue(accumulator(...arg))
     ;
     return fns.reduce(_pipe);
 }
-function memoize1(f) {
-    const cache = {
-    };
+function memoize(f) {
+    const cache = {};
     return (...args)=>{
         const argStr = JSON.stringify(args);
         cache[argStr] = cache[argStr] || f(...args);
     };
 }
-function getRandomInt1(min, max) {
-    var byteArray = new Uint8Array(1);
-    window.crypto.getRandomValues(byteArray);
-    var range = max - min + 1;
-    var max_range = 256;
-    if (byteArray[0] >= Math.floor(max_range / range) * range) {
-        return getRandomInt1(min, max);
-    }
-    return min + byteArray[0] % range;
+function generateId() {
+    return window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
 }
-function getRandom1(min = 1, max = 100) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-function getRandomItem1(array) {
-    return array[Math.floor(array.length * Math.random())];
-}
-function generateId1(size) {
+function generateIdOfSize(size) {
     const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
     for(var str = "", i = 0; i < size; i += 1){
         str += chars[Math.floor(Math.random() * chars.length)];
     }
     return str;
 }
-function valoo1(v, ...cb) {
+function getRandomInt(min = 1, max = 100) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function getRandomElement(array) {
+    return array[Math.floor(array.length * Math.random())];
+}
+function getRandomHexColor() {
+    return "#" + Math.floor(Math.random() * 16777215).toString(16);
+}
+function valoo(v, ...cb) {
     function value(n) {
         if (arguments.length) {
             v = n;
@@ -62,7 +57,7 @@ function valoo1(v, ...cb) {
     };
     return value;
 }
-function stringifyKeysInOrder1(data) {
+function stringifyKeysInOrder(data) {
     function recursivelyOrderKeys(unordered) {
         if (Array.isArray(unordered)) {
             unordered.forEach(function(item, index) {
@@ -71,8 +66,7 @@ function stringifyKeysInOrder1(data) {
             return unordered;
         }
         if (typeof unordered === "object") {
-            const ordered = {
-            };
+            const ordered = {};
             Object.keys(unordered).sort().forEach(function(key) {
                 ordered[key] = recursivelyOrderKeys(unordered[key]);
             });
@@ -82,27 +76,27 @@ function stringifyKeysInOrder1(data) {
     }
     return JSON.stringify(recursivelyOrderKeys(data), null, 2);
 }
-function getWordCnt1(text) {
+function getWordCnt(text) {
     return Object.entries(text.toLowerCase().split(/\W+/).filter((line)=>!!line
     ).reduce((acc, el)=>{
         acc[el] = acc[el] + 1 || 1;
         return acc;
-    }, {
-    }));
+    }, {}));
 }
 export { delay1 as delay };
-export { assureArray1 as assureArray };
-export { throwError1 as throwError };
-export { pipe1 as pipe };
-export { memoize1 as memoize };
-export { getRandomInt1 as getRandomInt };
-export { getRandom1 as getRandom };
-export { getRandomItem1 as getRandomItem };
-export { generateId1 as generateId };
-export { valoo1 as valoo };
-export { stringifyKeysInOrder1 as stringifyKeysInOrder };
-export { getWordCnt1 as getWordCnt };
-class Dragon1 {
+export { assertArray as assertArray };
+export { throwError as throwError };
+export { pipe as pipe };
+export { memoize as memoize };
+export { generateId as generateId };
+export { generateIdOfSize as generateIdOfSize };
+export { getRandomInt as getRandomInt };
+export { getRandomElement as getRandomElement };
+export { getRandomHexColor as getRandomHexColor };
+export { valoo as valoo };
+export { stringifyKeysInOrder as stringifyKeysInOrder };
+export { getWordCnt as getWordCnt };
+class Dragon {
     fireDragons = [
         "Blaze",
         "Heat",
@@ -146,27 +140,27 @@ class Dragon1 {
         return delay1(this.getRandom(), 500);
     }
 }
-export { Dragon1 as Dragon };
-function* delayingIterable1(range, time) {
+export { Dragon as Dragon };
+function* delayingIterable(range, time1) {
     let i = 0;
     while(i++ < 200){
-        yield delay(getRandomIntSimpel(...range), time);
+        yield delay(getRandomIntSimpel(...range), time1);
     }
 }
-function* loopingRange1(from, to, time) {
+function* loopingRange(from, to, time2) {
     while(true){
-        if (from < to) yield delay(++from, time);
-        else yield delay(from = 0, time);
+        if (from < to) yield delay(++from, time2);
+        else yield delay(from = 0, time2);
     }
 }
-function makeObserver1(generatorFunction) {
+function makeObserver(generatorFunction) {
     return function(...args) {
         const generatorObject = generatorFunction(...args);
         generatorObject.next();
         return generatorObject;
     };
 }
-function makeQueue1(...callbacks) {
+function makeQueue(...callbacks1) {
     async function* makeGenerator(callbacks) {
         while(true){
             const request = yield;
@@ -175,26 +169,25 @@ function makeQueue1(...callbacks) {
             }
         }
     }
-    const generatorObject = makeGenerator(callbacks);
+    const generatorObject = makeGenerator(callbacks1);
     generatorObject.next();
     return generatorObject;
 }
-function queue1(fn) {
+function queue(fn) {
     let lastPromise = Promise.resolve();
     return function(...args) {
         let returnedPromise = lastPromise.then(()=>fn(...args)
         );
-        lastPromise = returnedPromise.catch(()=>{
-        });
+        lastPromise = returnedPromise.catch(()=>{});
         return returnedPromise;
     };
 }
-export { delayingIterable1 as delayingIterable };
-export { loopingRange1 as loopingRange };
-export { makeObserver1 as makeObserver };
-export { makeQueue1 as makeQueue };
-export { queue1 as queue };
-function takeN1(iter, n) {
+export { delayingIterable as delayingIterable };
+export { loopingRange as loopingRange };
+export { makeObserver as makeObserver };
+export { makeQueue as makeQueue };
+export { queue as queue };
+function takeN(iter, n) {
     const res = [];
     let count = 0;
     for(count = 0; count < n; count++){
@@ -209,7 +202,7 @@ function takeN1(iter, n) {
         res
     ];
 }
-function iterate1(f, x, n) {
+function iterate(f1, x1, n) {
     function* iterateGen(f, x) {
         while(true){
             yield x;
@@ -217,25 +210,25 @@ function iterate1(f, x, n) {
         }
     }
     if (n === undefined) {
-        return iterateGen(f, x);
+        return iterateGen(f1, x1);
     } else {
-        return takeN1(iterateGen(f, x), n)[1];
+        return takeN(iterateGen(f1, x1), n)[1];
     }
 }
-export { takeN1 as takeN };
-export { iterate1 as iterate };
-function slog1(obj) {
+export { takeN as takeN };
+export { iterate as iterate };
+function slog(obj) {
     Object.entries(obj).forEach(([key, value])=>console.log(key + ":", value)
     );
 }
-function pp1(...objects) {
+function pp(...objects) {
     function printPrettyObject(object) {
         return typeof object !== "object" ? console.log(object) : Object.entries(object).forEach(([key, value])=>globalThis.Deno ? console.log(`${key}: ${Deno.inspect(value)}`) : console.log(`${key}:`, value)
         );
     }
     return objects.forEach(printPrettyObject);
 }
-function add1(fn, logger = console.log) {
+function add(fn, logger = console.log) {
     return (...args)=>{
         logger(`entering ${fn.name}: ${args}`);
         try {
@@ -248,61 +241,88 @@ function add1(fn, logger = console.log) {
         }
     };
 }
-function time1(name, action) {
+function time(name, action) {
     let start = Date.now();
     const result = action();
     if (result && "then" in result && typeof result.then === "function") {
         return result.then((r)=>{
-            const time = Date.now() - start;
-            console.log(name, "took", time, "ms");
-            return time;
+            const time2 = Date.now() - start;
+            console.log(name, "took", time2, "ms");
+            return time2;
         });
     }
-    const time = Date.now() - start;
-    console.log(name, "took", time, "ms");
-    return time;
+    const time1 = Date.now() - start;
+    console.log(name, "took", time1, "ms");
+    return time1;
 }
-const log1 = slog1;
-log1.pp = pp1;
-log1.add = add1;
-log1.time = time1;
-function getDateFormat1() {
+const log = slog;
+log.pp = pp;
+log.add = add;
+log.time = time;
+function getDateFormat() {
     const d = new Date().toISOString();
     const dateFmt = `[${d.slice(0, 10)} ${d.slice(11, 19)}]`;
     return dateFmt;
 }
-export { slog1 as slog };
-export { pp1 as pp };
-export { add1 as add };
-export { time1 as time };
-export { log1 as log };
-export { getDateFormat1 as getDateFormat };
-function importMetaResolve1(modulePath, filePath) {
-    return new URL(filePath, modulePath).pathname;
+export { slog as slog };
+export { pp as pp };
+export { add as add };
+export { time as time };
+export { log as log };
+export { getDateFormat as getDateFormat };
+function importMetaResolve(filePath, moduleUrl) {
+    return new URL(filePath, moduleUrl).pathname;
 }
-function createUrlFromRequest1(req, proto = "http") {
+function importMetaResolveAndProtect(userSuppliedFilename, moduleUrl, rootSuffix) {
+    if (typeof rootSuffix === "string" && (rootSuffix.trim().slice(-1) !== "/" || rootSuffix.trim()[0] === "/")) {
+        throw new TypeError("Invalid 'rootSuffix'.");
+    }
+    if (userSuppliedFilename.indexOf("\0") !== -1) {
+        throw new Error("Evil character in path.");
+    }
+    const rootDirectoryObj = new URL(rootSuffix ? rootSuffix : "./", moduleUrl);
+    const path = new URL(userSuppliedFilename, rootDirectoryObj).pathname;
+    if (!path.startsWith(rootDirectoryObj.pathname)) {
+        throw new Error("Unallowed path reversal in path.");
+    }
+    return path;
+}
+function createUrlFromRequest(req, proto = "http") {
     return new URL(req.url, `${proto}://${req.headers.get("host")}`);
 }
-export { importMetaResolve1 as importMetaResolve };
-export { createUrlFromRequest1 as createUrlFromRequest };
-const env1 = typeof Deno !== "undefined" ? "deno" : typeof process !== "undefined" ? "node" : typeof document !== "undefined" ? "browser" : "unknown";
-export { env1 as env };
-function concatTypedArrays1(a, b) {
+function getFilename(filePath) {
+    return filePath.split("/").pop();
+}
+function getExtension(fileName) {
+    return fileName.split(".").pop();
+}
+function getDirname(path) {
+    return path.slice(0, path.lastIndexOf("/"));
+}
+export { importMetaResolve as importMetaResolve };
+export { importMetaResolveAndProtect as importMetaResolveAndProtect };
+export { createUrlFromRequest as createUrlFromRequest };
+export { getFilename as getFilename };
+export { getExtension as getExtension };
+export { getDirname as getDirname };
+const env = typeof Deno !== "undefined" ? "deno" : typeof process !== "undefined" ? "node" : typeof document !== "undefined" ? "browser" : "unknown";
+export { env as env };
+function concatTypedArrays(a, b) {
     const c = new a.constructor(a.length + b.length);
     c.set(a, 0);
     c.set(b, a.length);
     return c;
 }
-function concatBytes1(a, ...bytes) {
+function concatBytes(a, ...bytes) {
     const b = new a.constructor(bytes);
-    return concatTypedArrays1(a, b);
+    return concatTypedArrays(a, b);
 }
-function areEqual1(a, b) {
+function areEqual(a, b) {
     if (a.byteLength !== b.byteLength) return false;
     return a.every((el, i)=>el === b[i]
     );
 }
-export { concatTypedArrays1 as concatTypedArrays };
-export { concatBytes1 as concatBytes };
-export { areEqual1 as areEqual };
+export { concatTypedArrays as concatTypedArrays };
+export { concatBytes as concatBytes };
+export { areEqual as areEqual };
 

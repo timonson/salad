@@ -1,6 +1,6 @@
 /**
-  * delayingIterable([0,200],1500)
-  */
+ * delayingIterable([0,200],1500)
+ */
 export function* delayingIterable(range, time) {
   let i = 0;
   while (i++ < 200) {
@@ -11,7 +11,7 @@ export function* delayingIterable(range, time) {
 export function* loopingRange(from, to, time) {
   while (true) {
     if (from < to) yield delay(++from, time);
-    else yield delay((from = 0), time);
+    else yield delay(from = 0, time);
   }
 }
 
@@ -28,10 +28,10 @@ export function makeObserver(generatorFunction) {
 }
 
 /**
-  * const queue = makeQueue(console.log)
-  * queue.next(10)
-  * queue.next(20)
-  */
+ * const queue = makeQueue(console.log)
+ * queue.next(10)
+ * queue.next(20)
+ */
 export function makeQueue(...callbacks) {
   async function* makeGenerator(callbacks) {
     while (true) {
@@ -47,11 +47,11 @@ export function makeQueue(...callbacks) {
 }
 
 /**
-  * Wrap an async function `fn()` in a queue using promise chaining, so only
-  * one instance of `fn()` can run at a time on this server.
-  * If `returnedPromise` rejected, swallow the rejection for the queue,
-  * but `returnedPromise` rejections will still be visible outside the queue
-  */
+ * Wrap an async function `fn()` in a queue using promise chaining, so only
+ * one instance of `fn()` can run at a time on this server.
+ * If `returnedPromise` rejected, swallow the rejection for the queue,
+ * but `returnedPromise` rejections will still be visible outside the queue
+ */
 export function queue(fn) {
   let lastPromise = Promise.resolve();
   return function (...args) {

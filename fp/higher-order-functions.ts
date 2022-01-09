@@ -27,11 +27,11 @@ export function perform<S>(f: (x: S) => void): (x: S) => S {
 }
 
 /**
-  * The generic type of the identity function does not work with 'foldOption'
-  * and 'foldResult'.
-  * add10(foldOption(identity)(identity)(some(5)))
-  * // TS Error
-  */
+ * The generic type of the identity function does not work with 'foldOption'
+ * and 'foldResult'.
+ * add10(foldOption(identity)(identity)(some(5)))
+ * // TS Error
+ */
 export function identity<X>(x: X) {
   return x;
 }
@@ -54,8 +54,8 @@ export function curry<F>(fn: any): F {
 }
 
 /**
-  * https://gist.github.com/JamieMason/172460a36a0eaef24233e6edb2706f83
-  */
+ * https://gist.github.com/JamieMason/172460a36a0eaef24233e6edb2706f83
+ */
 export function composeMultivariate<R>(
   ...fns: Function[]
 ): (...args: any[]) => R {
@@ -65,8 +65,8 @@ export function composeMultivariate<R>(
 }
 
 /**
-  * https://github.com/reduxjs/redux/blob/master/src/compose.ts
-  */
+ * https://github.com/reduxjs/redux/blob/master/src/compose.ts
+ */
 
 type Func<T extends any[], R> = (...a: T) => R;
 

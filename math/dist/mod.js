@@ -12,7 +12,7 @@ function getEqualParts(amount) {
     return Array.from(Array(amount), (e, i)=>i * range
     );
 }
-function getCirclePoints1(amount, radius, [Cx, Cy] = [
+function getCirclePoints(amount, radius, [Cx, Cy] = [
     0,
     0
 ]) {
@@ -22,13 +22,13 @@ function getCirclePoints1(amount, radius, [Cx, Cy] = [
         ]
     );
 }
-export { getCirclePoints1 as getCirclePoints };
-function mix1(v0, v1, t) {
+export { getCirclePoints as getCirclePoints };
+function lerp(v0, v1, t) {
     return (1 - t) * v0 + t * v1;
 }
-export { mix1 as mix };
-function carryRatio1(value, biggestValue, actualLength) {
+export { lerp as lerp };
+function carryRatio(value, biggestValue, actualLength) {
     return value / biggestValue * actualLength;
 }
-export { carryRatio1 as carryRatio };
+export { carryRatio as carryRatio };
 

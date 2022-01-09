@@ -1,5 +1,5 @@
 import { observe } from "./position.ts";
-import { mix } from "../math/linear_interpolation.ts";
+import { lerp } from "../math/linear_interpolation.ts";
 
 function getPosition(
   element: HTMLElement,
@@ -14,7 +14,7 @@ function getPosition(
     element.getBoundingClientRect().top,
   );
 
-  const result = mix(start, end, elementDistanceFromTop / totalRange) + "%";
+  const result = lerp(start, end, elementDistanceFromTop / totalRange) + "%";
   return result;
 }
 

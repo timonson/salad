@@ -23,8 +23,8 @@ export function getKeyboardFocusableElements(
 }
 
 /**
-  * Can be used for the slot elements of a Custom Element
-  */
+ * Can be used for the slot elements of a Custom Element
+ */
 export function getChildren(parentElement: Element) {
   return [...parentElement.children] as HTMLElement[];
 }

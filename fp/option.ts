@@ -42,11 +42,11 @@ export function foldOption<T, U>(ifSome: ((x: T) => U) | U) {
 }
 
 /**
-      * [ some(x), some(y) ] = some([x, y])
-      * [ None, None ] = None
-      * [ None, some(x) ] = None
-      * [ some(x), None ] = None
-      */
+ * [ some(x), some(y) ] = some([x, y])
+ * [ None, None ] = None
+ * [ None, some(x) ] = None
+ * [ some(x), None ] = None
+ */
 export function invertOptions<S extends Some<unknown>>(
   options: (S | None)[],
 ): Some<Array<S["value"]>> | None {
@@ -60,11 +60,11 @@ export function invertOptions<S extends Some<unknown>>(
 }
 
 /**
-      * [ some(x), some(y) ] = [x, y]
-      * [ None, None ] = []
-      * [ None, some(x) ] = [x]
-      * [ some(x), None ] = [x]
-      */
+ * [ some(x), some(y) ] = [x, y]
+ * [ None, None ] = []
+ * [ None, some(x) ] = [x]
+ * [ some(x), None ] = [x]
+ */
 export function concatOptions<T>(options: Option<T>[]): T[] {
   return options.reduce<any>(
     (arr, opt) => foldOption((value) => arr.concat([value]))(arr)(opt),

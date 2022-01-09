@@ -17,10 +17,10 @@ function changeInlineStyles(
 }
 
 /**
-   * Takes a JavaScript style object and an optional selector (default is the
-   * custom element itself) and adds or changes specific inline styles to the
-   * element matching the selector without altering other style values.
-   * CSS custom properties (variables) are allowed.
+ * Takes a JavaScript style object and an optional selector (default is the
+ * custom element itself) and adds or changes specific inline styles to the
+ * element matching the selector without altering other style values.
+ * CSS custom properties (variables) are allowed.
  */
 export function changeCss(
   styles: Record<string, string>,
@@ -29,6 +29,13 @@ export function changeCss(
   Object.entries(styles).forEach((entry) =>
     elements.forEach((element) => changeInlineStyles(element, entry))
   );
+}
+
+export function getComputedCssPropertyValue(
+  property: string,
+  element = document.body,
+) {
+  return getComputedStyle(element).getPropertyValue(property);
 }
 
 export function appendStyleElement(cssString: string, parent?: HTMLElement) {

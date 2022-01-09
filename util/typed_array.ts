@@ -10,10 +10,10 @@ export type TypedArray =
   | Float64Array;
 
 /**
-  * https://stackoverflow.com/questions/33702838/how-to-append-bytes-multi-bytes-and-buffer-to-arraybuffer-in-javascript
-  * You can create a new TypedArray with a new ArrayBuffer, but you can't change the
-  * size of an existing buffer
-  */
+ * https://stackoverflow.com/questions/33702838/how-to-append-bytes-multi-bytes-and-buffer-to-arraybuffer-in-javascript
+ * You can create a new TypedArray with a new ArrayBuffer, but you can't change the
+ * size of an existing buffer
+ */
 export function concatTypedArrays<A extends TypedArray>(a: A, b: A): A {
   // a, b TypedArray of same type
   //@ts-ignore
@@ -24,8 +24,8 @@ export function concatTypedArrays<A extends TypedArray>(a: A, b: A): A {
 }
 
 /**
-  * Concat bytes to TypedArray
-  */
+ * Concat bytes to TypedArray
+ */
 export function concatBytes<A extends TypedArray>(a: A, ...bytes: number[]): A {
   //@ts-ignore
   const b = new a.constructor(bytes);
@@ -33,8 +33,8 @@ export function concatBytes<A extends TypedArray>(a: A, ...bytes: number[]): A {
 }
 
 /**
-  * Compare TypedArrays
-  */
+ * Compare TypedArrays
+ */
 export function areEqual<A extends TypedArray>(a: A, b: A): Boolean {
   if (a.byteLength !== b.byteLength) return false;
   return a.every((el: A[number], i: number) => el === b[i]);

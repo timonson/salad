@@ -26,6 +26,10 @@ export function perform<S>(f: (x: S) => void): (x: S) => S {
   };
 }
 
+export function flip<A, B, R>(f: (a: A) => (b: B) => R) {
+  return (b: B) => (a: A) => f(a)(b);
+}
+
 /**
  * The generic type of the identity function does not work with 'foldOption'
  * and 'foldResult'.

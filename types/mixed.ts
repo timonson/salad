@@ -1,3 +1,5 @@
+export type AnyFunction = (...args: any[]) => any;
+
 /**
  * https://stackoverflow.com/questions/47914536/use-partial-in-nested-property-with-typescript/47914631
  */

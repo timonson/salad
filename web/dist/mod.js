@@ -1,3 +1,7 @@
+// deno-fmt-ignore-file
+// deno-lint-ignore-file
+// This code was bundled using `deno bundle` and it's not recommended to edit it manually
+
 function changeInlineStyles(element, [property, value]) {
     if (property.slice(0, 2) === "--" && element.style.getPropertyValue(property) !== value) {
         element.style.setProperty(property, value);

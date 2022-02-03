@@ -1,3 +1,7 @@
+// deno-fmt-ignore-file
+// deno-lint-ignore-file
+// This code was bundled using `deno bundle` and it's not recommended to edit it manually
+
 function delay1(value, duration = 0) {
     return new Promise((resolve, reject)=>{
         setTimeout(async ()=>resolve(typeof value === "function" ? await value() : value)
@@ -270,22 +274,31 @@ export { add as add };
 export { time as time };
 export { log as log };
 export { getDateFormat as getDateFormat };
-function importMetaResolve(filePath, moduleUrl) {
-    return new URL(filePath, moduleUrl).pathname;
+function convertFileUrlToPath(url) {
+    return decodeURIComponent(url.pathname.replace(/%(?![0-9A-Fa-f]{2})/g, "%25"));
 }
-function importMetaResolveAndProtect(userSuppliedFilename, moduleUrl, rootSuffix) {
-    if (typeof rootSuffix === "string" && (rootSuffix.trim().slice(-1) !== "/" || rootSuffix.trim()[0] === "/")) {
-        throw new TypeError("Invalid 'rootSuffix'.");
-    }
-    if (userSuppliedFilename.indexOf("\0") !== -1) {
-        throw new Error("Evil character in path.");
-    }
-    const rootDirectoryObj = new URL(rootSuffix ? rootSuffix : "./", moduleUrl);
-    const path = new URL(userSuppliedFilename, rootDirectoryObj).pathname;
-    if (!path.startsWith(rootDirectoryObj.pathname)) {
-        throw new Error("Unallowed path reversal in path.");
-    }
-    return path;
+function importMetaResolve(moduleUrl) {
+    return (filePath)=>convertFileUrlToPath(new URL(filePath, moduleUrl))
+    ;
+}
+function importMetaResolveAndProtect(rootDirectory) {
+    return (userSuppliedFilename)=>{
+        if (typeof rootDirectory === "string" && rootDirectory[0] !== "/") {
+            throw new TypeError("The path of rootDirectory is not absolute.");
+        }
+        const rootDirectoryObj = rootDirectory instanceof URL ? rootDirectory : new URL("file://" + rootDirectory.trim());
+        if (rootDirectoryObj.pathname.slice(-1) !== "/") {
+            throw new TypeError("The path of rootDirectory is not a directory.");
+        }
+        if (userSuppliedFilename.indexOf("\0") !== -1) {
+            throw new Error("Poison null byte in path.");
+        }
+        const path = convertFileUrlToPath(new URL(userSuppliedFilename, rootDirectoryObj));
+        if (!path.startsWith(convertFileUrlToPath(rootDirectoryObj))) {
+            throw new Error("Unallowed path reversal in path.");
+        }
+        return path;
+    };
 }
 function createUrlFromRequest(req, proto = "http") {
     return new URL(req.url, `${proto}://${req.headers.get("host")}`);
@@ -299,12 +312,17 @@ function getExtension(fileName) {
 function getDirname(path) {
     return path.slice(0, path.lastIndexOf("/"));
 }
+function removeExtension(fileName) {
+    return fileName.split(".")[0];
+}
+export { convertFileUrlToPath as convertFileUrlToPath };
 export { importMetaResolve as importMetaResolve };
 export { importMetaResolveAndProtect as importMetaResolveAndProtect };
 export { createUrlFromRequest as createUrlFromRequest };
 export { getFilename as getFilename };
 export { getExtension as getExtension };
 export { getDirname as getDirname };
+export { removeExtension as removeExtension };
 const env = typeof Deno !== "undefined" ? "deno" : typeof process !== "undefined" ? "node" : typeof document !== "undefined" ? "browser" : "unknown";
 export { env as env };
 function concatTypedArrays(a, b) {

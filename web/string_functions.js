@@ -25,7 +25,6 @@ export function searchAndInsert(baseString, pattern, str) {
   return baseString.slice(0, index) + str + baseString.slice(index);
 }
 
-// check if a string has whitespaces:
 export function hasWhiteSpace(str) {
   return /\s/g.test(str);
 }
@@ -35,7 +34,6 @@ export function getTag(string, tag) {
   return [...s1.matchAll(regexp)];
 }
 
-// Usage:
 // utoa('✓ à la mode'); // 4pyTIMOgIGxhIG1vZGU=
 // atou('4pyTIMOgIGxhIG1vZGU='); // "✓ à la mode"
 // utoa('I \u2661 Unicode!'); // SSDimaEgVW5pY29kZSE=

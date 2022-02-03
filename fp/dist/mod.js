@@ -1,3 +1,7 @@
+// deno-fmt-ignore-file
+// deno-lint-ignore-file
+// This code was bundled using `deno bundle` and it's not recommended to edit it manually
+
 function isArray(a) {
     return Array.isArray(a);
 }
@@ -130,6 +134,10 @@ function perform(f) {
         return x;
     };
 }
+function flip(f) {
+    return (b)=>(a)=>f(a)(b)
+    ;
+}
 function identity(x) {
     return x;
 }
@@ -167,6 +175,7 @@ export { applyTo as applyTo };
 export { applyPair as applyPair };
 export { applyPairTo as applyPairTo };
 export { perform as perform };
+export { flip as flip };
 export { identity as identity };
 export { constant as constant };
 export { curry as curry };
